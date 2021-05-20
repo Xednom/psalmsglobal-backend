@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+django-debug-toolbar = "*"
+
+[packages]
+django = "*"
+djoser = "*"
+djangorestframework = "*"
+django-environ = "*"
+django-split-settings = "*"
+mysqlclient = "*"
+
+[requires]
+python_version = "3.9"
