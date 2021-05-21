@@ -42,6 +42,7 @@ DJANGO_APPS = [
 LOCAL_APPS = [
     "apps.core",
     "apps.authentication",
+    "apps.account",
 ]
 
 THIRD_PARTY_APPS = [
