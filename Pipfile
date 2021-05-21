@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 django-debug-toolbar = "*"
+black = "*"
 
 [packages]
 django = "*"
@@ -13,6 +14,8 @@ djangorestframework = "*"
 django-environ = "*"
 django-split-settings = "*"
 mysqlclient = "*"
+django-money = "*"
+django-cors-headers = "*"
 
 [requires]
 python_version = "3.9"
