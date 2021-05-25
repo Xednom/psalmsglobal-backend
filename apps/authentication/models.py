@@ -6,6 +6,11 @@ from djmoney.models.fields import MoneyField
 from apps.core.models import TimeStamped
 
 
+class AccountType(models.TextChoices):
+    prepaid = "prepaid", ("Prepaid")
+    postpaid = "postpaid", ("Postpaid")
+
+
 class DesignationCategory(models.TextChoices):
     staff = "staff", ("Staff")
     new_client = "new_client", ("New Client")
@@ -40,6 +45,7 @@ class User(AbstractUser):
     company_category = models.CharField(
         choices=CompanyCategory.choices, blank=True, max_length=40
     )
+    account_type = models.CharField(choices=AccountType.choices, blank=True, max_length=40)
     REQUIRED_FIELDS = [
         "first_name",
         "last_name",
@@ -232,12 +238,12 @@ class Staff(TimeStamped):
             return staff_code
 
         if self.id:
-            staff_code = staff_initials + staff_code + "000" + str(self.id)
+            staff_code = staff_initials + staff_code + "0" + str(self.id)
             return staff_code
 
         in_id = last_in.id
         in_int = int(in_id)
-        staff_code = staff_initials + staff_code + "000" + str(int(in_int) + 1)
+        staff_code = staff_initials + staff_code + "0" + str(int(in_int) + 1)
 
         return staff_code
 

@@ -18,6 +18,7 @@ class UserProfileAdmin(UserAdmin):
         "last_name",
         "designation_category",
         "company_category",
+        "account_type",
         "is_staff",
     )
     list_filter = (
@@ -39,6 +40,7 @@ class UserProfileAdmin(UserAdmin):
                     "email",
                     "designation_category",
                     "company_category",
+                    "account_type",
                 )
             },
         ),
