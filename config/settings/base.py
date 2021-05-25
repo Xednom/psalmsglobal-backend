@@ -43,6 +43,7 @@ LOCAL_APPS = [
     "apps.core",
     "apps.authentication",
     "apps.account",
+    "apps.callme",
 ]
 
 THIRD_PARTY_APPS = [
