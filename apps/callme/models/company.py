@@ -3,6 +3,9 @@ from django.db import models
 from apps.core.models import TimeStamped
 
 
+__all__ = ("Company",)
+
+
 class Company(TimeStamped):
     client = models.ForeignKey("authentication.Client", on_delete=models.DO_NOTHING)
     company_owner_name = models.CharField(max_length=250)

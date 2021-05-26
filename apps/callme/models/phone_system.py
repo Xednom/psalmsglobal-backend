@@ -3,6 +3,9 @@ from django.db import models
 from apps.core.models import TimeStamped
 
 
+__all__ = ("VodaconnectPlan", "VodaconnectLineType", "PhoneSystem")
+
+
 class VodaconnectPlan(TimeStamped):
     range = models.CharField(max_length=100)
 

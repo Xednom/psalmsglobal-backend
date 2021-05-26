@@ -3,6 +3,9 @@ from django.db import models
 from apps.core.models import TimeStamped
 
 
+__all__ = ("Crm",)
+
+
 class Crm(TimeStamped):
     company = models.ForeignKey("callme.Company", on_delete=models.CASCADE)
     crm = models.BooleanField()

@@ -3,6 +3,9 @@ from django.db import models
 from apps.core.models import TimeStamped
 
 
+__all__ = ("Subscription",)
+
+
 class Subscription(TimeStamped):
     company = models.ForeignKey("callme.Company", on_delete=models.CASCADE)
     signed_up_date = models.DateField(blank=True, null=True)
