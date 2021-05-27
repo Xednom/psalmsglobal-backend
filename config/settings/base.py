@@ -58,6 +58,7 @@ INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -70,7 +71,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR/'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -162,3 +163,22 @@ DJOSER = {
         "password_reset": "apps.authentication.views.CallMePasswordResetEmail"
     }
 }
+
+POST_OFFICE = {
+    "BACKENDS": {
+        "default": "anymail.backends.mailgun.EmailBackend"
+    }
+}
+
+# Email sender credentials
+ANYMAIL_MAILGUN_API_KEY = env.str("ANYMAIL_MAILGUN_API_KEY")
+ANYMAIL_MAILGUN_SENDER_DOMAIN = env("MAILGUN_SENDER_DOMAIN")
+EMAIL_BACKEND = "post_office.EmailBackend"
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
+# SERVER_EMAIL = "xednom@gmail.com"
+
+EMAIL_HOST = "smtp.mailgun.org"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = True
