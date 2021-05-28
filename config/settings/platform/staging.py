@@ -1,8 +1,8 @@
 DEBUG = False
 
-ALLOWED_HOSTS = ["gpgstaging.pythonanywhere.com"]
+ALLOWED_HOSTS = ["callmestaging.pythonanywhere.com"]
 
-CORS_ALLOWED_ORIGINS = ["https://gpg-staging.vercel.app"]
+CORS_ALLOWED_ORIGINS = ["https://callme-staging.vercel.app"]
 
 MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)
 
