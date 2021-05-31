@@ -44,6 +44,8 @@ LOCAL_APPS = [
     "apps.authentication",
     "apps.account",
     "apps.callme",
+    "apps.post_paid",
+    "apps.prepaid",
 ]
 
 THIRD_PARTY_APPS = [
