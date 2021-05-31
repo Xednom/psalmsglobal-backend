@@ -3,6 +3,16 @@ from django.db import models
 from apps.core.models import TimeStamped
 
 
+__all__ = (
+    "LeadTransferredCrm",
+    "InterestedToSell",
+    "InterestedToBuy",
+    "GeneralCall",
+    "CustomerInteractionPostPaid",
+    "CustomerInteractionPostPaidComment"
+)
+
+
 class CrmChoices(models.TextChoices):
     yes = "yes", ("yes")
     no = "no", ("No")
@@ -67,6 +77,3 @@ class CustomerInteractionPostPaidComment(TimeStamped):
 
     class Meta:
         ordering = ["-created_at"]
-
-
-

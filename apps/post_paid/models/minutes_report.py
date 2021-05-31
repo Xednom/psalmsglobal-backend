@@ -4,6 +4,9 @@ from djmoney.models.fields import MoneyField
 from apps.core.models import TimeStamped
 
 
+__all__ = ("MinutesReport",)
+
+
 class MinutesReport(TimeStamped):
     client = models.ForeignKey("authentication.Client", on_delete=models.DO_NOTHING)
     month_year = models.CharField(max_length=250)

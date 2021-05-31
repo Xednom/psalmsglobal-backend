@@ -3,6 +3,9 @@ from django.db import models
 from apps.core.models import TimeStamped
 
 
+__all__ = ("AccountCharge",)
+
+
 class AccountCharge(TimeStamped):
     client = models.ForeignKey("authentication.Client", on_delete=models.DO_NOTHING)
     agent = models.ForeignKey("authentication.Staff", on_delete=models.DO_NOTHING)

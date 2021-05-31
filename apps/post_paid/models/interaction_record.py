@@ -3,6 +3,9 @@ from django.db import models
 from apps.core.models import TimeStamped
 
 
+__all__ = ("InteractionRecord",)
+
+
 class InteractionRecord(TimeStamped):
     date_called = models.DateField(auto_now_add=True)
     client = models.ForeignKey("authentication.Client", on_delete=models.DO_NOTHING)
