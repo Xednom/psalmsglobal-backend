@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.authentication.models import TimeStamped
+from apps.core.models import TimeStamped
 
 
 class CrmChoices(models.TextChoices):
