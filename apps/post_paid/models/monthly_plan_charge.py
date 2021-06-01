@@ -9,7 +9,11 @@ __all__ = ("MonthlyCharge",)
 
 
 class MonthlyCharge(TimeStamped):
-    client = models.ForeignKey("authentication.Client", on_delete=models.DO_NOTHING)
+    client = models.ForeignKey(
+        "authentication.Client",
+        related_name="client_monthly_charges",
+        on_delete=models.DO_NOTHING,
+    )
     month_year = models.CharField(max_length=250)
     plan_type = models.CharField(max_length=250)
     total_minutes = models.DecimalField(max_digits=19, decimal_places=2)

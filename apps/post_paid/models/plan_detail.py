@@ -27,10 +27,18 @@ class CostPlan(TimeStamped):
 
 
 class PostPaid(TimeStamped):
-    client = models.ForeignKey("authentication.Client", on_delete=models.DO_NOTHING)
-    plan_type = models.ForeignKey(PlanType, on_delete=models.DO_NOTHING)
+    client = models.ForeignKey(
+        "authentication.Client",
+        related_name="client_post_paids",
+        on_delete=models.DO_NOTHING,
+    )
+    plan_type = models.ForeignKey(
+        PlanType, related_name="post_paid_plan_types", on_delete=models.DO_NOTHING
+    )
     total_minutes = models.CharField(max_length=250)
-    cost_of_plan = models.ForeignKey(CostPlan, on_delete=models.DO_NOTHING)
+    cost_of_plan = models.ForeignKey(
+        CostPlan, related_name="post_paid_cost_of_plans", on_delete=models.DO_NOTHING
+    )
     start_of_plan = models.CharField(max_length=250)
     end_of_plan = models.CharField(max_length=250)
     account_status = models.BooleanField()
