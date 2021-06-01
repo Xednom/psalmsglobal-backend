@@ -21,16 +21,26 @@ class VodaconnectLineType(TimeStamped):
 
 
 class PhoneSystem(TimeStamped):
-    company = models.ForeignKey("callme.Company", on_delete=models.CASCADE)
+    company = models.ForeignKey(
+        "callme.Company", related_name="company_phone_systems", on_delete=models.CASCADE
+    )
     sub_number = models.BooleanField()
     caller_id_detail = models.TextField()
-    vodaconnect_plan = models.ForeignKey(VodaconnectPlan, on_delete=models.DO_NOTHING)
+    vodaconnect_plan = models.ForeignKey(
+        VodaconnectPlan,
+        related_name="vodaconnect_plan_phone_systems",
+        on_delete=models.DO_NOTHING,
+    )
     original_line = models.CharField(max_length=250)
     call_forwarding_number = models.CharField(max_length=250)
-    vodaconnect_line_type = models.ForeignKey(VodaconnectLineType, on_delete=models.DO_NOTHING)
+    vodaconnect_line_type = models.ForeignKey(
+        VodaconnectLineType,
+        related_name="vodaconnect_line_type_phone_systems",
+        on_delete=models.DO_NOTHING,
+    )
 
     class Meta:
         ordering = ["-company"]
-    
+
     def __str__(self):
         return f"{self.company} - {self.sub_number}"

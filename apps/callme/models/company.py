@@ -7,7 +7,11 @@ __all__ = ("Company",)
 
 
 class Company(TimeStamped):
-    client = models.ForeignKey("authentication.Client", on_delete=models.DO_NOTHING)
+    client = models.ForeignKey(
+        "authentication.Client",
+        related_name="client_companies",
+        on_delete=models.DO_NOTHING,
+    )
     company_owner_name = models.CharField(max_length=250)
     company_name = models.CharField(max_length=250)
     business_type = models.CharField(max_length=250)
@@ -20,6 +24,6 @@ class Company(TimeStamped):
 
     class Meta:
         ordering = ["-client"]
-    
+
     def __str__(self):
         return f"{self.company_owner_name} {self.company_name} - {self.client}"

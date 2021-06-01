@@ -7,7 +7,9 @@ __all__ = ("Crm",)
 
 
 class Crm(TimeStamped):
-    company = models.ForeignKey("callme.Company", on_delete=models.CASCADE)
+    company = models.ForeignKey(
+        "callme.Company", related_name="company_crms", on_delete=models.CASCADE
+    )
     crm = models.BooleanField()
     type_of_crm = models.TextField()
     crm_url = models.CharField(max_length=500)
@@ -16,6 +18,6 @@ class Crm(TimeStamped):
 
     class Meta:
         ordering = ["-company"]
-    
+
     def __str__(self):
         return f"{self.company}"
