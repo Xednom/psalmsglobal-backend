@@ -1,39 +1,238 @@
 from django.contrib import admin
 
+from apps.post_paid.models import (
+        AccountBalance,
+        AccountCharge,
+        InterestedToBuy,
+        InterestedToSell,
+        GeneralCall,
+        CustomerInteractionPostPaid,
+        InteractionRecord,
+        MinutesReport,
+        MonthlyCharge,
+        PlanType,
+        CostPlan,
+        PostPaid,
+        Subscription
+    )
 
-# commented this out first due to models not being able to be integrated yet.
-# class SubscriptionAdmin(admin.ModelAdmin):
-#     model = Subscription
-#     list_display = (
-#         "company",
-#         "signed_up_date",
-#         "signed_out_date",
-#         "biling_cycle",
-#         "date_call_started",
-#         "status",
-#     )
-#     list_filter = ("company",)
-#     search_fields = (
-#         "company",
-#         "company__client__user__first_name",
-#         "client__user__last_name",
-#         "client__client_code",
-#     )
-#     readonly_fields = ("created_at", "updated_at")
-#     fieldsets = (
-#         (
-#             "Subscription Information",
-#             {
-#                 "fields": (
-#                     "company",
-#                     "signed_up_date",
-#                     "signed_out_date",
-#                     "billing_cycle",
-#                     "date_call_started",
-#                     "status",
-#                     "script_created",
-#                     "notes"
-#                 )
-#             },
-#         ),
-#     )
+
+class AccountBalanceAdmin(admin.ModelAdmin):
+    model = AccountBalance
+    list_display = (
+        "client",
+        "account_total_aquired_minutes",
+        "account_total_spending",
+        "account_total_mins_used",
+        "account_total_mins_unused"
+    )
+    list_filter = ("client",)
+    search_fields = (
+        "client__user__first_name",
+        "client__user__last_name"
+    )
+    readonly_fields = ("created_at", "updated_at")
+
+
+class AccountChargeAdmin(admin.ModelAdmin):
+    model = AccountCharge
+    list_display = (
+        "client",
+        "agent",
+        "ticket_number",
+        "date_called",
+        "total_minutes"
+    )
+    list_filter = ("client", "agent")
+    search_fields = (
+        "client__user__first_name",
+        "client__user__last_name",
+        "agent__user__first_name",
+        "agent__user__last_name",
+    )
+    readonly_fields = ("created_at", "updated_at")
+
+
+class CustomerInteractionPostPaidAdmin(admin.ModelAdmin):
+    model = CustomerInteractionPostPaid
+    list_display = (
+        "ticket_number",
+        "company",
+        "apn",
+        "caller_full_name",
+        "caller_phone",
+        "email",
+        "interested_to_sell",
+        "interested_to_buy"
+    )
+    list_filter = ("company",)
+    search_fields = (
+        "company",
+        "company__client__user__first_name"
+    )
+    readonly_fields = ("created_at", "updated_at")
+
+
+class InteractionRecordAdmin(admin.ModelAdmin):
+    model = InteractionRecord
+    list_display = (
+        "client",
+        "agent",
+        "date_called",
+        "total_minutes",
+    )
+    list_filter = (
+        "client",
+        "agent"
+    )
+    search_fields = (
+        "client__user__first_name",
+        "client__user__last_name",
+        "agent__user__first_name",
+        "agent__user__last_name"
+    )
+    readonly_fields = ("created_at", "updated_at")
+
+
+class MinutesReportAdmin(admin.ModelAdmin):
+    model = MinutesReport
+    list_display = (
+        "client",
+        "month_year",
+        "plan_type",
+        "cost_of_plan",
+        "monthly_usage",
+        "total_minutes_unused"
+    )
+    list_filter = (
+        "client",
+    )
+    search_fields = (
+        "client__user__first_name",
+        "client__user__last_name"
+    )
+    readonly_fields = ("created_at", "updated_at")
+
+
+class MonthlyChargeAdmin(admin.ModelAdmin):
+    model = MonthlyCharge
+    list_display = (
+        "client",
+        "month_year",
+        "plan_type",
+        "total_minutes",
+        "cost_of_plan",
+        "payment_status"
+    )
+    list_filter = (
+        "client",
+        "payment_status",
+        "plan_type"
+    )
+    search_fields = (
+        "client__user__first_name",
+        "client__user__last_name"
+    )
+    readonly_fields = ("created_at", "updated_at")
+
+
+class PlanTypeAdmin(admin.ModelAdmin):
+    model = PlanType
+    search_fields = ("name",)
+    readonly_fields = ("created_at", "updated_at")
+
+
+class CostPlanAdmin(admin.ModelAdmin):
+    model = CostPlan
+    search_fields = ("name",)
+    readonly_fields = ("created_at", "updated_at")
+
+
+class InterestedToBuyAdmin(admin.ModelAdmin):
+    model = InterestedToBuy
+    search_fields = ("name",)
+    readonly_fields = ("created_at", "updated_at")
+
+
+class InterestedToSellAdmin(admin.ModelAdmin):
+    model = InterestedToSell
+    search_fields = ("name",)
+    readonly_fields = ("created_at", "updated_at")
+
+
+class GeneralCallAdmin(admin.ModelAdmin):
+    model = GeneralCall
+    search_fields = ("name",)
+    readonly_fields = ("created_at", "update_at")
+
+
+class PostPaidAdmin(admin.ModelAdmin):
+    model = PostPaid
+    list_display = (
+        "client",
+        "plan_type",
+        "total_minutes",
+        "cost_of_plan",
+        "start_of_plan",
+        "end_of_plan",
+        "account_status",
+        "recurring_bill"
+    )
+    list_filter = ("client",)
+    search_fields = (
+        "client__user__first_name",
+        "client__user__last_name"
+        "plan_type__name"
+    )
+    readonly_fields = ("created_at", "updated_at")
+
+
+class SubscriptionAdmin(admin.ModelAdmin):
+    model = Subscription
+    list_display = (
+        "company",
+        "signed_up_date",
+        "signed_out_date",
+        "billing_cycle",
+        "date_call_started",
+        "status",
+    )
+    list_filter = ("company",)
+    search_fields = (
+        "company",
+        "company__client__user__first_name",
+        "client__user__last_name",
+        "client__client_code",
+    )
+    readonly_fields = ("created_at", "updated_at")
+    fieldsets = (
+        (
+            "Subscription Information",
+            {
+                "fields": (
+                    "company",
+                    "signed_up_date",
+                    "signed_out_date",
+                    "billing_cycle",
+                    "date_call_started",
+                    "status",
+                    "script_created",
+                    "notes"
+                )
+            },
+        ),
+    )
+
+
+admin.site.register(Subscription, SubscriptionAdmin)
+admin.site.register(CustomerInteractionPostPaid, CustomerInteractionPostPaidAdmin)
+admin.site.register(InteractionRecord, InteractionRecordAdmin)
+admin.site.register(MinutesReport, MinutesReportAdmin)
+admin.site.register(MonthlyCharge, MonthlyChargeAdmin)
+admin.site.register(PostPaid, PostPaidAdmin)
+admin.site.register(PlanType, PlanTypeAdmin)
+admin.site.register(CostPlan, CostPlanAdmin)
+admin.site.register(InterestedToSell, InterestedToSellAdmin)
+admin.site.register(InterestedToBuy, InterestedToBuyAdmin)
+admin.site.register(AccountCharge, AccountChargeAdmin)
+admin.site.register(AccountBalance, AccountBalanceAdmin)
