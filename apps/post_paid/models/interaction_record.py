@@ -10,12 +10,12 @@ class InteractionRecord(TimeStamped):
     date_called = models.DateField(auto_now_add=True)
     client = models.ForeignKey(
         "authentication.Client",
-        related_name="client_interaction_records",
+        related_name="post_paid_client_interaction_records",
         on_delete=models.DO_NOTHING,
     )
     agent = models.ForeignKey(
         "authentication.Staff",
-        related_name="agent_interaction_records",
+        related_name="post_paid_agent_interaction_records",
         on_delete=models.DO_NOTHING,
     )
     total_minutes = models.IntegerField()

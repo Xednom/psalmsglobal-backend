@@ -10,7 +10,7 @@ __all__ = ("AccountBalance",)
 class AccountBalance(TimeStamped):
     client = models.ForeignKey(
         "authentication.Client",
-        related_name="client_account_balances",
+        related_name="post_paid_client_account_balances",
         on_delete=models.DO_NOTHING,
     )
     account_total_aquired_minutes = models.CharField(max_length=250, blank=True)

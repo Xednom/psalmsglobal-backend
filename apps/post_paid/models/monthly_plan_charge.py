@@ -11,7 +11,7 @@ __all__ = ("MonthlyCharge",)
 class MonthlyCharge(TimeStamped):
     client = models.ForeignKey(
         "authentication.Client",
-        related_name="client_monthly_charges",
+        related_name="post_paid_client_monthly_charges",
         on_delete=models.DO_NOTHING,
     )
     month_year = models.CharField(max_length=250)
