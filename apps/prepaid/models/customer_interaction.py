@@ -8,8 +8,8 @@ __all__ = (
     "InterestedToSell",
     "InterestedToBuy",
     "GeneralCall",
-    "CustomerInteractionPostPaid",
-    "CustomerInteractionPostPaidComment",
+    "CustomerInteractionPrepaid",
+    "CustomerInteractionPrepaidComment",
 )
 
 
@@ -48,11 +48,11 @@ class GeneralCall(TimeStamped):
         return self.name
 
 
-class CustomerInteractionPostPaid(TimeStamped):
+class CustomerInteractionPrepaid(TimeStamped):
     ticket_number = models.CharField(max_length=250, blank=True)
     company = models.ForeignKey(
         "callme.Company",
-        related_name="customer_company_interactions",
+        related_name="prepaid_customer_company_interactions",
         on_delete=models.DO_NOTHING,
     )
     apn = models.CharField(max_length=250)
@@ -62,17 +62,17 @@ class CustomerInteractionPostPaid(TimeStamped):
     reason_of_the_call = models.TextField(blank=True)
     interested_to_sell = models.ForeignKey(
         InterestedToSell,
-        related_name="interested_to_sell_interactions",
+        related_name="prepaid_interested_to_sell_interactions",
         on_delete=models.CASCADE,
     )
     interested_to_buy = models.ForeignKey(
         InterestedToBuy,
-        related_name="interested_to_buy_interactions",
+        related_name="prepaid_interested_to_buy_interactions",
         on_delete=models.CASCADE,
     )
     general_call = models.ForeignKey(
         GeneralCall,
-        related_name="customer_interaction_general_calls",
+        related_name="prepaid_customer_interaction_general_calls",
         on_delete=models.CASCADE,
     )
     total_minutes = models.IntegerField(default=0, blank=True)
@@ -83,8 +83,8 @@ class CustomerInteractionPostPaid(TimeStamped):
 
 
 class CustomerInteractionPrepaidComment(TimeStamped):
-    customer_interaction_post_paid = models.ForeignKey(
-        CustomerInteractionPostPaid,
+    customer_interaction_prepaid = models.ForeignKey(
+        CustomerInteractionPrepaid,
         related_name="customer_interaction_prepaid_comments",
         on_delete=models.SET_NULL,
         blank=True,

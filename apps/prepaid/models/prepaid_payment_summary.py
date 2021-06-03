@@ -10,7 +10,7 @@ __all__ = ("PaymentSummary",)
 class PaymentSummary(TimeStamped):
     client = models.ForeignKey(
         "authentication.Client",
-        related_name="client_payment_summaries",
+        related_name="prepaid_client_payment_summaries",
         on_delete=models.CASCADE,
     )
     date_purchase = models.DateField()

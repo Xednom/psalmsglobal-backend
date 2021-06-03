@@ -10,7 +10,7 @@ __all__ = ("SubscriptionInfo", "PrepaidSubscription")
 class SubscriptionInfo(TimeStamped):
     company = models.ForeignKey(
         "callme.Company",
-        related_name="company_subscription_infos",
+        related_name="prepaid_company_subscription_infos",
         on_delete=models.CASCADE,
     )
     signed_up_date = models.DateField(blank=True, null=True)

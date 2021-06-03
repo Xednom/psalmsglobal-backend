@@ -9,12 +9,12 @@ __all__ = ("AccountCharge",)
 class AccountCharge(TimeStamped):
     client = models.ForeignKey(
         "authentication.Client",
-        related_name="client_account_charges",
+        related_name="prepaid_client_account_charges",
         on_delete=models.DO_NOTHING,
     )
     agent = models.ForeignKey(
         "authentication.Staff",
-        related_name="agent_account_charges",
+        related_name="prepaid_agent_account_charges",
         on_delete=models.DO_NOTHING,
     )
     ticket_number = models.CharField(max_length=250)
