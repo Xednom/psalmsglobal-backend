@@ -1,16 +1,16 @@
 DEBUG = False
 
-ALLOWED_HOSTS = ["gpg.pythonanywhere.com"]
+ALLOWED_HOSTS = ["callme.pythonanywhere.com"]
 
 CORS_ALLOWED_ORIGINS = ["https://gpg-frontend.vercel.app", "https://landmaster.app"]
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "gpg$gpg_corp",
-        "USER": "gpg",
+        "NAME": "callme$psalmsglobal",
+        "USER": "callme",
         "PASSWORD": "admin12345",
-        "HOST": "gpg.mysql.pythonanywhere-services.com",
+        "HOST": "callme.mysql.pythonanywhere-services.com",
         "PORT": "3306",
         "OPTIONS": {
             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
