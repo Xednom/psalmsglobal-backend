@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from apps.callme.models import Company
+from apps.authentication.models import Client
 
 
 __all__ = ("CompanySerializer",)
@@ -8,12 +9,13 @@ __all__ = ("CompanySerializer",)
 
 class CompanySerializer(serializers.ModelSerializer):
     client = serializers.PrimaryKeyRelatedField(
-        queryset=Company.objects.all(), required=False, allow_null=True
+        queryset=Client.objects.all(), required=False, allow_null=True
     )
 
     class Meta:
         model = Company
         fields = (
+            "id",
             "client",
             "company_owner_name",
             "company_name",
