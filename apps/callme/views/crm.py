@@ -18,12 +18,14 @@ class CrmViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         current_user = self.request.user
-        user_company = Company.objects.select_related("client").filter(client__user=current_user)
+        users = User.objects.filter(username=current_user)
+        user = users.all()
 
-        if (
-            current_user.designation_category == "current_client"
-            or current_user.designation_category == "new_client"
-            or current_user.designation_category == "affiliate_partner"
-        ):
-            qs = Crm.objects.select_related("company").filter(company=user_company)
+        if current_user:
+            queryset = Crm.objects.select_related("company").filter(
+                company__client__user__in=user
+            )
+            return queryset
+        elif current_user.is_superuser:
+            qs = Crm.objects.select_related("company").all()
             return qs
