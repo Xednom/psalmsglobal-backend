@@ -7,8 +7,8 @@ __all__ = ("AttributeType", "Form", "Script")
 
 
 class AttributeType(TimeStamped):
-    text = "text", ("Text")
-    question = "question", ("Question")
+    text = models.CharField(max_length=500, blank=True)
+    question = models.TextField(blank=True)
 
 
 class Form(TimeStamped):
