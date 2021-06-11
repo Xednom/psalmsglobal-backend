@@ -32,6 +32,7 @@ class PhoneSystemSerializer(serializers.ModelSerializer):
     class Meta:
         model = PhoneSystem
         fields = (
+            "id",
             "company",
             "sub_number",
             "caller_id_detail",
