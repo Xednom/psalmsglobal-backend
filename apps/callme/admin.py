@@ -1,7 +1,14 @@
 from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin
 
-from apps.callme.models import Company, Crm, PhoneSystem, Script
+from apps.callme.models import (
+    Company,
+    Crm,
+    PhoneSystem,
+    Script,
+    VodaconnectPlan,
+    VodaconnectLineType,
+)
 
 
 class CompanyAdmin(admin.ModelAdmin):
@@ -124,4 +131,6 @@ class ScriptAdmin(admin.ModelAdmin):
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Crm, CrmAdmin)
 admin.site.register(PhoneSystem, PhoneSystemAdmin)
+admin.site.register(VodaconnectLineType)
+admin.site.register(VodaconnectPlan)
 admin.site.register(Script, ScriptAdmin)
