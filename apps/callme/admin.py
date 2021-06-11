@@ -6,6 +6,8 @@ from apps.callme.models import (
     Crm,
     PhoneSystem,
     Script,
+    Form,
+    AttributeType,
     VodaconnectPlan,
     VodaconnectLineType,
 )
@@ -134,3 +136,5 @@ admin.site.register(PhoneSystem, PhoneSystemAdmin)
 admin.site.register(VodaconnectLineType)
 admin.site.register(VodaconnectPlan)
 admin.site.register(Script, ScriptAdmin)
+admin.site.register(AttributeType)
+admin.site.register(Form)
