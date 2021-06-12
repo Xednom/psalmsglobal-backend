@@ -18,6 +18,7 @@ django-money = "*"
 django-cors-headers = "*"
 django-post-office = "*"
 drf-writable-nested = "*"
+django-mysql = "*"
 
 [requires]
 python_version = "3.8"
