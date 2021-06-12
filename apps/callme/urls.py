@@ -8,7 +8,6 @@ from apps.callme.views import (
     PhoneSystemViewSet,
     VodaconnectPlanViewSet,
     VodaconnectLineTypeViewSet,
-    AttributeTypeViewSet,
     FormViewSet,
     ScriptViewSet
 )
@@ -21,6 +20,7 @@ router.register(r"phone-system", PhoneSystemViewSet, basename="phone-system-list
 router.register(r"vodaconnect-plan", VodaconnectPlanViewSet, basename="vodaconnect-plan")
 router.register(r"vodaconnect-line-type", VodaconnectLineTypeViewSet, basename="vodaconnect-line-type")
 router.register(r"script", ScriptViewSet, basename="script-list")
+router.register(r"form", FormViewSet, basename="form-list")
 
 app_name = "callme"
 

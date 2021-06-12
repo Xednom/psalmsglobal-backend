@@ -5,4 +5,4 @@ from .phone_system import (
     VodaconnectPlanViewSet,
     VodaconnectLineTypeViewSet,
 )  # noqa
-from .script import ScriptViewSet, AttributeTypeViewSet, FormViewSet  # noqa
+from .script import ScriptViewSet, FormViewSet  # noqa

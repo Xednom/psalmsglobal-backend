@@ -7,7 +7,7 @@ from apps.callme.models import (
     PhoneSystem,
     Script,
     Form,
-    AttributeType,
+    Attribute,
     VodaconnectPlan,
     VodaconnectLineType,
 )
@@ -111,6 +111,18 @@ class PhoneSystemAdmin(admin.ModelAdmin):
     )
 
 
+class AttributeAdmin(admin.TabularInline):
+    model = Attribute
+    extra = 1
+    fields = ("form", "data_type", "value_text", "value_question")
+    readonly_fields = ("created_at", "updated_at")
+
+
+class FormAdmin(admin.ModelAdmin):
+    model = Form
+    inlines = [AttributeAdmin]
+
+
 class ScriptAdmin(admin.ModelAdmin):
     model = Script
     list_display = ("company", "form", "company_address", "mailing_lists")
@@ -136,5 +148,4 @@ admin.site.register(PhoneSystem, PhoneSystemAdmin)
 admin.site.register(VodaconnectLineType)
 admin.site.register(VodaconnectPlan)
 admin.site.register(Script, ScriptAdmin)
-admin.site.register(AttributeType)
-admin.site.register(Form)
+admin.site.register(Form, FormAdmin)
