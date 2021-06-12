@@ -2,7 +2,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["callme.pythonanywhere.com"]
 
-CORS_ALLOWED_ORIGINS = ["https://gpg-frontend.vercel.app", "https://landmaster.app"]
+CORS_ALLOWED_ORIGINS = ["https://psalmsglobal-frontend.vercel.app"]
 
 DATABASES = {
     "default": {
