@@ -52,7 +52,8 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "rest_framework",
     "djmoney",
-    "post_office"
+    "post_office",
+    "django_mysql",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
@@ -73,7 +74,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR/'templates')],
+        "DIRS": [os.path.join(BASE_DIR / "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -158,19 +159,15 @@ DJOSER = {
     "SERIALIZERS": {
         "user_create": "apps.authentication.serializers.UserRegistrationSerializer",
         "user": "apps.authentication.serializers.UserListSerializer",
-        "current_user": "apps.authentication.serializers.CurrentUserSerializer"
+        "current_user": "apps.authentication.serializers.CurrentUserSerializer",
     },
     "EMAIL": {
         "confirmation": "apps.authentication.views.CallMeConfirmationEmail",
-        "password_reset": "apps.authentication.views.CallMePasswordResetEmail"
-    }
+        "password_reset": "apps.authentication.views.CallMePasswordResetEmail",
+    },
 }
 
-POST_OFFICE = {
-    "BACKENDS": {
-        "default": "anymail.backends.mailgun.EmailBackend"
-    }
-}
+POST_OFFICE = {"BACKENDS": {"default": "anymail.backends.mailgun.EmailBackend"}}
 
 # Email sender credentials
 ANYMAIL_MAILGUN_API_KEY = env.str("ANYMAIL_MAILGUN_API_KEY")
