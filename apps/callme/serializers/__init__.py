@@ -5,4 +5,4 @@ from .phone_system import (
     VodaconnectPlanSerializer,
     VodaconnectLineTypeSerializer,
 )  # noqa
-from .script import AttributeTypeSerializer, FormSerializer, ScriptSerializer  # noqa
+from .script import FormSerializer, ScriptSerializer  # noqa
