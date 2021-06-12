@@ -28,7 +28,8 @@ class Form(TimeStamped):
 
 class Attribute(TimeStamped):
     form = models.ForeignKey(
-        Form, related_name="attribute_forms", on_delete=models.CASCADE
+        Form, related_name="attribute_forms", on_delete=models.SET_NULL,
+        blank=True, null=True
     )
     data_type = models.CharField(choices=AttributeDataType.choices, max_length=20)
     value_text = models.CharField(max_length=500, blank=True)

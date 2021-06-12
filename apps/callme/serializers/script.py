@@ -14,6 +14,12 @@ class AttributeSerializer(serializers.ModelSerializer):
 
 
 class FormSerializer(WritableNestedModelSerializer):
+    company = serializers.SlugRelatedField(
+        slug_field="company_name",
+        queryset=Company.objects.all(),
+        required=False,
+        allow_null=True,
+    )
     attribute_forms = AttributeSerializer(many=True, required=False, allow_null=True)
 
     class Meta:
