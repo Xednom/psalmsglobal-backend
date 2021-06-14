@@ -14,12 +14,16 @@ class CrmSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
     )
+    client_code = serializers.CharField(
+        source="company.client.client_code", required=False, allow_null=True
+    )
 
     class Meta:
         model = Crm
         fields = (
             "id",
             "company",
+            "client_code",
             "crm",
             "type_of_crm",
             "crm_url",

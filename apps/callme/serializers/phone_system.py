@@ -16,6 +16,9 @@ __all__ = (
 
 
 class PhoneSystemSerializer(serializers.ModelSerializer):
+    client_code = serializers.CharField(
+        source="company.client.client_code", required=False, allow_null=False
+    )
     company = serializers.SlugRelatedField(
         slug_field="company_name",
         queryset=Company.objects.all(),
@@ -33,6 +36,7 @@ class PhoneSystemSerializer(serializers.ModelSerializer):
         model = PhoneSystem
         fields = (
             "id",
+            "client_code",
             "company",
             "sub_number",
             "caller_id_detail",
