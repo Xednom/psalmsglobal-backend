@@ -2,7 +2,11 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["callme.pythonanywhere.com"]
 
-CORS_ALLOWED_ORIGINS = ["https://psalmsglobal-frontend.vercel.app"]
+CORS_ALLOWED_ORIGINS = [
+    "https://psalmsglobal-frontend.vercel.app",
+    "https://psalmsglobal.app",
+]
+
 
 DATABASES = {
     "default": {
@@ -20,9 +24,7 @@ DATABASES = {
 
 # for management command;
 # see https://docs.djangoproject.com/en/2.1/howto/static-files/
-STATIC_ROOT = (
-    os.path.join(BASE_DIR, 'staticfiles')
-)
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 HTTP_PROTOCOL = "https://"
 
