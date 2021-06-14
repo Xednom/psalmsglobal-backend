@@ -16,11 +16,13 @@ from apps.callme.models import (
 class CompanyAdmin(admin.ModelAdmin):
     model = Company
     list_display = (
+        "client",
         "company_owner_name",
         "company_name",
-        "client",
-        "business_type",
+        "company_phone",
+        "company_email",
         "company_forwarding_email",
+        "paypal_email",
     )
     list_filter = ("client",)
     search_fields = (
@@ -83,6 +85,7 @@ class PhoneSystemAdmin(admin.ModelAdmin):
         "vodaconnect_plan",
         "original_line",
         "call_forwarding_number",
+        "vodaconnect_line_type"
     )
     list_filter = ("vodaconnect_plan", "vodaconnect_line_type")
     search_fields = (

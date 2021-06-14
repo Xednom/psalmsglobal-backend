@@ -40,6 +40,7 @@ class PhoneSystem(TimeStamped):
     )
 
     class Meta:
+        verbose_name = "Sub Number Phone Set up"
         ordering = ["-company"]
 
     def __str__(self):

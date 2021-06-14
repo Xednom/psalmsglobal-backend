@@ -22,7 +22,9 @@ class Company(TimeStamped):
     )
     company_owner_name = models.CharField(max_length=250)
     company_name = models.CharField(max_length=250)
-    business_type = models.CharField(max_length=250, choices=BusinessTypeChoices.choices)
+    business_type = models.CharField(
+        max_length=250, choices=BusinessTypeChoices.choices
+    )
     company_phone = models.CharField(max_length=250)
     company_email = models.CharField(max_length=250)
     company_complete_address = models.TextField()
@@ -31,6 +33,8 @@ class Company(TimeStamped):
     notes = models.TextField()
 
     class Meta:
+        verbose_name = "List of Company"
+        verbose_name_plural = "List of Companies"
         ordering = ["-client"]
 
     def __str__(self):
