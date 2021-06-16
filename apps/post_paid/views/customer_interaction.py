@@ -53,12 +53,12 @@ class GeneralCallViewSet(viewsets.ModelViewSet):
 class CustomerInteractionPostPaidViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerInteractionPostPaidSerializer
     permisson_classes = [permissions.IsAuthenticated]
+    lookup_field = "ticket_number"
 
     def get_queryset(self):
         current_user = self.request.user
-        user_company = Company.objects.select_related("client").filter(
-            client__user=current_user
-        )
+        users = User.objects.filter(username=current_user)
+        user = users.all()
 
         if (
             current_user.designation_category == "current_client"
@@ -66,8 +66,11 @@ class CustomerInteractionPostPaidViewSet(viewsets.ModelViewSet):
             or current_user.designation_category == "affiliate_partner"
         ):
             qs = CustomerInteractionPostPaid.objects.select_related("company").filter(
-                company=user_company
+                company__client__user__in=user
             )
+            return qs
+        elif current_user.designation_category == "staff":
+            qs = CustomerInteractionPostPaid.objects.all()
             return qs
         elif current_user.is_superuser:
             qs = CustomerInteractionPostPaid.objects.all()
