@@ -163,7 +163,7 @@ class InterestedToSellAdmin(admin.ModelAdmin):
 class GeneralCallAdmin(admin.ModelAdmin):
     model = GeneralCall
     search_fields = ("name",)
-    readonly_fields = ("created_at", "update_at")
+    readonly_fields = ("created_at", "updated_at")
 
 
 class PostPaidAdmin(admin.ModelAdmin):
@@ -236,3 +236,4 @@ admin.site.register(InterestedToSell, InterestedToSellAdmin)
 admin.site.register(InterestedToBuy, InterestedToBuyAdmin)
 admin.site.register(AccountCharge, AccountChargeAdmin)
 admin.site.register(AccountBalance, AccountBalanceAdmin)
+admin.site.register(GeneralCall, GeneralCallAdmin)
