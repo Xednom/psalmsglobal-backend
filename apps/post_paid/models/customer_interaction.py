@@ -81,6 +81,39 @@ class CustomerInteractionPostPaid(TimeStamped):
         max_length=250, choices=LeadTransferredCrm.choices
     )
 
+    def create_ticket_number(self):
+        ticket_code = ""
+        last_in = CustomerInteractionPostPaid.objects.all().order_by("id").last()
+
+        if not last_in:
+            seq = 0
+            ticket_number = "CI000" + str((int(seq) + 1))
+            return ticket_number
+
+        if self.id:
+            if self.id >= 100:
+                ticket_number = "CI" + str(self.id)
+            elif self.id <= 9:
+                ticket_number = "CI00" + str(self.id)
+            elif self.id >= 10:
+                ticket_number = "CI0" + str(self.id)
+            return ticket_number
+
+        in_id = last_in.id
+        in_int = int(in_id)
+        if in_int >= 100:
+            ticket_code = "CI" + str(int(in_int) + 1)
+        elif in_int < 10:
+            ticket_code = "CI00" + str(int(in_int) + 1)
+        elif in_int >= 10:
+            ticket_code = "CI0" + str(int(in_int) + 1)
+        
+        return ticket_code
+
+    def save(self, *args, **kwargs):
+        self.ticket_number = self.create_ticket_number()
+        super(CustomerInteractionPostPaid, self).save(*args, **kwargs)
+
 
 class CustomerInteractionPostPaidComment(TimeStamped):
     customer_interaction_post_paid = models.ForeignKey(
