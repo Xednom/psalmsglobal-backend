@@ -46,7 +46,7 @@ class CustomerInteractionPostPaidCommentSerializer(serializers.ModelSerializer):
 
 
 class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
-    company = serializers.PrimaryKeyRelatedField(
+    company = serializers.SlugRelatedField(slug_field="company_name",
         queryset=Company.objects.all(), required=False, allow_null=True
     )
     interested_to_sell = serializers.SlugRelatedField(
@@ -67,6 +67,7 @@ class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerInteractionPostPaid
         fields = (
+            "id",
             "ticket_number",
             "company",
             "apn",
