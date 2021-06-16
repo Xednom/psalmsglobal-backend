@@ -27,6 +27,9 @@ class CompanyViewSet(viewsets.ModelViewSet):
         ):
             qs = Company.objects.select_related("client").filter(client__user__in=user)
             return qs
+        elif current_user.designation_category == "staff":
+            qs = Company.objects.all()
+            return qs
         elif current_user.is_superuser:
             qs = Company.objects.all()
             return qs
