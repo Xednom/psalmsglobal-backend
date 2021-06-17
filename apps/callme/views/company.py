@@ -15,6 +15,8 @@ __all__ = ("CompanyViewSet",)
 class CompanyViewSet(viewsets.ModelViewSet):
     serializer_class = CompanySerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['company_name']
 
     def get_queryset(self):
         current_user = self.request.user
