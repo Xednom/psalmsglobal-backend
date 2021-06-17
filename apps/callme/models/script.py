@@ -32,8 +32,9 @@ class Attribute(TimeStamped):
         blank=True, null=True
     )
     data_type = models.CharField(choices=AttributeDataType.choices, max_length=20)
-    value_text = models.CharField(max_length=500, blank=True)
+    value_text = models.TextField(blank=True)
     value_question = models.TextField(blank=True)
+    input_question = models.TextField(blank=True)
 
     def __str__(self):
         return f"{self.form}"
