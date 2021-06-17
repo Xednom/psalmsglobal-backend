@@ -40,14 +40,32 @@ class GeneralCallSerializer(serializers.ModelSerializer):
 
 
 class CustomerInteractionPostPaidCommentSerializer(serializers.ModelSerializer):
+    created_at = serializers.DateTimeField(required=False, allow_null=True)
+    commenter = serializers.SerializerMethodField()
+
     class Meta:
         model = CustomerInteractionPostPaidComment
-        fields = ("customer_interaction_post_paid", "user", "comment")
+        fields = (
+            "customer_interaction_post_paid",
+            "user",
+            "comment",
+            "commenter",
+            "created_at",
+        )
+
+    def get_commenter(self, instance):
+        if instance.user.designation_category == "staff":
+            return "Staff"
+        else:
+            return "Client"
 
 
 class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
-    company = serializers.SlugRelatedField(slug_field="company_name",
-        queryset=Company.objects.all(), required=False, allow_null=True
+    company = serializers.SlugRelatedField(
+        slug_field="company_name",
+        queryset=Company.objects.all(),
+        required=False,
+        allow_null=True,
     )
     interested_to_sell = serializers.SlugRelatedField(
         slug_field="name", queryset=InterestedToSell.objects.all()

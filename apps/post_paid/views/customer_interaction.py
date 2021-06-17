@@ -87,7 +87,9 @@ class CreateCustomerInteractionPostPaidComment(generics.CreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         post_paid_cust_interaction_id = self.kwargs.get("id")
-        job_order = get_object_or_404(
-            CustomerInteractionPostPaidComment, id=post_paid_cust_interaction_id
+        customer_interaction_post_paid = get_object_or_404(
+            CustomerInteractionPostPaid, id=post_paid_cust_interaction_id
         )
-        serializer.save(user=user, job_order_category=job_order)
+        serializer.save(
+            user=user, customer_interaction_post_paid=customer_interaction_post_paid
+        )
