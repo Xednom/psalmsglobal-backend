@@ -87,7 +87,7 @@ class Client(TimeStamped):
 
     @property
     def client_name(self):
-        return f"{self.user.first_name} {self.user.last_name}"
+        return f"{self.user.user_full_name}"
 
     def create_client_code(self):
         initial_name = self.user.first_name + self.user.last_name
@@ -140,10 +140,6 @@ class Client(TimeStamped):
         self.client_code = self.create_client_code()
         self.customer_id = self.create_customer_id()
         super().save(*args, **kwargs)
-
-    @property
-    def client_name(self):
-        return f"{self.user.user_full_name}"
 
 
 class Staff(TimeStamped):
