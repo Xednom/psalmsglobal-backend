@@ -8,6 +8,7 @@ from apps.post_paid.models import (
     GeneralCall,
     CustomerInteractionPostPaid,
     CustomerInteractionPostPaidComment,
+    InteractionRecord
 )
 from apps.authentication.models import Client, Staff
 
@@ -60,6 +61,37 @@ class CustomerInteractionPostPaidCommentSerializer(serializers.ModelSerializer):
             return "Client"
 
 
+class CustomerInteractionPostPaidRecordSerializer(serializers.ModelSerializer):
+    client = serializers.PrimaryKeyRelatedField(
+        queryset=Client.objects.all(), required=False, allow_null=True
+    )
+    agent = serializers.PrimaryKeyRelatedField(
+        queryset=Staff.objects.all(), required=False, allow_null=True
+    )
+    agent_name = serializers.SerializerMethodField()
+    agent_code = serializers.SerializerMethodField()
+
+
+    class Meta:
+        model = InteractionRecord
+        fields = (
+            "client",
+            "agent",
+            "agent_code",
+            "agent_name",
+            "date_called",
+            "ticket_number",
+            "total_minutes",
+            "summary",
+        )
+    
+    def get_agent_name(self, instance):
+        return f"{instance.agent.staff_name}"
+    
+    def get_agent_code(self, instance):
+        return f"{instance.agent.staff_id}"
+
+
 class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
     company = serializers.SlugRelatedField(
         slug_field="company_name",
@@ -78,6 +110,11 @@ class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
     )
     customer_interaction_post_paid_comments = (
         CustomerInteractionPostPaidCommentSerializer(
+            many=True, required=False, allow_null=True
+        )
+    )
+    customer_interaction_post_paid_records = (
+        CustomerInteractionPostPaidRecordSerializer(
             many=True, required=False, allow_null=True
         )
     )
@@ -100,4 +137,5 @@ class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
             "crm",
             "leads_transferred_crm",
             "customer_interaction_post_paid_comments",
+            "customer_interaction_post_paid_records"
         )
