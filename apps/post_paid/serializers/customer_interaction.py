@@ -135,7 +135,6 @@ class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
             "interested_to_sell",
             "interested_to_buy",
             "general_call",
-            "total_minutes",
             "crm",
             "leads_transferred_crm",
             "customer_interaction_post_paid_comments",

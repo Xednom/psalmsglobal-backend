@@ -75,7 +75,6 @@ class CustomerInteractionPostPaid(TimeStamped):
         related_name="post_paid_customer_interaction_general_calls",
         on_delete=models.CASCADE,
     )
-    total_minutes = models.IntegerField(default=0, blank=True)
     crm = models.CharField(max_length=250, choices=CrmChoices.choices)
     leads_transferred_crm = models.CharField(
         max_length=250, choices=LeadTransferredCrm.choices
