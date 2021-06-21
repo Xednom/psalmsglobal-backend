@@ -20,6 +20,7 @@ class InteractionRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = InteractionRecord
         fields = (
+            "id",
             "client",
             "agent",
             "agent_code",

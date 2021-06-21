@@ -15,6 +15,8 @@ __all__ = ("InteractionRecordViewSet",)
 class InteractionRecordViewSet(viewsets.ModelViewSet):
     serializer_class = InteractionRecordSerializer
     permisson_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["customer_interaction_post_paid__id"]
 
     def get_queryset(self):
         current_user = self.request.user
