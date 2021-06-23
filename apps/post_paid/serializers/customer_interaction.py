@@ -136,6 +136,7 @@ class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
             "interested_to_buy",
             "general_call",
             "crm",
+            "script_answer",
             "leads_transferred_crm",
             "customer_interaction_post_paid_comments",
             "customer_interaction_post_paid_records"

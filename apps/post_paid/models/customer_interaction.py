@@ -1,4 +1,5 @@
 from django.db import models
+from ckeditor.fields import RichTextField
 
 from apps.core.models import TimeStamped
 
@@ -79,6 +80,7 @@ class CustomerInteractionPostPaid(TimeStamped):
     leads_transferred_crm = models.CharField(
         max_length=250, choices=LeadTransferredCrm.choices
     )
+    script_answer = RichTextField(blank=True)
 
     def create_ticket_number(self):
         ticket_code = ""
