@@ -54,6 +54,7 @@ THIRD_PARTY_APPS = [
     "djmoney",
     "post_office",
     "django_mysql",
+    "ckeditor"
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS

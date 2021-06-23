@@ -19,6 +19,7 @@ django-cors-headers = "*"
 django-post-office = "*"
 drf-writable-nested = "*"
 django-mysql = "*"
+django-ckeditor = "*"
 
 [requires]
 python_version = "3.8"
