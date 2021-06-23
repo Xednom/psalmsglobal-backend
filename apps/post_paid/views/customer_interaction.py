@@ -53,6 +53,8 @@ class GeneralCallViewSet(viewsets.ModelViewSet):
 class CustomerInteractionPostPaidViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerInteractionPostPaidSerializer
     permisson_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["ticket_number"]
     lookup_field = "ticket_number"
 
     def get_queryset(self):
