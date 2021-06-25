@@ -99,6 +99,7 @@ class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
     )
+    company_crm = serializers.SerializerMethodField()
     company_client = serializers.SerializerMethodField()
     interested_to_sell = serializers.SlugRelatedField(
         slug_field="name", queryset=InterestedToSell.objects.all()
@@ -126,6 +127,7 @@ class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
             "id",
             "ticket_number",
             "company",
+            "company_crm",
             "company_client",
             "apn",
             "caller_full_name",
@@ -144,3 +146,7 @@ class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
     
     def get_company_client(self, instance):
         return f"{instance.company.client.id}"
+
+    def get_company_crm(self, instance):
+        company_crm = [company_crm.crm for company_crm in instance.company.company_crms.all()]
+        return company_crm
