@@ -57,6 +57,10 @@ class CustomerInteractionPostPaid(TimeStamped):
         on_delete=models.DO_NOTHING,
     )
     apn = models.CharField(max_length=250)
+    reference_number = models.CharField(max_length=250, blank=True)
+    county = models.CharField(max_length=250, blank=True)
+    state = models.CharField(max_length=250, blank=True)
+    address = models.TextField(blank=True)
     caller_full_name = models.CharField(max_length=250)
     caller_phone = models.CharField(max_length=250)
     email = models.CharField(max_length=250)

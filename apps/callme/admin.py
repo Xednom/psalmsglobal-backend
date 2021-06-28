@@ -10,6 +10,8 @@ from apps.callme.models import (
     Attribute,
     VodaconnectPlan,
     VodaconnectLineType,
+    State,
+    County
 )
 
 
@@ -85,7 +87,7 @@ class PhoneSystemAdmin(admin.ModelAdmin):
         "vodaconnect_plan",
         "original_line",
         "call_forwarding_number",
-        "vodaconnect_line_type"
+        "vodaconnect_line_type",
     )
     list_filter = ("vodaconnect_plan", "vodaconnect_line_type")
     search_fields = (
@@ -117,7 +119,7 @@ class PhoneSystemAdmin(admin.ModelAdmin):
 class AttributeAdmin(admin.TabularInline):
     model = Attribute
     extra = 1
-    fields = ("form", "data_type", "value_text", "value_question")
+    fields = ("form", "data_type", "value_text", "value_question", "input_question")
     readonly_fields = ("created_at", "updated_at")
 
 
@@ -152,3 +154,5 @@ admin.site.register(VodaconnectLineType)
 admin.site.register(VodaconnectPlan)
 admin.site.register(Script, ScriptAdmin)
 admin.site.register(Form, FormAdmin)
+admin.site.register(State)
+admin.site.register(County)
