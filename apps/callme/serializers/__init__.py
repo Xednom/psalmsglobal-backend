@@ -6,3 +6,4 @@ from .phone_system import (
     VodaconnectLineTypeSerializer,
 )  # noqa
 from .script import FormSerializer, ScriptSerializer  # noqa
+from .geography import StateSerializer, CountySerializer # noqa
