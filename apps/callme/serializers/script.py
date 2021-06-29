@@ -4,13 +4,24 @@ from drf_writable_nested.serializers import WritableNestedModelSerializer
 from apps.callme.models import Form, Attribute, Script, Company
 
 
-__all__ = ("FormSerializer", "ScriptSerializer")
+__all__ = ("AttributeSerializer", "FormSerializer", "ScriptSerializer")
 
 
 class AttributeSerializer(serializers.ModelSerializer):
+    form_id = serializers.SerializerMethodField()
+
     class Meta:
         model = Attribute
-        fields = ("form", "data_type", "value_text", "value_question")
+        fields = (
+            "form_id",
+            "data_type",
+            "value_text",
+            "value_question",
+            "input_question",
+        )
+
+    def get_form_id(self, instance):
+        return f"{instance.form.id}"
 
 
 class FormSerializer(WritableNestedModelSerializer):
@@ -21,10 +32,20 @@ class FormSerializer(WritableNestedModelSerializer):
         allow_null=True,
     )
     attribute_forms = AttributeSerializer(many=True, required=False, allow_null=True)
+    id_form = serializers.SerializerMethodField()
 
     class Meta:
         model = Form
-        fields = ("id", "form_title", "company", "attribute_forms")
+        fields = (
+            "id_form",
+            "form_title",
+            "company",
+            "attribute_forms",
+            "original_script",
+        )
+
+    def get_id_form(self, instance):
+        return f"{instance.id}"
 
 
 class ScriptSerializer(serializers.ModelSerializer):

@@ -1,6 +1,7 @@
 from rest_framework import serializers
+from drf_writable_nested.serializers import WritableNestedModelSerializer
 
-from apps.callme.models import Company
+from apps.callme.models import Company, Form
 
 from apps.post_paid.models import (
     InterestedToSell,
@@ -8,9 +9,10 @@ from apps.post_paid.models import (
     GeneralCall,
     CustomerInteractionPostPaid,
     CustomerInteractionPostPaidComment,
-    InteractionRecord
+    InteractionRecord,
 )
 from apps.authentication.models import Client, Staff
+from apps.callme.serializers import AttributeSerializer, FormSerializer
 
 
 __all__ = (
@@ -61,6 +63,9 @@ class CustomerInteractionPostPaidCommentSerializer(serializers.ModelSerializer):
             return "Client"
 
 
+
+
+
 class CustomerInteractionPostPaidRecordSerializer(serializers.ModelSerializer):
     client = serializers.PrimaryKeyRelatedField(
         queryset=Client.objects.all(), required=False, allow_null=True
@@ -92,7 +97,7 @@ class CustomerInteractionPostPaidRecordSerializer(serializers.ModelSerializer):
         return f"{instance.agent.staff_id}"
 
 
-class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
+class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
     company = serializers.SlugRelatedField(
         slug_field="company_name",
         queryset=Company.objects.all(),
@@ -117,6 +122,11 @@ class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
     )
     customer_interaction_post_paid_records = (
         CustomerInteractionPostPaidRecordSerializer(
+            many=True, required=False, allow_null=True
+        )
+    )
+    customer_interaction_post_paid_forms = (
+        FormSerializer (
             many=True, required=False, allow_null=True
         )
     )
@@ -145,7 +155,8 @@ class CustomerInteractionPostPaidSerializer(serializers.ModelSerializer):
             "script_answer",
             "leads_transferred_crm",
             "customer_interaction_post_paid_comments",
-            "customer_interaction_post_paid_records"
+            "customer_interaction_post_paid_records",
+            "customer_interaction_post_paid_forms",
         )
     
     def get_company_client(self, instance):

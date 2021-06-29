@@ -21,6 +21,14 @@ class Form(TimeStamped):
         blank=True,
         null=True,
     )
+    customer_interaction_post_paid = models.ForeignKey(
+        "post_paid.CustomerInteractionPostPaid",
+        related_name="customer_interaction_post_paid_forms",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+    original_script = models.BooleanField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.form_title}"
@@ -28,8 +36,11 @@ class Form(TimeStamped):
 
 class Attribute(TimeStamped):
     form = models.ForeignKey(
-        Form, related_name="attribute_forms", on_delete=models.SET_NULL,
-        blank=True, null=True
+        Form,
+        related_name="attribute_forms",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
     )
     data_type = models.CharField(choices=AttributeDataType.choices, max_length=20)
     value_text = models.TextField(blank=True)
@@ -48,10 +59,7 @@ class Script(TimeStamped):
     form = models.ForeignKey(
         Form, related_name="form_scripts", on_delete=models.CASCADE
     )
-    mailing_lists = ListTextField(
-        base_field=models.CharField(max_length=500),
-        size=100
-    )
+    mailing_lists = ListTextField(base_field=models.CharField(max_length=500), size=100)
     status = models.BooleanField(default=True)
 
     def get_company_address(self):

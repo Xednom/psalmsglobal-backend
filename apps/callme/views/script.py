@@ -18,7 +18,29 @@ __all__ = ("FormViewSet", "ScriptViewSet")
 class FormViewSet(viewsets.ModelViewSet):
     serializer_class = FormSerializer
     permission_classes = [permissions.IsAuthenticated]
-    queryset = Form.objects.all()
+
+    def get_queryset(self):
+        current_user = self.request.user
+        users = User.objects.filter(username=current_user)
+        user = users.all()
+
+        if (
+            current_user.designation_category == "current_client"
+            or current_user.designation_category == "new_client"
+            or current_user.designation_category == "affiliate_partner"
+        ):
+            qs = Form.objects.select_related(
+                "company", "customer_interaction_post_paid"
+            ).filter(company__client__user__in=user, original_script=True)
+            return qs
+        elif current_user.designation_category == "staff":
+            qs = Form.objects.select_related(
+                "company", "customer_interaction_post_paid"
+            ).filter(original_script=True)
+            return qs
+        else:
+            qs = Script.objects.all()
+            return qs
 
 
 class ScriptViewSet(viewsets.ModelViewSet):

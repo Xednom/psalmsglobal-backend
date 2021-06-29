@@ -125,6 +125,19 @@ class AttributeAdmin(admin.TabularInline):
 
 class FormAdmin(admin.ModelAdmin):
     model = Form
+    fieldsets = (
+        (
+            "Form Information",
+            {
+                "fields": (
+                    "form_title",
+                    "company",
+                    "customer_interaction_post_paid",
+                    "original_script",
+                )
+            },
+        ),
+    )
     inlines = [AttributeAdmin]
 
 

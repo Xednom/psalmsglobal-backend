@@ -5,5 +5,5 @@ from .phone_system import (
     VodaconnectPlanSerializer,
     VodaconnectLineTypeSerializer,
 )  # noqa
-from .script import FormSerializer, ScriptSerializer  # noqa
-from .geography import StateSerializer, CountySerializer # noqa
+from .script import AttributeSerializer, FormSerializer, ScriptSerializer  # noqa
+from .geography import StateSerializer, CountySerializer  # noqa
