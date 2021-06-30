@@ -39,7 +39,7 @@ class FormViewSet(viewsets.ModelViewSet):
             ).filter(original_script=True)
             return qs
         else:
-            qs = Script.objects.all()
+            qs = Form.objects.all()
             return qs
 
 
