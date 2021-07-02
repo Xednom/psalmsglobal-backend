@@ -21,6 +21,7 @@ drf-writable-nested = "*"
 django-mysql = "*"
 django-ckeditor = "*"
 xlrd = "*"
+django-filter = "*"
 
 [requires]
 python_version = "3.8"
