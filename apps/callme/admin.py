@@ -11,7 +11,8 @@ from apps.callme.models import (
     VodaconnectPlan,
     VodaconnectLineType,
     State,
-    County
+    County,
+    CallMeInfo
 )
 
 
@@ -169,3 +170,4 @@ admin.site.register(Script, ScriptAdmin)
 admin.site.register(Form, FormAdmin)
 admin.site.register(State)
 admin.site.register(County)
+admin.site.register(CallMeInfo)
