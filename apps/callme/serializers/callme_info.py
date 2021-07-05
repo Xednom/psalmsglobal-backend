@@ -7,11 +7,14 @@ __all__ = ("CallMeInfoSerializer",)
 
 
 class CallMeInfoSerializer(serializers.ModelSerializer):
+    company_name = serializers.SerializerMethodField()
+
     class Meta:
         model = CallMeInfo
         fields = (
             "id",
             "company",
+            "company_name",
             "apn",
             "reference",
             "short_legal_description",
@@ -32,3 +35,6 @@ class CallMeInfoSerializer(serializers.ModelSerializer):
             "offer_status",
             "offer_status_notes",
         )
+
+    def get_company_name(self, instance):
+        return f"{instance.company.company_name}"

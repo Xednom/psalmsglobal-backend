@@ -16,10 +16,11 @@ __all__ = ("CallMeInfoViewSet",)
 class CallMeInfoFilter(filters.FilterSet):
     apn = CharFilter(field_name="apn", lookup_expr="icontains")
     reference = CharFilter(field_name="reference", lookup_expr="icontains")
+    company_name = CharFilter(field_name="company_name", lookup_expr="icontains")
 
     class Meta:
         model = CallMeInfo
-        fields = ("apn", "reference")
+        fields = ("apn", "reference", "company_name")
 
 
 class CallMeInfoViewSet(viewsets.ModelViewSet):
