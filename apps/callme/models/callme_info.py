@@ -28,10 +28,10 @@ class CallMeInfo(TimeStamped):
     first_name = models.CharField(max_length=250, blank=True)
     last_name = models.CharField(max_length=250, blank=True)
     company_name = models.CharField(max_length=250, blank=True)
-    offer_amount = models.TextField(blank=True)
+    buyer_offer_amount = models.TextField(blank=True)
     approved_option_amount = models.TextField(blank=True)
     other_terms = models.TextField(blank=True)
-    offer_amount = models.TextField(blank=True)
+    seller_offer_amount = models.TextField(blank=True)
     other_offer_terms = models.TextField(blank=True)
     notes = models.TextField(blank=True)
     offer_status = models.ForeignKey(

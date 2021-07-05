@@ -10,6 +10,7 @@ class CallMeInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CallMeInfo
         fields = (
+            "id",
             "company",
             "apn",
             "reference",
@@ -22,10 +23,10 @@ class CallMeInfoSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "company_name",
-            "offer_amount",
+            "buyer_offer_amount",
             "approved_option_amount",
             "other_terms",
-            "offer_amount",
+            "seller_offer_amount",
             "other_offer_terms",
             "notes",
             "offer_status",
