@@ -1,12 +1,24 @@
 from rest_framework import serializers
 
-from apps.callme.models import PropertyInfo
+from apps.callme.models import PropertyInfo, OfferStatus
 
 
-__all__ = ("CallMeInfoSerializer",)
+__all__ = ("CallMeInfoSerializer", "OfferStatusSerializer")
+
+
+class OfferStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OfferStatus
+        fields = ("name",)
 
 
 class CallMeInfoSerializer(serializers.ModelSerializer):
+    offer_status = serializers.SlugRelatedField(
+        slug_field="name",
+        queryset=OfferStatus.objects.all(),
+        allow_null=True,
+        required=False,
+    )
     company_name = serializers.SerializerMethodField()
 
     class Meta:

@@ -7,4 +7,4 @@ from .phone_system import (
 )  # noqa
 from .script import ScriptViewSet, FormViewSet  # noqa
 from .geography import StateViewSet, CountyViewSet # noqa
-from .callme_info import CallMeInfoViewSet # noqa
+from .callme_info import CallMeInfoViewSet, OfferStatusViewSet # noqa

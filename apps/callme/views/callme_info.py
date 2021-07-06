@@ -4,13 +4,19 @@ from django_filters import CharFilter
 from django_filters import rest_framework as filters
 from rest_framework import viewsets, permissions
 
-from apps.callme.models import PropertyInfo, callme_info
-from apps.callme.serializers import CallMeInfoSerializer
+from apps.callme.models import PropertyInfo, OfferStatus
+from apps.callme.serializers import CallMeInfoSerializer, OfferStatusSerializer
 
 User = get_user_model()
 
 
-__all__ = ("CallMeInfoViewSet",)
+__all__ = ("CallMeInfoViewSet", "OfferStatusViewSet")
+
+
+class OfferStatusViewSet(viewsets.ModelViewSet):
+    queryset = OfferStatus.objects.all()
+    serializer_class = OfferStatusSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class CallMeInfoFilter(filters.FilterSet):

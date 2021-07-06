@@ -12,7 +12,8 @@ from apps.callme.models import (
     VodaconnectLineType,
     State,
     County,
-    PropertyInfo
+    PropertyInfo,
+    OfferStatus
 )
 
 
@@ -171,3 +172,4 @@ admin.site.register(Form, FormAdmin)
 admin.site.register(State)
 admin.site.register(County)
 admin.site.register(PropertyInfo)
+admin.site.register(OfferStatus)

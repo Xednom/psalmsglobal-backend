@@ -12,7 +12,8 @@ from apps.callme.views import (
     ScriptViewSet,
     StateViewSet,
     CountyViewSet,
-    CallMeInfoViewSet
+    CallMeInfoViewSet,
+    OfferStatusViewSet
 )
 
 router = routers.DefaultRouter()
@@ -27,6 +28,7 @@ router.register(r"form", FormViewSet, basename="form-list")
 router.register(r"state", StateViewSet, basename="state-list")
 router.register(r"county", CountyViewSet, basename="county-list")
 router.register(r"callme-info", CallMeInfoViewSet, basename="callme-info-list")
+router.register(r"offer-status", OfferStatusViewSet, basename="offer-status-list")
 
 app_name = "callme"
 

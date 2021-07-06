@@ -9,6 +9,9 @@ __all__ = ("OfferStatus", "PropertyInfo")
 class OfferStatus(TimeStamped):
     name = models.CharField(max_length=250)
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class PropertyInfo(TimeStamped):
     company = models.ForeignKey(
