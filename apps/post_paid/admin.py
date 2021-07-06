@@ -13,7 +13,8 @@ from apps.post_paid.models import (
         PlanType,
         CostPlan,
         PostPaid,
-        Subscription
+        Subscription,
+        JobOrderPostPaid
     )
 
 
@@ -237,3 +238,4 @@ admin.site.register(InterestedToBuy, InterestedToBuyAdmin)
 admin.site.register(AccountCharge, AccountChargeAdmin)
 admin.site.register(AccountBalance, AccountBalanceAdmin)
 admin.site.register(GeneralCall, GeneralCallAdmin)
+admin.site.register(JobOrderPostPaid)

@@ -36,3 +36,6 @@ class InteractionRecord(TimeStamped):
 
     class Meta:
         ordering = ["-client"]
+    
+    def __str__(self):
+        return self.ticket_number

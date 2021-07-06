@@ -12,3 +12,4 @@ from .minutes_report import MinutesReportViewSet  # noqa
 from .monthly_plan_charge import MonthlyChargeViewSet  # noqa
 from .plan_detail import PostPaidViewSet  # noqa
 from .subscription import SubscriptionViewSet  # noqa
+from .job_order import JobOrderPostPaidViewSet  # noqa
