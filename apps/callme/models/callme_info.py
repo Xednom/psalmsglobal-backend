@@ -3,14 +3,14 @@ from django.db import models
 from apps.core.models import TimeStamped
 
 
-__all__ = ("OfferStatus", "CallMeInfo")
+__all__ = ("OfferStatus", "PropertyInfo")
 
 
 class OfferStatus(TimeStamped):
     name = models.CharField(max_length=250)
 
 
-class CallMeInfo(TimeStamped):
+class PropertyInfo(TimeStamped):
     company = models.ForeignKey(
         "callme.Company",
         related_name="company_customer_infos",
@@ -25,8 +25,7 @@ class CallMeInfo(TimeStamped):
     property_county = models.CharField(max_length=250, blank=True)
     property_state = models.CharField(max_length=250, blank=True)
     property_zip = models.CharField(max_length=250, blank=True)
-    first_name = models.CharField(max_length=250, blank=True)
-    last_name = models.CharField(max_length=250, blank=True)
+    full_name = models.CharField(max_length=250, blank=True)
     company_name = models.CharField(max_length=250, blank=True)
     buyer_offer_amount = models.TextField(blank=True)
     approved_option_amount = models.TextField(blank=True)

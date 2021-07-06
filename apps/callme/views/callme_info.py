@@ -4,7 +4,7 @@ from django_filters import CharFilter
 from django_filters import rest_framework as filters
 from rest_framework import viewsets, permissions
 
-from apps.callme.models import CallMeInfo, callme_info
+from apps.callme.models import PropertyInfo, callme_info
 from apps.callme.serializers import CallMeInfoSerializer
 
 User = get_user_model()
@@ -19,12 +19,12 @@ class CallMeInfoFilter(filters.FilterSet):
     company_name = CharFilter(field_name="company_name", lookup_expr="icontains")
 
     class Meta:
-        model = CallMeInfo
+        model = PropertyInfo
         fields = ("apn", "reference", "company_name")
 
 
 class CallMeInfoViewSet(viewsets.ModelViewSet):
-    queryset = CallMeInfo.objects.select_related("company").all()
+    queryset = PropertyInfo.objects.select_related("company").all()
     serializer_class = CallMeInfoSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = (filters.DjangoFilterBackend,)

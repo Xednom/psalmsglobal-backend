@@ -12,7 +12,7 @@ from apps.callme.models import (
     VodaconnectLineType,
     State,
     County,
-    CallMeInfo
+    PropertyInfo
 )
 
 
@@ -170,4 +170,4 @@ admin.site.register(Script, ScriptAdmin)
 admin.site.register(Form, FormAdmin)
 admin.site.register(State)
 admin.site.register(County)
-admin.site.register(CallMeInfo)
+admin.site.register(PropertyInfo)

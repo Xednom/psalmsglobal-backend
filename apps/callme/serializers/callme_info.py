@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.callme.models import CallMeInfo
+from apps.callme.models import PropertyInfo
 
 
 __all__ = ("CallMeInfoSerializer",)
@@ -10,7 +10,7 @@ class CallMeInfoSerializer(serializers.ModelSerializer):
     company_name = serializers.SerializerMethodField()
 
     class Meta:
-        model = CallMeInfo
+        model = PropertyInfo
         fields = (
             "id",
             "company",
@@ -23,8 +23,7 @@ class CallMeInfoSerializer(serializers.ModelSerializer):
             "property_county",
             "property_state",
             "property_zip",
-            "first_name",
-            "last_name",
+            "full_name",
             "company_name",
             "buyer_offer_amount",
             "approved_option_amount",
