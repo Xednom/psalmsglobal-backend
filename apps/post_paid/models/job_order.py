@@ -35,7 +35,7 @@ class JobOrderStatus(models.TextChoices):
 
 class JobOrderPostPaid(TimeStamped):
     caller_interaction_record = models.ForeignKey(
-        "post_paid.InteractionRecord",
+        "post_paid.CustomerInteractionPostPaid",
         related_name="interaction_job_orders",
         on_delete=models.CASCADE,
         blank=True,
@@ -75,7 +75,7 @@ class JobOrderPostPaid(TimeStamped):
     url_of_the_completed_jo = models.TextField(blank=True)
 
     def __str__(self):
-        return "Job Order general of " + self.client.user.get_full_name()
+        return "Job Order general of " + str(self.caller_interaction_record.ticket_number)
 
     def create_ticket_number(self):
         ticket_code = ""

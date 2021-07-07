@@ -10,6 +10,7 @@ from apps.post_paid.models import (
     CustomerInteractionPostPaid,
     CustomerInteractionPostPaidComment,
     InteractionRecord,
+    JobOrderPostPaid
 )
 from apps.authentication.models import Client, Staff
 from apps.callme.serializers import AttributeSerializer, FormSerializer
@@ -63,9 +64,6 @@ class CustomerInteractionPostPaidCommentSerializer(serializers.ModelSerializer):
             return "Client"
 
 
-
-
-
 class CustomerInteractionPostPaidRecordSerializer(serializers.ModelSerializer):
     client = serializers.PrimaryKeyRelatedField(
         queryset=Client.objects.all(), required=False, allow_null=True
@@ -75,7 +73,6 @@ class CustomerInteractionPostPaidRecordSerializer(serializers.ModelSerializer):
     )
     agent_name = serializers.SerializerMethodField()
     agent_code = serializers.SerializerMethodField()
-
 
     class Meta:
         model = InteractionRecord
@@ -89,12 +86,37 @@ class CustomerInteractionPostPaidRecordSerializer(serializers.ModelSerializer):
             "total_minutes",
             "summary",
         )
-    
+
     def get_agent_name(self, instance):
         return f"{instance.agent.staff_name}"
-    
+
     def get_agent_code(self, instance):
         return f"{instance.agent.staff_id}"
+
+
+class JobOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobOrderPostPaid
+        fields = (
+            "caller_interaction_record",
+            "client",
+            "client_file",
+            "client_email",
+            "va_assigned",
+            "staff_email",
+            "ticket_number",
+            "request_date",
+            "due_date",
+            "job_title",
+            "job_description",
+            "client_notes",
+            "va_notes",
+            "management_notes",
+            "status",
+            "date_completed",
+            "total_time_consumed",
+            "url_of_the_completed_jo",
+        )
 
 
 class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
@@ -125,10 +147,11 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
             many=True, required=False, allow_null=True
         )
     )
-    customer_interaction_post_paid_forms = (
-        FormSerializer (
-            many=True, required=False, allow_null=True
-        )
+    customer_interaction_post_paid_forms = FormSerializer(
+        many=True, required=False, allow_null=True
+    )
+    interaction_job_orders = JobOrderSerializer(
+        many=True, required=False, allow_null=True
     )
 
     class Meta:
@@ -157,11 +180,14 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
             "customer_interaction_post_paid_comments",
             "customer_interaction_post_paid_records",
             "customer_interaction_post_paid_forms",
+            "interaction_job_orders",
         )
-    
+
     def get_company_client(self, instance):
         return f"{instance.company.client.id}"
 
     def get_company_crm(self, instance):
-        company_crm = [company_crm.crm for company_crm in instance.company.company_crms.all()]
+        company_crm = [
+            company_crm.crm for company_crm in instance.company.company_crms.all()
+        ]
         return company_crm
