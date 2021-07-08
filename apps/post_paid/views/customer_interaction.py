@@ -54,7 +54,13 @@ class CustomerInteractionPostPaidViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerInteractionPostPaidSerializer
     permisson_classes = [permissions.IsAuthenticated]
     filter_backends = [filters.SearchFilter]
-    search_fields = ["ticket_number"]
+    search_fields = [
+        "=ticket_number",
+        "=apn",
+        "caller_full_name",
+        "=caller_phone",
+        "=email",
+    ]
     lookup_field = "ticket_number"
 
     def get_queryset(self):
