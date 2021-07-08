@@ -14,6 +14,12 @@ class JobOrderPostPaidSerializer(serializers.ModelSerializer):
         allow_null=True,
         required=False,
     )
+    client = serializers.SlugRelatedField(
+        slug_field="client_code",
+        queryset=Client.objects.all(),
+        required=False,
+        allow_null=True,
+    )
 
     class Meta:
         model = JobOrderPostPaid

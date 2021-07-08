@@ -86,6 +86,9 @@ class CustomerInteractionPostPaid(TimeStamped):
     )
     script_answer = RichTextField(blank=True)
 
+    def __str__(self):
+        return self.ticket_number
+
     def create_ticket_number(self):
         ticket_code = ""
         last_in = CustomerInteractionPostPaid.objects.all().order_by("id").last()

@@ -75,7 +75,7 @@ class JobOrderPostPaid(TimeStamped):
     url_of_the_completed_jo = models.TextField(blank=True)
 
     def __str__(self):
-        return "Job Order general of " + str(self.caller_interaction_record.ticket_number)
+        return "Job Order general of " + str(self.caller_interaction_record)
 
     def create_ticket_number(self):
         ticket_code = ""

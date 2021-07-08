@@ -14,7 +14,8 @@ from apps.post_paid.views import (
     MonthlyChargeViewSet,
     PostPaidViewSet,
     SubscriptionViewSet,
-    JobOrderPostPaidViewSet
+    JobOrderPostPaidViewSet,
+    JobOrderViewSet,
 )
 
 router = routers.DefaultRouter()
@@ -38,7 +39,8 @@ router.register(r"minutes-report", MinutesReportViewSet, basename="minutes-repor
 router.register(r"minutes-charge", MonthlyChargeViewSet, basename="minutes-charge")
 router.register(r"post-paid", PostPaidViewSet, basename="post-paid")
 router.register(r"subscription", SubscriptionViewSet, basename="subscription-list")
-router.register(r"job-order", JobOrderPostPaidViewSet, basename="job-order-list")
+router.register(r"job-order", JobOrderPostPaidViewSet, basename="job-order-interaction-list")
+router.register(r"job-order-general", JobOrderViewSet, basename="job-order-list")
 
 app_name = "post_paid"
 
