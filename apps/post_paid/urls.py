@@ -16,6 +16,7 @@ from apps.post_paid.views import (
     SubscriptionViewSet,
     JobOrderPostPaidViewSet,
     JobOrderViewSet,
+    CreateJobOrderComment
 )
 
 router = routers.DefaultRouter()
@@ -50,5 +51,10 @@ urlpatterns = [
         "customer-interaction-post-paid/<int:id>/comment/",
         CreateCustomerInteractionPostPaidComment.as_view(),
         name="customer-interaction-post-paid-comment",
+    ),
+    path(
+        "job-order/<int:id>/comment/",
+        CreateJobOrderComment.as_view(),
+        name="job-order-comment",
     ),
 ]

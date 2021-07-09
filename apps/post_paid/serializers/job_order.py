@@ -1,10 +1,20 @@
 from rest_framework import serializers
 
-from apps.post_paid.models import JobOrderPostPaid, CustomerInteractionPostPaid
+from apps.post_paid.models import (
+    JobOrderPostPaid,
+    CustomerInteractionPostPaid,
+    JobOrderComment,
+)
 from apps.authentication.models import Client, Staff
 
 
-__all__ = ("JobOrderPostPaidSerializer",)
+__all__ = ("JobOrderPostPaidSerializer", "JobOrderCommentSerializer")
+
+
+class JobOrderCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobOrderComment
+        fields = ("job_order", "user", "comment", "created_at")
 
 
 class JobOrderPostPaidSerializer(serializers.ModelSerializer):
@@ -19,6 +29,9 @@ class JobOrderPostPaidSerializer(serializers.ModelSerializer):
         queryset=Client.objects.all(),
         required=False,
         allow_null=True,
+    )
+    job_order_comments = JobOrderCommentSerializer(
+        many=True, required=False, allow_null=True
     )
 
     class Meta:
@@ -43,4 +56,5 @@ class JobOrderPostPaidSerializer(serializers.ModelSerializer):
             "date_completed",
             "total_time_consumed",
             "url_of_the_completed_jo",
+            "job_order_comments"
         )

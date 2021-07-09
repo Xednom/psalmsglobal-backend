@@ -12,4 +12,4 @@ from .minutes_report import MinutesReport  # noqa
 from .monthly_plan_charge import MonthlyCharge  # noqa
 from .plan_detail import PlanType, CostPlan, PostPaid  # noqa
 from .subscription import Subscription  # noqa
-from .job_order import JobOrderPostPaid  # noqa
+from .job_order import JobOrderPostPaid, JobOrderComment  # noqa

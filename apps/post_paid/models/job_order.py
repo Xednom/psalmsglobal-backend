@@ -1,10 +1,14 @@
+from django.contrib.auth import get_user, get_user_model
+
 from django.db import models
 
 from apps.core.models import TimeStamped
 from apps.account.models import AccountFile
 
+User = get_user_model()
 
-__all__ = ("JobOrderPostPaid",)
+
+__all__ = ("JobOrderPostPaid", "JobOrderComment")
 
 
 class JobOrderStatus(models.TextChoices):
@@ -75,7 +79,7 @@ class JobOrderPostPaid(TimeStamped):
     url_of_the_completed_jo = models.TextField(blank=True)
 
     def __str__(self):
-        return "Job Order general of " + str(self.caller_interaction_record)
+        return "Job Order general of " + str(self.ticket_number)
 
     def create_ticket_number(self):
         ticket_code = ""
@@ -137,3 +141,18 @@ class JobOrderPostPaid(TimeStamped):
             self.client_email = self.get_client_email()
             self.staff_email = self.get_staff_email()
             super(JobOrderPostPaid, self).save(*args, **kwargs)
+
+
+class JobOrderComment(TimeStamped):
+    job_order = models.ForeignKey(
+        JobOrderPostPaid,
+        related_name="job_order_comments",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    comment = models.TextField()
+
+    class Meta:
+        ordering = ["created_at"]
