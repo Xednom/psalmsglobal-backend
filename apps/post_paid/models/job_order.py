@@ -130,13 +130,19 @@ class JobOrderPostPaid(TimeStamped):
         account_files = ", ".join(i.url for i in account_file)
         return account_files
 
+    def get_company_client(self):
+        client = self.caller_interaction_record.company.client
+        return client
+
     def save(self, *args, **kwargs):
         if not self.id:
             self.ticket_number = self.create_ticket_number()
+            self.client = self.get_company_client()
             self.client_file = self.get_account_files()
             super(JobOrderPostPaid, self).save(*args, **kwargs)
         elif self.id:
             self.ticket_number = self.create_ticket_number()
+            self.client = self.get_company_client()
             self.client_file = self.get_account_files()
             self.client_email = self.get_client_email()
             self.staff_email = self.get_staff_email()
