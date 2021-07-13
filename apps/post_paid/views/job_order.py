@@ -33,6 +33,8 @@ class JobOrderPostPaidViewSet(viewsets.ModelViewSet):
 class JobOrderViewSet(viewsets.ModelViewSet):
     serializer_class = JobOrderPostPaidSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["=caller_interaction_record__ticket_number"]
     lookup_field = "ticket_number"
 
     def get_queryset(self):
