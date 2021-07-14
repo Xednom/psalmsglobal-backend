@@ -16,7 +16,9 @@ from apps.post_paid.views import (
     SubscriptionViewSet,
     JobOrderPostPaidViewSet,
     JobOrderViewSet,
-    CreateJobOrderComment
+    CreateJobOrderComment,
+    PlanTypeListView,
+    CostOfPlanListView
 )
 
 router = routers.DefaultRouter()
@@ -57,4 +59,7 @@ urlpatterns = [
         CreateJobOrderComment.as_view(),
         name="job-order-comment",
     ),
+    path("post-paid/plan-types/", PlanTypeListView.as_view(), name="plan-type-list"),
+    path("post-paid/cost-of-plan/", CostOfPlanListView.as_view(), name="cost-of-plan-list"),
+
 ]

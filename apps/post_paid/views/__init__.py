@@ -10,6 +10,10 @@ from .customer_interaction import (
 from .interaction_record import InteractionRecordViewSet  # noqa
 from .minutes_report import MinutesReportViewSet  # noqa
 from .monthly_plan_charge import MonthlyChargeViewSet  # noqa
-from .plan_detail import PostPaidViewSet  # noqa
+from .plan_detail import PostPaidViewSet, PlanTypeListView, CostOfPlanListView  # noqa
 from .subscription import SubscriptionViewSet  # noqa
-from .job_order import JobOrderPostPaidViewSet, JobOrderViewSet, CreateJobOrderComment  # noqa
+from .job_order import (
+    JobOrderPostPaidViewSet,
+    JobOrderViewSet,
+    CreateJobOrderComment,
+)  # noqa
