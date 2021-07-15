@@ -23,6 +23,7 @@ class PostPaidSerializer(serializers.ModelSerializer):
     client = serializers.PrimaryKeyRelatedField(
         queryset=Client.objects.all(), required=False, allow_null=True
     )
+    client_name = serializers.SerializerMethodField()
     plan_type = serializers.SlugRelatedField(
         slug_field="name",
         queryset=PlanType.objects.all(),
@@ -39,7 +40,9 @@ class PostPaidSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostPaid
         fields = (
+            "id",
             "client",
+            "client_name",
             "plan_type",
             "total_minutes",
             "cost_of_plan",
@@ -49,3 +52,6 @@ class PostPaidSerializer(serializers.ModelSerializer):
             "recurring_bill",
             "notes",
         )
+    
+    def get_client_name(self, instance):
+        return instance.client.client_name
