@@ -6,5 +6,9 @@ from .phone_system import (
     VodaconnectLineTypeViewSet,
 )  # noqa
 from .script import ScriptViewSet, FormViewSet  # noqa
-from .geography import StateViewSet, CountyViewSet # noqa
-from .callme_info import CallMeInfoViewSet, OfferStatusViewSet # noqa
+from .geography import StateViewSet, CountyViewSet  # noqa
+from .callme_info import (
+    CallMeInfoViewSet,
+    OfferStatusViewSet,
+    PropertyInfoViewSet,
+)  # noqa

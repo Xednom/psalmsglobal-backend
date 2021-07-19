@@ -13,7 +13,8 @@ from apps.callme.views import (
     StateViewSet,
     CountyViewSet,
     CallMeInfoViewSet,
-    OfferStatusViewSet
+    OfferStatusViewSet,
+    PropertyInfoViewSet
 )
 
 router = routers.DefaultRouter()
@@ -29,6 +30,7 @@ router.register(r"state", StateViewSet, basename="state-list")
 router.register(r"county", CountyViewSet, basename="county-list")
 router.register(r"callme-info", CallMeInfoViewSet, basename="callme-info-list")
 router.register(r"offer-status", OfferStatusViewSet, basename="offer-status-list")
+router.register(r"property-info", PropertyInfoViewSet, basename="property-info-list")
 
 app_name = "callme"
 

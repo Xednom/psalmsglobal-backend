@@ -10,7 +10,7 @@ from apps.callme.serializers import CallMeInfoSerializer, OfferStatusSerializer
 User = get_user_model()
 
 
-__all__ = ("CallMeInfoViewSet", "OfferStatusViewSet")
+__all__ = ("CallMeInfoViewSet", "OfferStatusViewSet", "PropertyInfoViewSet")
 
 
 class OfferStatusViewSet(viewsets.ModelViewSet):
@@ -34,4 +34,25 @@ class CallMeInfoViewSet(viewsets.ModelViewSet):
     serializer_class = CallMeInfoSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_class = (CallMeInfoFilter)
+    filterset_class = CallMeInfoFilter
+
+
+class PropertyInfoViewSet(viewsets.ModelViewSet):
+    serializer_class = CallMeInfoSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        current_user = self.request.user
+        user = User.objects.filter(username=current_user)
+        if (
+            current_user.designation_category == "current_client"
+            or current_user.designation_category == "new_client"
+            or current_user.designation_category == "affiliate_partner"
+        ):
+            qs = PropertyInfo.objects.select_related("company", "offer_status").filter(
+                company__client__user__in=user
+            )
+            return qs
+        elif current_user.is_superuser:
+            qs = PropertyInfo.objects.all()
+            return qs
