@@ -131,8 +131,11 @@ class JobOrderPostPaid(TimeStamped):
         return account_files
 
     def get_company_client(self):
-        client = self.caller_interaction_record.company.client
-        return client
+        if self.caller_interaction_record:
+            client = self.caller_interaction_record.company.client
+            return client
+        elif self.client:
+            return self.client
 
     def save(self, *args, **kwargs):
         if not self.id:
