@@ -39,7 +39,7 @@ router.register(
 )
 router.register(r"interaction-record", InteractionRecordViewSet, basename="interaction-record")
 router.register(r"minutes-report", MinutesReportViewSet, basename="minutes-report")
-router.register(r"minutes-charge", MonthlyChargeViewSet, basename="minutes-charge")
+router.register(r"monthly-charge", MonthlyChargeViewSet, basename="minutes-charge")
 router.register(r"post-paid", PostPaidViewSet, basename="post-paid")
 router.register(r"subscription", SubscriptionViewSet, basename="subscription-list")
 router.register(r"job-order", JobOrderPostPaidViewSet, basename="job-order-interaction-list")

@@ -24,7 +24,9 @@ class AccountBalanceViewSet(viewsets.ModelViewSet):
             or current_user.designation_category == "new_client"
             or current_user.designation_category == "affiliate_partner"
         ):
-            qs = AccountBalance.objects.select_related("client").filter(client=user)
+            qs = AccountBalance.objects.select_related("client").filter(
+                client__user__in=user
+            )
             return qs
         elif current_user.is_superuser:
             qs = AccountBalance.objects.all()
