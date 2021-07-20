@@ -50,7 +50,7 @@ class PropertyInfo(TimeStamped):
 
 
 class PropertyFileInfo(TimeStamped):
-    file = models.FileField(blank=True)
+    file = models.TextField(blank=True)
 
     def __str__(self):
         return self.file
