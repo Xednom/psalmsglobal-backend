@@ -7,4 +7,8 @@ from .phone_system import (
 )  # noqa
 from .script import AttributeSerializer, FormSerializer, ScriptSerializer  # noqa
 from .geography import StateSerializer, CountySerializer  # noqa
-from .callme_info import CallMeInfoSerializer, OfferStatusSerializer # noqa
+from .callme_info import (
+    CallMeInfoSerializer,
+    OfferStatusSerializer,
+    PropertyFileSerializer,
+)  # noqa

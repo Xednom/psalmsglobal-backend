@@ -14,7 +14,8 @@ from apps.callme.views import (
     CountyViewSet,
     CallMeInfoViewSet,
     OfferStatusViewSet,
-    PropertyInfoViewSet
+    PropertyInfoViewSet,
+    FileUploadView
 )
 
 router = routers.DefaultRouter()
@@ -35,5 +36,6 @@ router.register(r"property-info", PropertyInfoViewSet, basename="property-info-l
 app_name = "callme"
 
 urlpatterns = [
-    path("", include(router.urls))
+    path("", include(router.urls)),
+    path("file-upload/", FileUploadView.as_view(), name="file-upload")
 ]

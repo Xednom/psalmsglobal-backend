@@ -3,7 +3,7 @@ from django.db import models
 from apps.core.models import TimeStamped
 
 
-__all__ = ("OfferStatus", "PropertyInfo")
+__all__ = ("OfferStatus", "PropertyInfo", "PropertyFileInfo")
 
 
 class OfferStatus(TimeStamped):
@@ -47,3 +47,10 @@ class PropertyInfo(TimeStamped):
 
     def __str__(self):
         return f"{self.company} - {self.apn}"
+
+
+class PropertyFileInfo(TimeStamped):
+    file = models.FileField(blank=True)
+
+    def __str__(self):
+        return self.file

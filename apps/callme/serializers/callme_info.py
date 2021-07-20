@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
-from apps.callme.models import PropertyInfo, OfferStatus
+from apps.callme.models import Company, PropertyInfo, OfferStatus, PropertyFileInfo
 
 
-__all__ = ("CallMeInfoSerializer", "OfferStatusSerializer")
+__all__ = ("CallMeInfoSerializer", "OfferStatusSerializer", "PropertyFileSerializer")
 
 
 class OfferStatusSerializer(serializers.ModelSerializer):
@@ -18,6 +18,12 @@ class CallMeInfoSerializer(serializers.ModelSerializer):
         queryset=OfferStatus.objects.all(),
         allow_null=True,
         required=False,
+    )
+    company = serializers.SlugRelatedField(
+        slug_field="company_name",
+        queryset=Company.objects.all(),
+        required=False,
+        allow_null=True
     )
     company_name = serializers.SerializerMethodField()
 
@@ -49,3 +55,9 @@ class CallMeInfoSerializer(serializers.ModelSerializer):
 
     def get_company_name(self, instance):
         return f"{instance.company.company_name}"
+
+
+class PropertyFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PropertyFileInfo
+        fields = ("file",)
