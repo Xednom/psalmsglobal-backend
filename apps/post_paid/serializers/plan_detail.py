@@ -52,6 +52,6 @@ class PostPaidSerializer(serializers.ModelSerializer):
             "recurring_bill",
             "notes",
         )
-    
+
     def get_client_name(self, instance):
         return instance.client.client_name
