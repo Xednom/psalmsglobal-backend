@@ -55,7 +55,8 @@ THIRD_PARTY_APPS = [
     "post_office",
     "django_mysql",
     "ckeditor",
-    "django_filters"
+    "django_filters",
+    "import_export"
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS

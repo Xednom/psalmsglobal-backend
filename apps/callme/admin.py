@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin
+from import_export.admin import ImportExportModelAdmin
 
 from apps.callme.models import (
     Company,
@@ -15,6 +16,7 @@ from apps.callme.models import (
     PropertyInfo,
     OfferStatus,
 )
+from apps.callme.resources import FormResource
 
 
 class CompanyAdmin(admin.ModelAdmin):
@@ -125,8 +127,9 @@ class AttributeAdmin(admin.TabularInline):
     readonly_fields = ("created_at", "updated_at")
 
 
-class FormAdmin(admin.ModelAdmin):
+class FormAdmin(ImportExportModelAdmin):
     model = Form
+    resource_class = FormResource
     list_display = (
         "form_title",
         "company",
