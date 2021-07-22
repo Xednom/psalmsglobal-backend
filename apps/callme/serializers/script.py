@@ -37,6 +37,7 @@ class FormSerializer(WritableNestedModelSerializer):
     class Meta:
         model = Form
         fields = (
+            "id",
             "id_form",
             "form_title",
             "company",

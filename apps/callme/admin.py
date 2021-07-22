@@ -13,7 +13,7 @@ from apps.callme.models import (
     State,
     County,
     PropertyInfo,
-    OfferStatus
+    OfferStatus,
 )
 
 
@@ -127,6 +127,12 @@ class AttributeAdmin(admin.TabularInline):
 
 class FormAdmin(admin.ModelAdmin):
     model = Form
+    list_display = (
+        "form_title",
+        "company",
+        "customer_interaction_post_paid",
+        "original_script",
+    )
     fieldsets = (
         (
             "Form Information",
