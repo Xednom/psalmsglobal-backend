@@ -16,6 +16,9 @@ class MinutesReport(TimeStamped):
     month_year = models.CharField(max_length=250)
     plan_type = models.CharField(max_length=250)
     cost_of_plan = MoneyField(max_digits=19, decimal_places=2, default_currency="USD")
+    plan_allocated_minutes = models.DecimalField(
+        max_digits=19, decimal_places=2, blank=True, null=True
+    )
     monthly_usage = models.IntegerField()
     total_minutes_unused = models.IntegerField()
 
