@@ -17,6 +17,7 @@ from apps.callme.models import (
     OfferStatus,
 )
 from apps.callme.resources import FormResource
+from apps.core.admin import ModelAdminMixin
 
 
 class CompanyAdmin(admin.ModelAdmin):
@@ -127,7 +128,7 @@ class AttributeAdmin(admin.TabularInline):
     readonly_fields = ("created_at", "updated_at")
 
 
-class FormAdmin(ImportExportModelAdmin):
+class FormAdmin(ModelAdminMixin, ImportExportModelAdmin):
     model = Form
     resource_class = FormResource
     list_display = (
@@ -150,6 +151,11 @@ class FormAdmin(ImportExportModelAdmin):
         ),
     )
     inlines = [AttributeAdmin]
+
+    def get_queryset(self, request):
+        qs = Form.objects.all()
+        if request.user.is_superuser:
+            return qs.filter(original_script=True)
 
 
 class ScriptAdmin(admin.ModelAdmin):
