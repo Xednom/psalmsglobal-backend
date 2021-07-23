@@ -3,6 +3,9 @@ from django.db.models.fields import CharField
 from django_mysql.models import ListTextField
 from apps.core.models import TimeStamped
 
+from ckeditor.fields import RichTextField
+from django_bleach.models import BleachField
+
 
 __all__ = ("AttributeDataType", "Attribute", "Form", "Script")
 
@@ -28,6 +31,10 @@ class Form(TimeStamped):
         blank=True,
         null=True,
     )
+    mailing_lists = ListTextField(
+        base_field=models.CharField(max_length=500), size=100, blank=True, null=True
+    )
+    status = models.BooleanField(default=True)
     original_script = models.BooleanField(blank=True, null=True)
 
     def __str__(self):
@@ -43,8 +50,8 @@ class Attribute(TimeStamped):
         null=True,
     )
     data_type = models.CharField(choices=AttributeDataType.choices, max_length=20)
-    value_text = models.TextField(blank=True)
-    value_question = models.TextField(blank=True)
+    value_text = BleachField(blank=True)
+    value_question = BleachField(blank=True)
     input_question = models.TextField(blank=True)
 
     def __str__(self):

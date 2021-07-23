@@ -33,6 +33,7 @@ class FormSerializer(WritableNestedModelSerializer):
     )
     attribute_forms = AttributeSerializer(many=True, required=False, allow_null=True)
     id_form = serializers.SerializerMethodField()
+    mailing_lists = serializers.JSONField()
 
     class Meta:
         model = Form
@@ -43,6 +44,8 @@ class FormSerializer(WritableNestedModelSerializer):
             "company",
             "attribute_forms",
             "original_script",
+            "mailing_lists",
+            "status"
         )
 
     def get_id_form(self, instance):

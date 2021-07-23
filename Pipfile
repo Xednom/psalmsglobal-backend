@@ -23,6 +23,7 @@ django-ckeditor = "*"
 xlrd = "*"
 django-filter = "*"
 django-import-export = "*"
+django-bleach = "*"
 
 [requires]
 python_version = "3.8"

@@ -36,7 +36,7 @@ class FormViewSet(viewsets.ModelViewSet):
         elif current_user.designation_category == "staff":
             qs = Form.objects.select_related(
                 "company", "customer_interaction_post_paid"
-            ).filter(original_script=True)
+            ).filter(original_script=True, status=True)
             return qs
         else:
             qs = Form.objects.all()

@@ -135,7 +135,6 @@ class FormAdmin(ModelAdminMixin, ImportExportModelAdmin):
         "form_title",
         "company",
         "customer_interaction_post_paid",
-        "original_script",
     )
     fieldsets = (
         (
@@ -145,7 +144,6 @@ class FormAdmin(ModelAdminMixin, ImportExportModelAdmin):
                     "form_title",
                     "company",
                     "customer_interaction_post_paid",
-                    "original_script",
                 )
             },
         ),

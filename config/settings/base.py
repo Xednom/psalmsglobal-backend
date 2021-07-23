@@ -56,7 +56,8 @@ THIRD_PARTY_APPS = [
     "django_mysql",
     "ckeditor",
     "django_filters",
-    "import_export"
+    "import_export",
+    "django_bleach"
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
@@ -184,3 +185,46 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
+
+
+# Which HTML tags are allowed
+BLEACH_ALLOWED_TAGS = [
+    "p",
+    "b",
+    "i",
+    "u",
+    "em",
+    "a",
+    "ul",
+    "ol",
+    "li",
+    "strong",
+    "blockquote",
+    "span",
+    "code"
+]
+
+# Which HTML attributes are allowed
+BLEACH_ALLOWED_ATTRIBUTES = ["href", "title", "style"]
+
+# Which CSS properties are allowed in 'style' attributes (assuming
+# style is an allowed attribute)
+BLEACH_ALLOWED_STYLES = [
+    "font-family",
+    "font-size",
+    "font-weight",
+    "text-decoration",
+    "font-variant",
+    "color",
+]
+
+BLEACH_ALLOWED_PROTOCOLS = ["http", "https", "data"]
+
+# Strip unknown tags if True, replace with HTML escaped characters if
+# False
+BLEACH_STRIP_TAGS = True
+
+# Strip comments, or leave them in.
+BLEACH_STRIP_COMMENTS = False
+
+BLEACH_DEFAULT_WIDGET = "ckeditor.widgets.CKEditorWidget"
