@@ -78,6 +78,9 @@ class JobOrderPostPaid(TimeStamped):
     )
     url_of_the_completed_jo = models.TextField(blank=True)
 
+    class Meta:
+        ordering = ["-ticket_number"]
+
     def __str__(self):
         return "Job Order general of " + str(self.ticket_number)
 
