@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
+from django.contrib.auth import get_user_model
+
 from apps.callme.models import Company, Form
 
 from apps.post_paid.models import (
@@ -10,10 +12,12 @@ from apps.post_paid.models import (
     CustomerInteractionPostPaid,
     CustomerInteractionPostPaidComment,
     InteractionRecord,
-    JobOrderPostPaid
+    JobOrderPostPaid,
 )
 from apps.authentication.models import Client, Staff
 from apps.callme.serializers import AttributeSerializer, FormSerializer
+
+User = get_user_model()
 
 
 __all__ = (
@@ -59,9 +63,15 @@ class CustomerInteractionPostPaidCommentSerializer(serializers.ModelSerializer):
 
     def get_commenter(self, instance):
         if instance.user.designation_category == "staff":
-            return "Staff"
+            user = User.objects.filter(username=instance.user)
+            staffs = Staff.objects.select_related("user").filter(user__in=user)
+            staff_code = [staff.staff_id for staff in staffs]
+            return "".join(staff_code)
         else:
-            return "Client"
+            user = User.objects.filter(username=instance.user)
+            clients = Client.objects.select_related("user").filter(user__in=user)
+            client_code = [client.client_code for client in clients]
+            return "".join(client_code)
 
 
 class CustomerInteractionPostPaidRecordSerializer(serializers.ModelSerializer):
