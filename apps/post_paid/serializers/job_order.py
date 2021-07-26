@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 
 from apps.post_paid.models import (
     JobOrderPostPaid,
@@ -8,13 +9,30 @@ from apps.post_paid.models import (
 from apps.authentication.models import Client, Staff
 
 
+User = get_user_model()
+
+
 __all__ = ("JobOrderPostPaidSerializer", "JobOrderCommentSerializer")
 
 
 class JobOrderCommentSerializer(serializers.ModelSerializer):
+    commenter = serializers.SerializerMethodField()
+
     class Meta:
         model = JobOrderComment
-        fields = ("job_order", "user", "comment", "created_at")
+        fields = ("job_order", "user", "comment", "commenter", "created_at")
+
+    def get_commenter(self, instance):
+        if instance.user.designation_category == "staff":
+            user = User.objects.filter(username=instance.user)
+            staffs = Staff.objects.select_related("user").filter(user__in=user)
+            staff_code = [staff.staff_id for staff in staffs]
+            return "".join(staff_code)
+        else:
+            user = User.objects.filter(username=instance.user)
+            clients = Client.objects.select_related("user").filter(user__in=user)
+            client_code = [client.client_code for client in clients]
+            return "".join(client_code)
 
 
 class JobOrderPostPaidSerializer(serializers.ModelSerializer):
@@ -56,5 +74,5 @@ class JobOrderPostPaidSerializer(serializers.ModelSerializer):
             "date_completed",
             "total_time_consumed",
             "url_of_the_completed_jo",
-            "job_order_comments"
+            "job_order_comments",
         )
