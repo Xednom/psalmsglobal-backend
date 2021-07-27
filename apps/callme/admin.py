@@ -156,31 +156,11 @@ class FormAdmin(ModelAdminMixin, ImportExportModelAdmin):
             return qs.filter(original_script=True)
 
 
-class ScriptAdmin(admin.ModelAdmin):
-    model = Script
-    list_display = ("company", "form", "company_address", "mailing_lists")
-    list_filter = ("company",)
-    search_fields = (
-        "company",
-        "company__client__user__first_name",
-        "client__user__last_name",
-        "client__client_code",
-    )
-    readonly_fields = ("created_at", "updated_at")
-    fieldsets = (
-        (
-            "Script Information",
-            {"fields": ("company", "company_address", "form", "mailing_lists")},
-        ),
-    )
-
-
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Crm, CrmAdmin)
 admin.site.register(PhoneSystem, PhoneSystemAdmin)
 admin.site.register(VodaconnectLineType)
 admin.site.register(VodaconnectPlan)
-admin.site.register(Script, ScriptAdmin)
 admin.site.register(Form, FormAdmin)
 admin.site.register(State)
 admin.site.register(County)

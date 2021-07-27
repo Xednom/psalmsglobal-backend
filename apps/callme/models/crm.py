@@ -18,6 +18,8 @@ class Crm(TimeStamped):
 
     class Meta:
         ordering = ["-company"]
+        verbose_name = "Type of Clients CRM"
+        verbose_name_plural = "Type of Clients CRM"
 
     def __str__(self):
         return f"{self.company}"

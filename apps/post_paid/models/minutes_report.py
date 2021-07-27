@@ -22,5 +22,9 @@ class MinutesReport(TimeStamped):
     monthly_usage = models.IntegerField()
     total_minutes_unused = models.IntegerField()
 
+    class Meta:
+        verbose_name = "summary of Minute"
+        verbose_name_plural = "summary of Minutes"
+
     def __str__(self):
         return f"{self.client} minutes unused {self.total_minutes_unused}"

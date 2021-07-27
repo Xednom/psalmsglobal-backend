@@ -9,6 +9,10 @@ __all__ = ("OfferStatus", "PropertyInfo", "PropertyFileInfo")
 class OfferStatus(TimeStamped):
     name = models.CharField(max_length=250)
 
+    class Meta:
+        verbose_name = "Update Offer Status"
+        verbose_name_plural = "Update Offer Status"
+
     def __str__(self):
         return f"{self.name}"
 
@@ -44,6 +48,10 @@ class PropertyInfo(TimeStamped):
         null=True,
     )
     offer_status_notes = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = "Sellers Property Inventory List"
+        verbose_name_plural = "Sellers Property Inventory List"
 
     def __str__(self):
         return f"{self.company} - {self.apn}"

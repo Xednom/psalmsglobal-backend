@@ -20,6 +20,8 @@ class Subscription(TimeStamped):
 
     class Meta:
         ordering = ["-company"]
+        verbose_name = "Plan Subscription Info"
+        verbose_name_plural = "Plan Subscription Info"
 
     def __str__(self):
         return f"{self.company} - {self.status}"

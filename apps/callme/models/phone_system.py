@@ -9,12 +9,20 @@ __all__ = ("VodaconnectPlan", "VodaconnectLineType", "PhoneSystem")
 class VodaconnectPlan(TimeStamped):
     range = models.CharField(max_length=100)
 
+    class Meta:
+        verbose_name = "VodaConnect Plan Type"
+        verbose_name_plural = "VodaConnect Plan Type"
+
     def __str__(self):
         return self.range
 
 
 class VodaconnectLineType(TimeStamped):
     line = models.CharField(max_length=250)
+
+    class Meta:
+        verbose_name = "VodaConnect Line Category"
+        verbose_name_plural = "Vodaconnect Line Category"
 
     def __str__(self):
         return self.line
@@ -40,7 +48,7 @@ class PhoneSystem(TimeStamped):
     )
 
     class Meta:
-        verbose_name = "Sub Number Phone Set up"
+        verbose_name = "List of Sub Numbers"
         ordering = ["-company"]
 
     def __str__(self):

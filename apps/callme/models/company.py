@@ -33,8 +33,8 @@ class Company(TimeStamped):
     notes = models.TextField()
 
     class Meta:
-        verbose_name = "List of Company"
-        verbose_name_plural = "List of Companies"
+        verbose_name = "Owners Company List"
+        verbose_name_plural = "Owners Company List"
         ordering = ["-client"]
 
     def __str__(self):

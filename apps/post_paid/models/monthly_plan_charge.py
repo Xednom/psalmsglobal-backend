@@ -24,6 +24,8 @@ class MonthlyCharge(TimeStamped):
 
     class Meta:
         ordering = ["-client"]
+        verbose_name = "Monthly Charge Report"
+        verbose_name_plural = "Monthly Charge Report"
 
     def __str__(self):
         return f"{self.client} {self.plan_type} {self.payment_status}"

@@ -37,6 +37,9 @@ class Form(TimeStamped):
     status = models.BooleanField(default=True)
     original_script = models.BooleanField(blank=True, null=True)
 
+    class Meta:
+        verbose_name = "List of Scripts per Company"
+
     def __str__(self):
         return f"{self.form_title}"
 

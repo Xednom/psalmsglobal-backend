@@ -47,6 +47,8 @@ class InteractionRecord(TimeStamped):
 
     class Meta:
         ordering = ["-client"]
+        verbose_name = "Call Record Breakdown"
+        verbose_name_plural = "Call Record Breakdown"
 
     def __str__(self):
         return self.ticket_number

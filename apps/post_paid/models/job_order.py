@@ -80,6 +80,8 @@ class JobOrderPostPaid(TimeStamped):
 
     class Meta:
         ordering = ["-ticket_number"]
+        verbose_name = "List of Job Order"
+        verbose_name_plural = "List of Job Orders"
 
     def __str__(self):
         return "Job Order general of " + str(self.ticket_number)

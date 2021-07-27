@@ -22,5 +22,9 @@ class AccountCharge(TimeStamped):
     total_minutes = models.DecimalField(max_digits=19, decimal_places=2)
     summary = models.TextField(blank=True)
 
+    class Meta:
+        verbose_name = "Account Charge"
+        verbose_name_plural = "Account Charge"
+
     def __str__(self):
         return f"{self.client} - {self.ticket_number}"

@@ -11,6 +11,8 @@ class PlanType(TimeStamped):
 
     class Meta:
         ordering = ["-name"]
+        verbose_name = "Plan Type Category"
+        verbose_name_plural = "Plan Type Category"
 
     def __str__(self):
         return self.name
@@ -21,6 +23,8 @@ class CostPlan(TimeStamped):
 
     class Meta:
         ordering = ["-name"]
+        verbose_name = "Cost of Plan"
+        verbose_name_plural = "Cost of Plans"
 
     def __str__(self):
         return self.name
@@ -47,6 +51,8 @@ class PostPaid(TimeStamped):
 
     class Meta:
         ordering = ["-client"]
+        verbose_name = "Active Plan Detail"
+        verbose_name_plural = "Active Plan Details"
 
     def __str__(self):
         return f"{self.client} - {self.plan_type}"

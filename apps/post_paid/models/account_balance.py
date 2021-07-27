@@ -22,3 +22,5 @@ class AccountBalance(TimeStamped):
 
     class Meta:
         ordering = ["-client"]
+        verbose_name = "Account Balance"
+        verbose_name_plural = "Account Balance"
