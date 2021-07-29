@@ -7,7 +7,13 @@ from post_office.models import EmailTemplate
 from post_office import mail
 
 from apps.authentication.models import Client
-from apps.post_paid.models import AccountBalance, MinutesReport
+from apps.post_paid.models import (
+    AccountBalance,
+    MinutesReport,
+    MonthlyCharge,
+    InteractionRecord,
+    JobOrderPostPaid,
+)
 
 
 class Command(BaseCommand):
@@ -15,38 +21,44 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         client_name = (
-            MinutesReport.objects.all().values_list("client", flat=True).distinct()
+            MonthlyCharge.objects.all().values_list("client", flat=True).distinct()
         )
         client = Client.objects.filter(id__in=client_name)
 
         for i in client:
             client_balance = AccountBalance.objects.filter(client=i).exists()
-            client_total_minutes = MinutesReport.objects.filter(client=i).aggregate(
-                total_minutes=Sum("plan_allocated_minutes")
+            client_total_minutes = MonthlyCharge.objects.filter(client=i).aggregate(
+                total_minutes=Sum("total_minutes")
             )
-            client_total_spending = MinutesReport.objects.filter(client=i).aggregate(
+            client_total_spending = MonthlyCharge.objects.filter(client=i).aggregate(
                 total_spending=Sum("cost_of_plan")
             )
-            client_account_total_minutes = MinutesReport.objects.filter(
+            client_total_mins_used = (
+                InteractionRecord.objects.select_related(
+                    "customer_interaction_post_paid", "client", "agent"
+                )
+                .filter(client=i)
+                .aggregate(total_mins_used=Sum("total_minutes"))
+            )
+            client_jo_total_mins_used = JobOrderPostPaid.objects.filter(
                 client=i
-            ).aggregate(total_monthly_usage=Sum("monthly_usage"))
+            ).aggregate(total_job_mins_used=Sum("total_time_consumed"))
 
-            if (
-                client_total_minutes["total_minutes"]
-                and client_total_spending["total_spending"]
-                and client_account_total_minutes["total_monthly_usage"]
-            ):
+            account_mins_used = (
+                client_total_mins_used["total_mins_used"]
+                + client_jo_total_mins_used["total_job_mins_used"]
+            )
+
+            if client_total_minutes["total_minutes"] and account_mins_used:
                 if client_balance:
                     AccountBalance.objects.filter(client=i).update(
                         account_total_aquired_minutes=client_total_minutes[
                             "total_minutes"
                         ],
                         account_total_spending=client_total_spending["total_spending"],
-                        account_total_mins_used=client_account_total_minutes[
-                            "total_monthly_usage"
-                        ],
+                        account_total_mins_used=account_mins_used,
                         account_total_mins_unused=client_total_minutes["total_minutes"]
-                        - client_account_total_minutes["total_monthly_usage"],
+                        - account_mins_used,
                     )
                 else:
                     AccountBalance.objects.create(
@@ -55,9 +67,7 @@ class Command(BaseCommand):
                             "total_minutes"
                         ],
                         account_total_spending=client_total_spending["total_spending"],
-                        account_total_mins_used=client_account_total_minutes[
-                            "total_monthly_usage"
-                        ],
+                        account_total_mins_used=account_mins_used,
                         account_total_mins_unused=client_total_minutes["total_minutes"]
-                        - client_account_total_minutes["total_monthly_usage"],
+                        - account_mins_used,
                     )
