@@ -1,4 +1,5 @@
 from django.db import models
+from decimal import Decimal
 
 from apps.core.models import TimeStamped
 
@@ -40,11 +41,11 @@ class PostPaid(TimeStamped):
         PlanType, related_name="post_paid_plan_types", on_delete=models.DO_NOTHING
     )
     total_minutes = models.CharField(max_length=250)
-    cost_of_plan = models.ForeignKey(
-        CostPlan, related_name="post_paid_cost_of_plans", on_delete=models.DO_NOTHING
+    cost_of_plan = models.DecimalField(
+        max_digits=19, decimal_places=2, blank=True, null=True
     )
-    start_of_plan = models.CharField(max_length=250)
-    end_of_plan = models.CharField(max_length=250)
+    start_of_plan = models.DateField(blank=True, null=True)
+    end_of_plan = models.DateField(blank=True, null=True)
     account_status = models.BooleanField()
     recurring_bill = models.BooleanField()
     notes = models.TextField(blank=True)
