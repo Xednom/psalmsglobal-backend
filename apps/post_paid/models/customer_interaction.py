@@ -45,6 +45,9 @@ class InterestedToBuy(TimeStamped):
 class GeneralCall(TimeStamped):
     name = models.CharField(max_length=250)
 
+    class Meta:
+        verbose_name = "Type of Caller"
+
     def __str__(self):
         return self.name
 
