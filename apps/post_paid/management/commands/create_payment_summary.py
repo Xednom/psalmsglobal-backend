@@ -1,4 +1,6 @@
 import calendar
+import datetime
+
 from decimal import Decimal
 from datetime import date
 
@@ -23,26 +25,29 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
 
-        today = date.today()
+        today = datetime.datetime.now()
         month_year = str(calendar.month_abbr[today.month]) + "/" + str(today.year)
 
-        print(month_year)
-
         client_name = (
-            MonthlyCharge.objects.all().values_list("client", flat=True).distinct()
+            MonthlyCharge.objects.select_related("client")
+            .all()
+            .values_list("client", flat=True)
+            .distinct()
         )
         client = Client.objects.filter(id__in=client_name)
 
         for i in client:
             client_monthly_charge = MonthlyCharge.objects.filter(client=i).exists()
-            client_post_paid = PostPaid.objects.filter(client=i)
+            client_post_paid = PostPaid.objects.select_related(
+                "client", "plan_type"
+            ).filter(client=i)
             for post_paid in client_post_paid:
                 if post_paid.cost_of_plan:
-
-                    MonthlyCharge.objects.create(
-                        client=i,
-                        month_year=month_year,
-                        plan_type=post_paid.plan_type,
-                        total_minutes=post_paid.total_minutes,
-                        cost_of_plan=post_paid.cost_of_plan,
-                    )
+                    if today.strftime("%d") == "30":
+                        MonthlyCharge.objects.create(
+                            client=i,
+                            month_year=month_year,
+                            plan_type=post_paid.plan_type,
+                            total_minutes=post_paid.total_minutes,
+                            cost_of_plan=post_paid.cost_of_plan,
+                        )

@@ -21,28 +21,36 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         client_name = (
-            MonthlyCharge.objects.all().values_list("client", flat=True).distinct()
+            MonthlyCharge.objects.all()
+            .select_related("client", "plan_type")
+            .values_list("client", flat=True)
+            .distinct()
         )
         client = Client.objects.filter(id__in=client_name)
 
         for i in client:
             client_balance = AccountBalance.objects.filter(client=i).exists()
-            client_total_minutes = MonthlyCharge.objects.filter(client=i).aggregate(
-                total_minutes=Sum("total_minutes")
+            client_total_minutes = (
+                MonthlyCharge.objects.select_related("client", "plan_type")
+                .filter(client=i)
+                .aggregate(total_minutes=Sum("total_minutes"))
             )
-            client_total_spending = MonthlyCharge.objects.filter(client=i).aggregate(
-                total_spending=Sum("cost_of_plan")
+            client_total_spending = (
+                MonthlyCharge.objects.filter(client=i)
+                .select_related("client", "plan_type")
+                .aggregate(total_spending=Sum("cost_of_plan"))
             )
             client_total_mins_used = (
-                InteractionRecord.objects.select_related(
-                    "customer_interaction_post_paid", "client", "agent"
-                )
-                .filter(client=i)
+                InteractionRecord.objects.filter(client=i)
+                .select_related("customer_interaction_post_paid", "client", "agent")
                 .aggregate(total_mins_used=Sum("total_minutes"))
             )
-            client_jo_total_mins_used = JobOrderPostPaid.objects.filter(
-                client=i
-            ).aggregate(total_job_mins_used=Sum("total_time_consumed"))
+            client_jo_total_mins_used = (
+                JobOrderPostPaid.objects.filter(client=i)
+                .select_related("caller_interaction_record", "client")
+                .prefetch_related("va_assigned")
+                .aggregate(total_job_mins_used=Sum("total_time_consumed"))
+            )
 
             account_mins_used = (
                 client_total_mins_used["total_mins_used"]
@@ -51,7 +59,9 @@ class Command(BaseCommand):
 
             if client_total_minutes["total_minutes"] and account_mins_used:
                 if client_balance:
-                    AccountBalance.objects.filter(client=i).update(
+                    AccountBalance.objects.filter(client=i).select_related(
+                        "client"
+                    ).update(
                         account_total_aquired_minutes=client_total_minutes[
                             "total_minutes"
                         ],
