@@ -125,4 +125,5 @@ class CurrentUserSerializer(BaseUserListSerializer, WritableNestedModelSerialize
             "last_name",
             "designation_category",
             "company_category",
+            "account_type"
         )

@@ -53,6 +53,7 @@ class User(AbstractUser):
         "email",
         "designation_category",
         "company_category",
+        "account_type"
     ]
 
     @property
