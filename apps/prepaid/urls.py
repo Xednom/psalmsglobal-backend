@@ -27,9 +27,9 @@ router.register(
 )
 router.register(r"general-call", GeneralCallViewSet, basename="general-call")
 router.register(
-    r"customer-interaction-post-paid",
+    r"customer-interaction",
     CustomerInteractionPrepaidViewSet,
-    basename="customer-interaction-post-paid",
+    basename="customer-interaction",
 )
 router.register(r"payment-summary", PrepaidPaymentSummaryViewSet, basename="prepaid-payment-summary")
 router.register(r"subscription-info", SubscriptionInfoViewSet, basename="subscription-info")
