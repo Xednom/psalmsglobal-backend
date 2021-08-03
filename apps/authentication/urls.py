@@ -2,7 +2,7 @@ from rest_framework import routers
 
 from django.urls import include, path
 
-from .views import StaffViewSet, ClientViewSet, ClientCodeViewSet
+from .views import StaffViewSet, ClientViewSet, ClientCodeViewSet, UserAccountTypeView
 
 router = routers.DefaultRouter()
 router.register(r"staff", StaffViewSet, basename="staff")
@@ -15,4 +15,5 @@ urlpatterns = [
     path("", include(router.urls)),
     path("", include("djoser.urls")),
     path("", include("djoser.urls.jwt")),
+    path("user-account-type/<int:id>/", UserAccountTypeView.as_view(), name="user-account-type")
 ]

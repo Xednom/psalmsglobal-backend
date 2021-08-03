@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
-from rest_framework import viewsets, permissions, filters
+from rest_framework import viewsets, permissions, filters, generics
 from djoser.email import ConfirmationEmail, PasswordResetEmail
 
 from .models import Staff, Client
-from .serializers import StaffSerializer, ClientSerializer, ClientCodeSerializer
+from .serializers import StaffSerializer, ClientSerializer, ClientCodeSerializer, UserAccountTypeSerializer
 
 User = get_user_model()
 
@@ -30,6 +30,13 @@ class ClientCodeViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     filter_backends = [filters.SearchFilter]
     search_fields = ["=client_code"]
+
+
+class UserAccountTypeView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserAccountTypeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    lookup_field = "id"
 
 
 class CallMeConfirmationEmail(ConfirmationEmail):

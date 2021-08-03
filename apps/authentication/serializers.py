@@ -7,6 +7,8 @@ from .models import Client, Staff
 from djoser.serializers import UserCreateSerializer as BaseUserRegistrationSerializer
 from djoser.serializers import UserSerializer as BaseUserListSerializer
 
+User = get_user_model()
+
 
 class UserRegistrationSerializer(BaseUserRegistrationSerializer):
     class Meta(BaseUserRegistrationSerializer.Meta):
@@ -58,6 +60,12 @@ class ClientCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = ("client_code", "hourly_rate")
+
+
+class UserAccountTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "account_type")
 
 
 class StaffSerializer(WritableNestedModelSerializer):
