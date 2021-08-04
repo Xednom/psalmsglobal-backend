@@ -11,10 +11,10 @@ class Crm(TimeStamped):
         "callme.Company", related_name="company_crms", on_delete=models.CASCADE
     )
     crm = models.BooleanField()
-    type_of_crm = models.TextField()
-    crm_url = models.CharField(max_length=500)
-    crm_login = models.CharField(max_length=250)
-    notes = models.TextField()
+    type_of_crm = models.TextField(blank=True)
+    crm_url = models.CharField(max_length=500, blank=True)
+    crm_login = models.CharField(max_length=250, blank=True)
+    notes = models.TextField(blank=True)
 
     class Meta:
         ordering = ["-company"]
