@@ -17,7 +17,9 @@ from apps.post_paid.models import (
 
 
 class Command(BaseCommand):
-    help = "Automatically create Account balance for every user in the system monthly."
+    help = """Automatically create Account balance for every user in the system monthly.
+        Note: for this to work, the Client should have a Plan Summary and Payment(MonthlyCharge)
+    """
 
     def handle(self, *args, **kwargs):
         client_name = (
@@ -52,12 +54,12 @@ class Command(BaseCommand):
                 .aggregate(total_job_mins_used=Sum("total_time_consumed"))
             )
 
-            account_mins_used = (
-                client_total_mins_used["total_mins_used"]
-                + client_jo_total_mins_used["total_job_mins_used"]
-            )
+            if (
+                client_total_spending["total_spending"]
+                and client_total_mins_used["total_mins_used"] == None
+            ):
+                account_mins_used = 0.00 + 0.00
 
-            if client_total_minutes["total_minutes"] and account_mins_used:
                 if client_balance:
                     AccountBalance.objects.filter(client=i).select_related(
                         "client"
@@ -71,6 +73,38 @@ class Command(BaseCommand):
                         - account_mins_used,
                     )
                 else:
+                    AccountBalance.objects.create(
+                        client=i,
+                        account_total_aquired_minutes=0.00,
+                        account_total_spending=0.00,
+                        account_total_mins_used=account_mins_used,
+                        account_total_mins_unused=0.00 - account_mins_used,
+                    )
+            else:
+                if client_balance:
+                    AccountBalance.objects.filter(client=i).select_related(
+                        "client"
+                    ).update(
+                        client=i,
+                        account_total_aquired_minutes=client_total_minutes[
+                            "total_minutes"
+                        ],
+                        account_total_spending=client_total_spending["total_spending"],
+                        account_total_mins_used=client_total_mins_used[
+                            "total_mins_used"
+                        ]
+                        + client_jo_total_mins_used["total_job_mins_used"],
+                        account_total_mins_unused=client_total_minutes["total_minutes"]
+                        - (
+                            client_total_mins_used["total_mins_used"]
+                            + client_jo_total_mins_used["total_job_mins_used"]
+                        ),
+                    )
+                else:
+                    account_mins_used = (
+                        client_total_mins_used["total_mins_used"]
+                        + client_jo_total_mins_used["total_job_mins_used"]
+                    )
                     AccountBalance.objects.create(
                         client=i,
                         account_total_aquired_minutes=client_total_minutes[
