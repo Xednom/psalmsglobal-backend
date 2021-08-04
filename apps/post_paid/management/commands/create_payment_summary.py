@@ -21,7 +21,9 @@ from apps.post_paid.models import (
 
 
 class Command(BaseCommand):
-    help = "Automatically create Plan Summary and Payment for every user in the system monthly."
+    help = """Automatically create Plan Summary and Payment for every user in the system monthly.
+        Note: this will only work if there is a Plan detail(Postpaid) for the Client.
+        """
 
     def handle(self, *args, **kwargs):
 
@@ -29,7 +31,7 @@ class Command(BaseCommand):
         month_year = str(calendar.month_abbr[today.month]) + "/" + str(today.year)
 
         client_name = (
-            MonthlyCharge.objects.select_related("client")
+            PostPaid.objects.select_related("client")
             .all()
             .values_list("client", flat=True)
             .distinct()
@@ -40,10 +42,18 @@ class Command(BaseCommand):
             client_monthly_charge = MonthlyCharge.objects.filter(client=i).exists()
             client_post_paid = PostPaid.objects.select_related(
                 "client", "plan_type"
-            ).filter(client=i)
+            ).filter(client=i, recurring_bill=True, account_status=True)
             for post_paid in client_post_paid:
-                if post_paid.cost_of_plan:
-                    if today.strftime("%d") == "30":
+                if post_paid:
+                    if today.strftime("%d") == "31":
+                        MonthlyCharge.objects.create(
+                            client=i,
+                            month_year=month_year,
+                            plan_type=post_paid.plan_type,
+                            total_minutes=post_paid.total_minutes,
+                            cost_of_plan=post_paid.cost_of_plan,
+                        )
+                    elif today.strftime("%d") == "30":
                         MonthlyCharge.objects.create(
                             client=i,
                             month_year=month_year,
