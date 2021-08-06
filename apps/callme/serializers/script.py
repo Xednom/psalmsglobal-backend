@@ -53,8 +53,9 @@ class FormSerializer(WritableNestedModelSerializer):
         return f"{instance.id}"
     
     def get_mailing_lists_unpacked(self, instance):
-        mailing_lists = ", ".join(instance.mailing_lists)
-        return mailing_lists
+        if instance.mailing_lists:
+            mailing_lists = ", ".join(instance.mailing_lists)
+            return mailing_lists
 
 
 class ScriptSerializer(serializers.ModelSerializer):
