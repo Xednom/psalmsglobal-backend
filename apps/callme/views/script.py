@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user, get_user_model
 
-from rest_framework import viewsets, permissions, filters
+from rest_framework import generics, viewsets, permissions, filters
 
 from apps.authentication.models import Client
 from apps.callme.models import Form, Script, Company
@@ -12,7 +12,14 @@ from apps.callme.serializers import (
 User = get_user_model()
 
 
-__all__ = ("FormViewSet", "ScriptViewSet")
+__all__ = ("FormViewSet", "ScriptViewSet", "FormView")
+
+
+class FormView(generics.RetrieveAPIView):
+    queryset = Form.objects.all()
+    serializer_class = FormSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    lookup_field = "id"
 
 
 class FormViewSet(viewsets.ModelViewSet):
