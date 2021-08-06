@@ -34,6 +34,11 @@ class InteractionRecordSerializer(serializers.ModelSerializer):
             "total_minutes",
             "summary",
             "status",
+            "client_feedback_status",
+            "other_feedback",
+            "client_notes",
+            "internal_management_ticket_status",
+            "other_ticket_status",
             "customer_interaction_post_paid",
         )
 

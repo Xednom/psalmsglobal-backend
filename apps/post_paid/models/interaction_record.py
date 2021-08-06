@@ -7,6 +7,21 @@ from apps.post_paid.models import CustomerInteractionPostPaid
 __all__ = ("InteractionRecord",)
 
 
+class FeedBackStatus(models.TextChoices):
+    dispute = "dispute", ("Dispute")
+    na = "n/a", ("N/A")
+    clarification = "clarification", ("Clarification")
+    other = "other", ("Other")
+
+
+class TicketStatus(models.TextChoices):
+    na = "na", ("N/A")
+    case_closed = "case_closed", ("Case Closed")
+    dispute_on_progress = "dispute_on_progress", ("Dispute on progress")
+    resolution_given = "resolution_given", ("Resolution given")
+    others = "others", ("Others")
+
+
 class StatusChoices(models.TextChoices):
     submitted = "submitted", ("Submitted")
     approved = "approved", ("Approved")
@@ -44,6 +59,21 @@ class InteractionRecord(TimeStamped):
         default=StatusChoices.approved,
         blank=True,
     )
+    client_feedback_status = models.CharField(
+        max_length=100,
+        choices=FeedBackStatus.choices,
+        default=FeedBackStatus.na,
+        blank=True,
+    )
+    other_feedback = models.TextField(blank=True)
+    client_notes = models.TextField(blank=True)
+    internal_management_ticket_status = models.CharField(
+        max_length=100,
+        choices=TicketStatus.choices,
+        default=TicketStatus.na,
+        blank=True,
+    )
+    other_ticket_status = models.TextField(blank=True)
 
     class Meta:
         ordering = ["-client"]
