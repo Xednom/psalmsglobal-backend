@@ -11,6 +11,9 @@ class FeedBackStatus(models.TextChoices):
     dispute = "dispute", ("Dispute")
     na = "n/a", ("N/A")
     clarification = "clarification", ("Clarification")
+    case_closed = "case_closed", ("Case Closed")
+    dispute_on_progress = "dispute_on_progress", ("Dispute on progress")
+    resolution_given = "resolution_given", ("Resolution given")
     other = "other", ("Other")
 
 
@@ -65,6 +68,7 @@ class InteractionRecord(TimeStamped):
         default=FeedBackStatus.na,
         blank=True,
     )
+    dispute_details = models.TextField(blank=True)
     other_feedback = models.TextField(blank=True)
     client_notes = models.TextField(blank=True)
     internal_management_ticket_status = models.CharField(
@@ -73,6 +77,7 @@ class InteractionRecord(TimeStamped):
         default=TicketStatus.na,
         blank=True,
     )
+    memo_solution_from_the_mgmt = models.TextField(blank=True)
     other_ticket_status = models.TextField(blank=True)
 
     class Meta:

@@ -35,9 +35,11 @@ class InteractionRecordSerializer(serializers.ModelSerializer):
             "summary",
             "status",
             "client_feedback_status",
+            "dispute_details",
             "other_feedback",
             "client_notes",
             "internal_management_ticket_status",
+            "memo_solution_from_the_mgmt",
             "other_ticket_status",
             "customer_interaction_post_paid",
         )
