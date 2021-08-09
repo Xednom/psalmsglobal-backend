@@ -131,6 +131,7 @@ class AttributeAdmin(admin.TabularInline):
 class FormAdmin(ModelAdminMixin, ImportExportModelAdmin):
     model = Form
     resource_class = FormResource
+    search_fields = ("company",)
     list_display = (
         "form_title",
         "company",
