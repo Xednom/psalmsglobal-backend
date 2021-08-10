@@ -59,6 +59,13 @@ class CustomerInteractionPostPaid(TimeStamped):
         related_name="post_paid_company_customer_interaction",
         on_delete=models.DO_NOTHING,
     )
+    agent = models.ForeignKey(
+        "authentication.Staff",
+        related_name="post_paid_customer_interaction_agents",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
     apn = models.CharField(max_length=250)
     reference_number = models.CharField(max_length=250, blank=True)
     county = models.CharField(max_length=250, blank=True)
