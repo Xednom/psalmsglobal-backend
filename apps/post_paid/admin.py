@@ -228,6 +228,49 @@ class SubscriptionAdmin(admin.ModelAdmin):
     )
 
 
+class JobOrderAdmin(admin.ModelAdmin):
+    model = JobOrderPostPaid
+    list_display = (
+        "client",
+        "client_file",
+        "client_email",
+        "request_date",
+        "due_date",
+        "job_title",
+        "job_title",
+        "status",
+        "date_completed",
+        "total_time_consumed",
+        "url_of_the_completed_jo",
+
+    )
+    list_filter = ("client",)
+    search_fields = (
+        "caller_interaction_record__ticket_number",
+        "client__user__first_name",
+        "client__user__last_name",
+        "client__client_code",
+    )
+    readonly_fields = ("created_at", "updated_at")
+    # fieldsets = (
+    #     (
+    #         "Subscription Information",
+    #         {
+    #             "fields": (
+    #                 "company",
+    #                 "signed_up_date",
+    #                 "signed_out_date",
+    #                 "billing_cycle",
+    #                 "date_call_started",
+    #                 "status",
+    #                 "script_created",
+    #                 "notes"
+    #             )
+    #         },
+    #     ),
+    # )
+
+
 admin.site.register(Subscription, SubscriptionAdmin)
 admin.site.register(CustomerInteractionPostPaid, CustomerInteractionPostPaidAdmin)
 admin.site.register(InteractionRecord, InteractionRecordAdmin)
@@ -241,4 +284,4 @@ admin.site.register(InterestedToBuy, InterestedToBuyAdmin)
 admin.site.register(AccountCharge, AccountChargeAdmin)
 admin.site.register(AccountBalance, AccountBalanceAdmin)
 admin.site.register(GeneralCall, GeneralCallAdmin)
-admin.site.register(JobOrderPostPaid)
+admin.site.register(JobOrderPostPaid, JobOrderAdmin)
