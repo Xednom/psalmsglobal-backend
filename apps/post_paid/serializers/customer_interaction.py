@@ -136,6 +136,9 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
         required=False,
         allow_null=True,
     )
+    agent = serializers.PrimaryKeyRelatedField(
+        queryset=Staff.objects.all(), required=False, allow_null=True
+    )
     company_crm = serializers.SerializerMethodField()
     company_client = serializers.SerializerMethodField()
     interested_to_sell = serializers.SlugRelatedField(
@@ -170,6 +173,7 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
             "id",
             "ticket_number",
             "company",
+            "agent",
             "company_crm",
             "company_client",
             "apn",
