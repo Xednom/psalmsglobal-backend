@@ -24,6 +24,7 @@ xlrd = "*"
 django-filter = "*"
 django-import-export = "*"
 django-bleach = "*"
+django-anymail = {extras = ["mailgun"], version = "*"}
 
 [requires]
 python_version = "3.8"
