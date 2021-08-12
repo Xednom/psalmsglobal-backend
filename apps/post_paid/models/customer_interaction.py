@@ -31,12 +31,20 @@ class LeadTransferredCrm(models.TextChoices):
 class InterestedToSell(TimeStamped):
     name = models.CharField(max_length=250)
 
+    class Meta:
+        verbose_name = "Interested to Sell"
+        verbose_name_plural = "Interested to Sell"
+
     def __str__(self):
         return self.name
 
 
 class InterestedToBuy(TimeStamped):
     name = models.CharField(max_length=250)
+
+    class Meta:
+        verbose_name = "Interested to Buy"
+        verbose_name_plural = "Interested to Buy"
 
     def __str__(self):
         return self.name
