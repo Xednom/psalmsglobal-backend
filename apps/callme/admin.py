@@ -62,7 +62,7 @@ class CompanyAdmin(admin.ModelAdmin):
 
 class CrmAdmin(admin.ModelAdmin):
     model = Crm
-    list_display = ("company", "crm", "crm_url")
+    list_display = ("company", "crm", "crm_login", "crm_url")
     list_filter = ("company",)
     search_fields = ("company", "client__user__first_name", "client__user__last_name")
     readonly_fields = ("created_at", "updated_at")

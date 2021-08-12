@@ -13,7 +13,7 @@ class Crm(TimeStamped):
     crm = models.BooleanField()
     type_of_crm = models.TextField(blank=True)
     crm_url = models.CharField(max_length=500, blank=True)
-    crm_login = models.CharField(max_length=250, blank=True)
+    crm_login = models.TextField(blank=True)
     notes = models.TextField(blank=True)
 
     class Meta:
