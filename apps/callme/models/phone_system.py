@@ -49,6 +49,7 @@ class PhoneSystem(TimeStamped):
 
     class Meta:
         verbose_name = "List of Sub Numbers"
+        verbose_name_plural = "List of Sub Numbers"
         ordering = ["-company"]
 
     def __str__(self):
