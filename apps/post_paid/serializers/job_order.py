@@ -51,6 +51,7 @@ class JobOrderPostPaidSerializer(serializers.ModelSerializer):
     job_order_comments = JobOrderCommentSerializer(
         many=True, required=False, allow_null=True
     )
+    agent_code = serializers.SerializerMethodField()
 
     class Meta:
         model = JobOrderPostPaid
@@ -58,6 +59,7 @@ class JobOrderPostPaidSerializer(serializers.ModelSerializer):
             "id",
             "caller_interaction_record",
             "client",
+            "agent_code",
             "client_file",
             "client_email",
             "va_assigned",
@@ -76,3 +78,8 @@ class JobOrderPostPaidSerializer(serializers.ModelSerializer):
             "url_of_the_completed_jo",
             "job_order_comments",
         )
+    
+    def get_agent_code(self, instance):
+        agent_codes = [agent.staff_id for agent in instance.va_assigned.all()]
+        agent_codes = ", ".join(agent_codes)
+        return agent_codes
