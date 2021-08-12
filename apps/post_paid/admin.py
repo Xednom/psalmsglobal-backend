@@ -14,7 +14,8 @@ from apps.post_paid.models import (
         CostPlan,
         PostPaid,
         Subscription,
-        JobOrderPostPaid
+        JobOrderPostPaid,
+        InternalAuditor
     )
 
 
@@ -60,11 +61,18 @@ class CustomerInteractionPostPaidAdmin(admin.ModelAdmin):
         "ticket_number",
         "company",
         "apn",
+        "reference_number",
+        "state",
+        "crm",
+        "leads_transferred_crm",
+        "internal_auditor",
         "caller_full_name",
         "caller_phone",
         "email",
         "interested_to_sell",
-        "interested_to_buy"
+        "interested_to_buy",
+        "general_call",
+        "agent"
     )
     list_filter = ("company",)
     search_fields = (
@@ -287,3 +295,4 @@ admin.site.register(AccountCharge, AccountChargeAdmin)
 admin.site.register(AccountBalance, AccountBalanceAdmin)
 admin.site.register(GeneralCall, GeneralCallAdmin)
 admin.site.register(JobOrderPostPaid, JobOrderAdmin)
+admin.site.register(InternalAuditor)

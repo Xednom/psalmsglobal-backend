@@ -4,6 +4,7 @@ from .customer_interaction import (
     InterestedToBuy,
     InterestedToSell,
     GeneralCall,
+    InternalAuditor,
     CustomerInteractionPostPaid,
     CustomerInteractionPostPaidComment,
 )  # noqa

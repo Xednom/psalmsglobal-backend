@@ -9,6 +9,7 @@ __all__ = (
     "InterestedToSell",
     "InterestedToBuy",
     "GeneralCall",
+    "InternalAuditor",
     "CustomerInteractionPostPaid",
     "CustomerInteractionPostPaidComment",
 )
@@ -60,6 +61,13 @@ class GeneralCall(TimeStamped):
         return self.name
 
 
+class InternalAuditor(TimeStamped):
+    name = models.CharField(max_length=250, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class CustomerInteractionPostPaid(TimeStamped):
     ticket_number = models.CharField(max_length=250, blank=True)
     company = models.ForeignKey(
@@ -102,7 +110,13 @@ class CustomerInteractionPostPaid(TimeStamped):
     leads_transferred_crm = models.CharField(
         max_length=250, choices=LeadTransferredCrm.choices
     )
-    script_answer = RichTextField(blank=True)
+    internal_auditor = models.ForeignKey(
+        "post_paid.InternalAuditor",
+        related_name="post_paid_customer_interaction_auditors",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
 
     class Meta:
         verbose_name = "Postpaid Customer Interaction Board"
@@ -137,7 +151,7 @@ class CustomerInteractionPostPaid(TimeStamped):
             ticket_code = "CI00" + str(int(in_int) + 1)
         elif in_int >= 10:
             ticket_code = "CI0" + str(int(in_int) + 1)
-        
+
         return ticket_code
 
     def save(self, *args, **kwargs):
