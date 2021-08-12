@@ -81,6 +81,8 @@ class InteractionRecordAdmin(admin.ModelAdmin):
         "agent",
         "date_called",
         "total_minutes",
+        "client_feedback_status",
+        "internal_management_ticket_status"
     )
     list_filter = (
         "client",
