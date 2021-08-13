@@ -102,8 +102,8 @@ class Command(BaseCommand):
                     )
                 else:
                     account_mins_used = (
-                        client_total_mins_used["total_mins_used"]
-                        + client_jo_total_mins_used["total_job_mins_used"]
+                        Decimal(client_total_mins_used["total_mins_used"])
+                        + Decimal(client_jo_total_mins_used["total_job_mins_used"])
                     )
                     AccountBalance.objects.create(
                         client=i,
