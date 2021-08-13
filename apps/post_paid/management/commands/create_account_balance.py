@@ -54,11 +54,8 @@ class Command(BaseCommand):
                 .aggregate(total_job_mins_used=Sum("total_time_consumed"))
             )
 
-            if (
-                client_total_spending["total_spending"] == None
-                or client_total_mins_used["total_mins_used"] == None
-            ):
-                account_mins_used = 0.00 + 0.00
+            if client_total_mins_used["total_mins_used"] == None:
+                account_mins_used = Decimal(0.00) + Decimal(0.00)
 
                 if client_balance:
                     AccountBalance.objects.filter(client=i).select_related(
