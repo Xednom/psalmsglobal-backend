@@ -74,7 +74,7 @@ class JobOrderPostPaid(TimeStamped):
     )
     date_completed = models.DateField(blank=True, null=True)
     total_time_consumed = models.DecimalField(
-        max_digits=10, decimal_places=2, blank=True, null=True
+        max_digits=10, decimal_places=2, default=0.00, blank=True, null=True
     )
     url_of_the_completed_jo = models.TextField(blank=True)
 
