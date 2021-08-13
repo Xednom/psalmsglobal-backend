@@ -80,7 +80,10 @@ class Command(BaseCommand):
                         account_total_mins_used=account_mins_used,
                         account_total_mins_unused=0.00 - account_mins_used,
                     )
-            else:
+            elif (
+                client_total_spending["total_spending"]
+                or client_total_mins_used["total_mins_used"]
+            ):
                 if client_balance:
                     AccountBalance.objects.filter(client=i).select_related(
                         "client"
