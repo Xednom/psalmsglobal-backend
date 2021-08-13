@@ -55,8 +55,8 @@ class Command(BaseCommand):
             )
 
             if (
-                client_total_spending["total_spending"]
-                and client_total_mins_used["total_mins_used"] == None
+                client_total_spending["total_spending"] == None
+                or client_total_mins_used["total_mins_used"] == None
             ):
                 account_mins_used = 0.00 + 0.00
 
