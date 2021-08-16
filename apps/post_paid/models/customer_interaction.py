@@ -1,7 +1,10 @@
+from post_office import mail
+
 from django.db import models
 from ckeditor.fields import RichTextField
 
 from apps.core.models import TimeStamped
+from apps.callme.models import Form
 
 
 __all__ = (
@@ -89,7 +92,7 @@ class CustomerInteractionPostPaid(TimeStamped):
     address = models.TextField(blank=True)
     caller_full_name = models.CharField(max_length=250)
     caller_phone = models.CharField(max_length=250)
-    email = models.CharField(max_length=250)
+    email = models.CharField(max_length=250, blank=True)
     reason_of_the_call = models.TextField(blank=True)
     interested_to_sell = models.ForeignKey(
         InterestedToSell,
@@ -156,6 +159,20 @@ class CustomerInteractionPostPaid(TimeStamped):
 
     def save(self, *args, **kwargs):
         self.ticket_number = self.create_ticket_number()
+        # form_mailing_lists = [form for form in Form.objects.filter(customer_interaction_post_paid=self.id)]
+        # print(form_mailing_lists)
+        # form_mailing_lists = ", ".join([form.mailing_lists for form in Form.objects.filter(customer_interaction_post_paid=self.id)])
+        # if not self.id:
+        #     self.ticket_number = self.create_ticket_number()
+        #     mail.send(
+        #         "postmaster@psalmsglobal.com",
+        #         bcc=form_mailing_lists,
+        #         template="cust_interaction_create",
+        #         context={
+        #             "caller_interaction": self
+        #         }
+        #     )
+        #     super(CustomerInteractionPostPaid, self).save(*args, **kwargs)
         super(CustomerInteractionPostPaid, self).save(*args, **kwargs)
 
 
