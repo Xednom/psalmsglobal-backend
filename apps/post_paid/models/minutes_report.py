@@ -19,8 +19,12 @@ class MinutesReport(TimeStamped):
     plan_allocated_minutes = models.DecimalField(
         max_digits=19, decimal_places=2, blank=True, null=True
     )
-    monthly_usage = models.IntegerField()
-    total_minutes_unused = models.IntegerField()
+    monthly_usage = models.DecimalField(
+        max_digits=19, decimal_places=2, blank=True, null=True
+    )
+    total_minutes_unused = models.DecimalField(
+        max_digits=19, decimal_places=2, blank=True, null=True
+    )
 
     class Meta:
         verbose_name = "summary of Minute"
