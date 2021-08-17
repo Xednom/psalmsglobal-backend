@@ -22,6 +22,7 @@ class JobOrderStatus(models.TextChoices):
     follow_up = "follow_up", ("Follow up")
     dispute = "dispute", ("Dispute")
     complete = "complete", ("Complete")
+    job_closed = "job_closed", ("Job closed")
     under_quality_review = "under_quality_review", ("Under Quality Review")
     daily_tasks = "daily_tasks", ("Daily Tasks")
     weekly_tasks = "weekly_tasks", ("Weekly Tasks")
