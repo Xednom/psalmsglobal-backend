@@ -1,3 +1,4 @@
+from post_office import mail
 from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
@@ -205,3 +206,21 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
             company_crm.crm for company_crm in instance.company.company_crms.all()
         ]
         return company_crm
+
+    def create(self, validated_data):
+        instance = super(CustomerInteractionPostPaidSerializer, self).create(
+            validated_data
+        )
+        form_mailing_lists = [
+            form.mailing_lists_unpacked
+            for form in Form.objects.filter(customer_interaction_post_paid=instance.id)
+        ]
+        form_mailing_lists = ", ".join(form_mailing_lists).replace("[", "").replace("]", "")
+        # form_mailing_lists = (form_mailing_lists).replace("[", "").replace("]", "").replace("/", "")
+        mail.send(
+            "postmaster@psalmsglobal.com",
+            bcc=form_mailing_lists.split(),
+            template="cust_interaction_create",
+            context={"caller_interaction": instance},
+        )
+        return instance
