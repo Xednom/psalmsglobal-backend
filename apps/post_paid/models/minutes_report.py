@@ -27,8 +27,8 @@ class MinutesReport(TimeStamped):
     )
 
     class Meta:
-        verbose_name = "summary of Minute"
-        verbose_name_plural = "summary of Minutes"
+        verbose_name = "Month to Month Usage Overview"
+        verbose_name_plural = "Month to Month Usage Overview"
 
     def __str__(self):
         return f"{self.client} minutes unused {self.total_minutes_unused}"

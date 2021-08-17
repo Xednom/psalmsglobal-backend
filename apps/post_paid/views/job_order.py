@@ -1,3 +1,5 @@
+from post_office import mail
+
 from django.contrib.auth import get_user_model
 from apps.post_paid import serializers
 
@@ -65,4 +67,15 @@ class CreateJobOrderComment(generics.CreateAPIView):
         user = self.request.user
         job_order_id = self.kwargs.get("id")
         job_order = get_object_or_404(JobOrderPostPaid, id=job_order_id)
+        if job_order.client_email and job_order.staff_email:
+            emails = job_order.client_email + ' ' + job_order.staff_email
+            emails = emails.split()
+            mail.send(
+                "postmaster@psalmsglobal.com",
+                bcc=emails,
+                template="job_order_comment_update",
+                context={
+                    "job_order": job_order
+                 },
+            )
         serializer.save(user=user, job_order=job_order)
