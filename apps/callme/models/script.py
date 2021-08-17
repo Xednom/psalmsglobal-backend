@@ -1,3 +1,5 @@
+from post_office import mail
+
 from django.db import models
 from django.db.models.fields import CharField
 from django_mysql.models import ListTextField
@@ -34,6 +36,7 @@ class Form(TimeStamped):
     mailing_lists = ListTextField(
         base_field=models.CharField(max_length=500), size=100, blank=True, null=True
     )
+    mailing_lists_unpacked = models.TextField(blank=True)
     status = models.BooleanField(default=True)
     original_script = models.BooleanField(blank=True, null=True)
 
@@ -42,6 +45,20 @@ class Form(TimeStamped):
 
     def __str__(self):
         return f"{self.form_title}"
+    
+    def unpack_mailing_lists(self):
+        mailing = " ".join(self.mailing_lists)
+        return mailing
+    
+    # @property
+    # def get_mailing_list(self):
+    #     if self.mailing_lists:
+    #         mailing_lists = ", ".join(self.mailing_lists)
+    #         return mailing_lists
+
+    def save(self, *args, **kwargs):
+        self.mailing_lists_unpacked = self.unpack_mailing_lists()
+        super(Form, self).save(*args, **kwargs)
 
 
 class Attribute(TimeStamped):

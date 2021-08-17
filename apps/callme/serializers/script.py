@@ -1,3 +1,4 @@
+from post_office import mail
 from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
@@ -34,7 +35,7 @@ class FormSerializer(WritableNestedModelSerializer):
     attribute_forms = AttributeSerializer(many=True, required=False, allow_null=True)
     id_form = serializers.SerializerMethodField()
     mailing_lists = serializers.JSONField()
-    mailing_lists_unpacked = serializers.SerializerMethodField()
+
     class Meta:
         model = Form
         fields = (
@@ -46,16 +47,11 @@ class FormSerializer(WritableNestedModelSerializer):
             "original_script",
             "mailing_lists",
             "mailing_lists_unpacked",
-            "status"
+            "status",
         )
 
     def get_id_form(self, instance):
         return f"{instance.id}"
-    
-    def get_mailing_lists_unpacked(self, instance):
-        if instance.mailing_lists:
-            mailing_lists = ", ".join(instance.mailing_lists)
-            return mailing_lists
 
 
 class ScriptSerializer(serializers.ModelSerializer):

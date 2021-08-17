@@ -144,6 +144,7 @@ class FormAdmin(ModelAdminMixin, ImportExportModelAdmin):
                 "fields": (
                     "form_title",
                     "company",
+                    "mailing_lists_unpacked",
                     "customer_interaction_post_paid",
                 )
             },

@@ -159,19 +159,20 @@ class CustomerInteractionPostPaid(TimeStamped):
 
     def save(self, *args, **kwargs):
         self.ticket_number = self.create_ticket_number()
-        # form_mailing_lists = [form for form in Form.objects.filter(customer_interaction_post_paid=self.id)]
-        # print(form_mailing_lists)
+
+        form_mailing_lists = [form.mailing_lists_unpacked for form in Form.objects.filter(customer_interaction_post_paid=self.id)]
+        form_mailing_lists = ", ".join(form_mailing_lists).replace("[", "").replace("]", "")
         # form_mailing_lists = ", ".join([form.mailing_lists for form in Form.objects.filter(customer_interaction_post_paid=self.id)])
-        # if not self.id:
-        #     self.ticket_number = self.create_ticket_number()
-        #     mail.send(
-        #         "postmaster@psalmsglobal.com",
-        #         bcc=form_mailing_lists,
-        #         template="cust_interaction_create",
-        #         context={
-        #             "caller_interaction": self
-        #         }
-        #     )
+        if not self.id:
+            self.ticket_number = self.create_ticket_number()
+            mail.send(
+                "postmaster@psalmsglobal.com",
+                bcc=form_mailing_lists.split(),
+                template="cust_interaction_create",
+                context={
+                    "caller_interaction": self
+                }
+            )
         #     super(CustomerInteractionPostPaid, self).save(*args, **kwargs)
         super(CustomerInteractionPostPaid, self).save(*args, **kwargs)
 
