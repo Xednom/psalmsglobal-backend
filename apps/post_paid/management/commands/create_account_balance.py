@@ -10,6 +10,7 @@ from apps.authentication.models import Client
 from apps.post_paid.models import (
     AccountBalance,
     MinutesReport,
+    PostPaid,
     MonthlyCharge,
     InteractionRecord,
     JobOrderPostPaid,
@@ -23,7 +24,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         client_name = (
-            MonthlyCharge.objects.all()
+            PostPaid.objects.all()
             .select_related("client", "plan_type")
             .values_list("client", flat=True)
             .distinct()
