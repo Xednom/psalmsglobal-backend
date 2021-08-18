@@ -1,3 +1,5 @@
+from post_office import mail
+
 from django.contrib.auth import get_user, get_user_model
 
 from rest_framework import generics, viewsets, permissions, filters
@@ -98,6 +100,21 @@ class CreateCustomerInteractionPostPaidComment(generics.CreateAPIView):
         customer_interaction_post_paid = get_object_or_404(
             CustomerInteractionPostPaid, id=post_paid_cust_interaction_id
         )
+        if customer_interaction_post_paid:
+            emails = (
+                customer_interaction_post_paid.agent.user.email
+                + " "
+                + customer_interaction_post_paid.company.client.user.email
+            )
+            emails = emails.split()
+            mail.send(
+                "postmaster@psalmsglobal.com",
+                bcc=emails,
+                template="cust_interaction_comment_update",
+                context={
+                    "interaction": customer_interaction_post_paid
+                },
+            )
         serializer.save(
             user=user, customer_interaction_post_paid=customer_interaction_post_paid
         )
