@@ -38,7 +38,7 @@ class PostPaidViewSet(viewsets.ModelViewSet):
         client = clients.all()
         if current_user:
             qs = PostPaid.objects.select_related(
-                "client", "plan_type", "cost_of_plan"
+                "client", "plan_type"
             ).filter(client__user__in=client)
             return qs
         elif current_user.is_superuser:

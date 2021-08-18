@@ -30,12 +30,6 @@ class PostPaidSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
     )
-    cost_of_plan = serializers.SlugRelatedField(
-        slug_field="name",
-        queryset=CostPlan.objects.all(),
-        required=False,
-        allow_null=True,
-    )
 
     class Meta:
         model = PostPaid
