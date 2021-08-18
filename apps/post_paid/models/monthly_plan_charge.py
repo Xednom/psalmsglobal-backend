@@ -20,6 +20,7 @@ class MonthlyCharge(TimeStamped):
     cost_of_plan = MoneyField(max_digits=19, decimal_places=2, default_currency="USD")
     payment_status = models.BooleanField(default=False)
     payment_reference = models.TextField(blank=True)
+    date_paid = models.DateField(blank=True, null=True)
     notes = models.TextField(blank=True)
 
     class Meta:
