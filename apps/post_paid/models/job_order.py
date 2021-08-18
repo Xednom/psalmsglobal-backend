@@ -170,4 +170,4 @@ class JobOrderComment(TimeStamped):
     comment = models.TextField()
 
     class Meta:
-        ordering = ["created_at"]
+        ordering = ["-created_at"]
