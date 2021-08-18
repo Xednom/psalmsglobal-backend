@@ -1,3 +1,5 @@
+from post_office import mail
+
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
@@ -78,8 +80,19 @@ class JobOrderPostPaidSerializer(serializers.ModelSerializer):
             "url_of_the_completed_jo",
             "job_order_comments",
         )
-    
+
     def get_agent_code(self, instance):
         agent_codes = [agent.staff_id for agent in instance.va_assigned.all()]
         agent_codes = ", ".join(agent_codes)
         return agent_codes
+
+    def create(self, validated_data):
+        instance = super(JobOrderPostPaidSerializer, self).create(validated_data)
+        emails = instance.client_email + " " + instance.staff_email
+        mail.send(
+            "postmaster@psalmsglobal.com",
+            bcc=emails.split(),
+            template="job_order_create",
+            context={"job_order": instance},
+        )
+        return instance
