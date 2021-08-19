@@ -136,7 +136,7 @@ class MonthlyChargeAdmin(admin.ModelAdmin):
         "cost_of_plan",
         "payment_reference",
         "payment_status",
-        "notes"
+        "date_paid"
     )
     list_filter = (
         "client",
