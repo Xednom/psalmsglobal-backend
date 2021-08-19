@@ -55,7 +55,11 @@ class Command(BaseCommand):
                 .aggregate(total_job_mins_used=Sum("total_time_consumed"))
             )
 
-            if client_total_mins_used["total_mins_used"] == None:
+            if (
+                client_total_mins_used["total_mins_used"] == None
+                and client_jo_total_mins_used["total_job_mins_used"] == None
+                or client_total_mins_used["total_mins_used"] == None
+            ):
                 account_mins_used = Decimal(0.00) + Decimal(0.00)
 
                 if client_balance:
@@ -76,11 +80,11 @@ class Command(BaseCommand):
                         account_total_aquired_minutes=0.00,
                         account_total_spending=0.00,
                         account_total_mins_used=account_mins_used,
-                        account_total_mins_unused=0.00 - account_mins_used,
+                        account_total_mins_unused=0.00 - 0.00,
                     )
             elif (
                 client_total_spending["total_spending"]
-                or client_total_mins_used["total_mins_used"]
+                and client_jo_total_mins_used["total_job_mins_used"]
             ):
                 if client_balance:
                     AccountBalance.objects.filter(client=i).select_related(
@@ -102,10 +106,9 @@ class Command(BaseCommand):
                         ),
                     )
                 else:
-                    account_mins_used = (
-                        Decimal(client_total_mins_used["total_mins_used"])
-                        + Decimal(client_jo_total_mins_used["total_job_mins_used"])
-                    )
+                    account_mins_used = Decimal(
+                        client_total_mins_used["total_mins_used"]
+                    ) + Decimal(client_jo_total_mins_used["total_job_mins_used"])
                     AccountBalance.objects.create(
                         client=i,
                         account_total_aquired_minutes=client_total_minutes[
