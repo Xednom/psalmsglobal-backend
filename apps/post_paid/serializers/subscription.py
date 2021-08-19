@@ -7,13 +7,11 @@ __all__ = ("SubscriptionSerializer",)
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
-    company = serializers.PrimaryKeyRelatedField(
-        queryset=Subscription.objects.all(), required=False, allow_null=True
-    )
-
+    company = serializers.CharField()
     class Meta:
         model = Subscription
         fields = (
+            "id",
             "company",
             "signed_up_date",
             "signed_out_date",

@@ -19,9 +19,6 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         current_user = self.request.user
-        user_company = Company.objects.select_related("client").filter(
-            client__user=current_user
-        )
 
         if (
             current_user.designation_category == "current_client"
@@ -29,7 +26,7 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
             or current_user.designation_category == "affiliate_partner"
         ):
             qs = Subscription.objects.select_related("company").filter(
-                company=user_company
+                company__client__user=current_user
             )
             return qs
         elif current_user.is_superuser:
