@@ -135,7 +135,7 @@ class FormAdmin(ModelAdminMixin, ImportExportModelAdmin):
     list_display = (
         "form_title",
         "company",
-        "customer_interaction_post_paid",
+        "mailing_lists",
     )
     fieldsets = (
         (
