@@ -19,7 +19,7 @@ from apps.post_paid.models import (
 
 class Command(BaseCommand):
     help = """Automatically create Account balance for every user in the system monthly.
-        Note: for this to work, the Client should have a Plan Summary and Payment(MonthlyCharge)
+        Note: for this to work, the Client should have a Plan Details
     """
 
     def handle(self, *args, **kwargs):
