@@ -22,5 +22,6 @@ class MonthlyChargeSerializer(serializers.ModelSerializer):
             "cost_of_plan",
             "payment_status",
             "payment_reference",
+            "date_paid",
             "notes",
         )
