@@ -34,7 +34,7 @@ class Command(BaseCommand):
         for i in client:
             client_balance = AccountBalance.objects.filter(client=i).exists()
             client_total_minutes = (
-                MonthlyCharge.objects.select_related("client", "plan_type")
+                PostPaid.objects.select_related("client", "plan_type")
                 .filter(client=i)
                 .aggregate(total_minutes=Sum("total_minutes"))
             )
@@ -43,26 +43,47 @@ class Command(BaseCommand):
                 .select_related("client", "plan_type")
                 .aggregate(total_spending=Sum("cost_of_plan"))
             )
-            client_total_mins_used = (
-                InteractionRecord.objects.filter(client=i)
-                .select_related("customer_interaction_post_paid", "client", "agent")
-                .aggregate(total_mins_used=Sum("total_minutes"))
+            used = (
+                AccountBalance.objects.filter(client=i)
+                .select_related("client")
+                .aggregate(account_total_mins_used=Sum("account_total_mins_used"))
             )
-            client_jo_total_mins_used = (
-                JobOrderPostPaid.objects.filter(client=i)
-                .select_related("caller_interaction_record", "client")
-                .prefetch_related("va_assigned")
-                .aggregate(total_job_mins_used=Sum("total_time_consumed"))
+            acquired = (
+                AccountBalance.objects.filter(client=i)
+                .select_related("client")
+                .aggregate(total_acquired=Sum("account_total_aquired_minutes"))
+            )
+
+            monthly_used = (
+                MinutesReport.objects.filter(client=i)
+                .select_related("client")
+                .aggregate(monthly_usage=Sum("monthly_usage"))
             )
 
             if (
-                client_total_mins_used["total_mins_used"] == None
-                and client_jo_total_mins_used["total_job_mins_used"] == None
-                or client_total_mins_used["total_mins_used"] == None
+                client_total_minutes["total_minutes"] == None
+                and monthly_used["monthly_usage"] == None
+                and used["account_total_mins_used"] == None
+                or acquired["total_acquired"] == None
             ):
-                account_mins_used = Decimal(0.00) + Decimal(0.00)
 
                 if client_balance:
+                    used = (
+                        AccountBalance.objects.filter(client=i)
+                        .select_related("client")
+                        .aggregate(
+                            account_total_mins_used=Sum("account_total_mins_used")
+                        )
+                    )
+                    acquired = (
+                        AccountBalance.objects.filter(client=i)
+                        .select_related("client")
+                        .aggregate(total_acquired=Sum("account_total_aquired_minutes"))
+                    )
+                    unused = Decimal(used["account_total_mins_used"]) - Decimal(
+                        acquired["total_acquired"]
+                    )
+
                     AccountBalance.objects.filter(client=i).select_related(
                         "client"
                     ).update(
@@ -70,22 +91,46 @@ class Command(BaseCommand):
                             "total_minutes"
                         ],
                         account_total_spending=client_total_spending["total_spending"],
-                        account_total_mins_used=account_mins_used,
-                        account_total_mins_unused=client_total_minutes["total_minutes"]
-                        - account_mins_used,
+                        account_total_mins_used=monthly_used["monthly_usage"],
+                        account_total_mins_unused=unused,
                     )
                 else:
-                    AccountBalance.objects.create(
-                        client=i,
-                        account_total_aquired_minutes=0.00,
-                        account_total_spending=0.00,
-                        account_total_mins_used=account_mins_used,
-                        account_total_mins_unused=0.00 - 0.00,
-                    )
-            elif (
-                client_total_spending["total_spending"]
-                and client_jo_total_mins_used["total_job_mins_used"]
-            ):
+                    if (
+                        used["account_total_mins_used"] == None
+                        and acquired["total_acquired"] == None
+                    ):
+                        AccountBalance.objects.create(
+                            client=i,
+                            account_total_aquired_minutes=client_total_minutes[
+                                "total_minutes"
+                            ],
+                            account_total_spending=client_total_spending[
+                                "total_spending"
+                            ],
+                            account_total_mins_used=monthly_used["monthly_usage"],
+                            account_total_mins_unused=0.00,
+                        )
+                    else:
+                        AccountBalance.objects.create(
+                            client=i,
+                            account_total_aquired_minutes=client_total_minutes[
+                                "total_minutes"
+                            ],
+                            account_total_spending=client_total_spending[
+                                "total_spending"
+                            ],
+                            account_total_mins_used=monthly_used["monthly_usage"],
+                            account_total_mins_unused=unused,
+                        )
+            else:
+                unused = Decimal(used["account_total_mins_used"]) - Decimal(
+                    acquired["total_acquired"]
+                )
+                monthly_user = (
+                    MinutesReport.objects.filter(client=i)
+                    .select_related("client")
+                    .aggregate(monthly_usage=Sum("monthly_usage"))
+                )
                 if client_balance:
                     AccountBalance.objects.filter(client=i).select_related(
                         "client"
@@ -95,27 +140,6 @@ class Command(BaseCommand):
                             "total_minutes"
                         ],
                         account_total_spending=client_total_spending["total_spending"],
-                        account_total_mins_used=client_total_mins_used[
-                            "total_mins_used"
-                        ]
-                        + client_jo_total_mins_used["total_job_mins_used"],
-                        account_total_mins_unused=client_total_minutes["total_minutes"]
-                        - (
-                            client_total_mins_used["total_mins_used"]
-                            + client_jo_total_mins_used["total_job_mins_used"]
-                        ),
-                    )
-                else:
-                    account_mins_used = Decimal(
-                        client_total_mins_used["total_mins_used"]
-                    ) + Decimal(client_jo_total_mins_used["total_job_mins_used"])
-                    AccountBalance.objects.create(
-                        client=i,
-                        account_total_aquired_minutes=client_total_minutes[
-                            "total_minutes"
-                        ],
-                        account_total_spending=client_total_spending["total_spending"],
-                        account_total_mins_used=account_mins_used,
-                        account_total_mins_unused=client_total_minutes["total_minutes"]
-                        - account_mins_used,
+                        account_total_mins_used=monthly_user["monthly_usage"],
+                        account_total_mins_unused=unused,
                     )
