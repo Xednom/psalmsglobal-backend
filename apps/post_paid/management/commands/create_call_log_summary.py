@@ -60,7 +60,7 @@ class Command(BaseCommand):
                 .aggregate(total_job_mins_used=Sum("total_time_consumed"))
             )
             allocated_minutes = (
-                PostPaid.objects.filter(client=i, start_of_plan__month=today.month)
+                PostPaid.objects.filter(client=i)
                 .select_related("client", "plan_type")
                 .aggregate(total_allocated_mins=Sum("total_minutes"))
             )
