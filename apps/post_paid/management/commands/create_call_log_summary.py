@@ -59,11 +59,19 @@ class Command(BaseCommand):
                 .prefetch_related("va_assigned")
                 .aggregate(total_job_mins_used=Sum("total_time_consumed"))
             )
+            allocated_minutes = (
+                PostPaid.objects.filter(client=i, start_of_plan__month=today.month)
+                .select_related("client", "plan_type")
+                .aggregate(total_allocated_mins=Sum("total_minutes"))
+            )
 
-            if (
-                client_total_mins_used["total_mins_used"] == None
-                and client_jo_total_mins_used["total_job_mins_used"] == None
-            ):
+            used = (
+                    AccountBalance.objects.filter(client=i)
+                    .select_related("client")
+                    .aggregate(account_total_mins_used=Sum("account_total_mins_used"))
+                )
+
+            if used["account_total_mins_used"] == None:
                 account_mins_used = 0.00 + 0.00
 
                 client_account_balance = AccountBalance.objects.select_related(
@@ -101,6 +109,7 @@ class Command(BaseCommand):
                                                 ).update(
                                                     month_year=item.month_year,
                                                     total_minutes_unused=client_account.account_total_mins_unused,
+                                                    plan_allocated_minutes=allocated_minutes["total_allocated_mins"],
                                                     monthly_usage=account_mins_used,
                                                     cost_of_plan=post_paid.cost_of_plan,
                                                 )
@@ -110,6 +119,7 @@ class Command(BaseCommand):
                                                     month_year=month_year,
                                                     plan_type=post_paid.plan_type,
                                                     total_minutes_unused=client_account.account_total_mins_unused,
+                                                    plan_allocated_minutes=allocated_minutes["total_allocated_mins"],
                                                     monthly_usage=account_mins_used,
                                                     cost_of_plan=post_paid.cost_of_plan,
                                                 )
@@ -123,13 +133,12 @@ class Command(BaseCommand):
                                             monthly_usage=account_mins_used,
                                             cost_of_plan=post_paid.cost_of_plan,
                                         )
-            elif (
-                client_total_mins_used["total_mins_used"] is not None
-                and client_jo_total_mins_used["total_job_mins_used"] != None
-            ):
-                account_mins_used = Decimal(
-                    client_total_mins_used["total_mins_used"]
-                ) + Decimal(client_jo_total_mins_used["total_job_mins_used"])
+            else:
+                used = (
+                    AccountBalance.objects.filter(client=i)
+                    .select_related("client")
+                    .aggregate(account_total_mins_used=Sum("account_total_mins_used"))
+                )
 
                 client_account_balance = AccountBalance.objects.select_related(
                     "client"
@@ -165,8 +174,9 @@ class Command(BaseCommand):
                                                     client=i, month_year=month_year
                                                 ).update(
                                                     month_year=item.month_year,
-                                                    total_minutes_unused=client_account.account_total_mins_unused,
-                                                    monthly_usage=account_mins_used,
+                                                    total_minutes_unused=Decimal(used["account_total_mins_used"]) - Decimal(allocated_minutes["total_allocated_mins"]),
+                                                    plan_allocated_minutes=allocated_minutes["total_allocated_mins"],
+                                                    monthly_usage=used["account_total_mins_used"],
                                                     cost_of_plan=post_paid.cost_of_plan,
                                                 )
                                             else:
@@ -174,8 +184,9 @@ class Command(BaseCommand):
                                                     client=i,
                                                     month_year=month_year,
                                                     plan_type=post_paid.plan_type,
-                                                    total_minutes_unused=client_account.account_total_mins_unused,
-                                                    monthly_usage=account_mins_used,
+                                                    total_minutes_unused=Decimal(used["account_total_mins_used"]) - Decimal(allocated_minutes["total_allocated_mins"]),
+                                                    plan_allocated_minutes=allocated_minutes["total_allocated_mins"],
+                                                    monthly_usage=used["account_total_mins_used"],
                                                     cost_of_plan=post_paid.cost_of_plan,
                                                 )
 
@@ -184,7 +195,8 @@ class Command(BaseCommand):
                                             client=i,
                                             month_year=month_year,
                                             plan_type=post_paid.plan_type,
-                                            total_minutes_unused=client_account.account_total_mins_unused,
-                                            monthly_usage=account_mins_used,
+                                            plan_allocated_minutes=allocated_minutes["total_allocated_mins"],
+                                            total_minutes_unused=Decimal(used["account_total_mins_used"]) - Decimal(allocated_minutes["total_allocated_mins"]),
+                                            monthly_usage=used["account_total_mins_used"],
                                             cost_of_plan=post_paid.cost_of_plan,
                                         )
