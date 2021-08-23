@@ -112,8 +112,8 @@ class MinutesReportAdmin(admin.ModelAdmin):
         "month_year",
         "plan_type",
         "cost_of_plan",
-        "monthly_usage",
         "plan_allocated_minutes",
+        "monthly_usage",
         "total_minutes_unused"
     )
     list_filter = (
