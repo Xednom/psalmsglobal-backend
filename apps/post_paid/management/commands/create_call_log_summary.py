@@ -42,8 +42,8 @@ class Command(BaseCommand):
 
         for i in client:
 
-            client_minutes_report = PostPaid.objects.filter(client=i).exists()
-            client_plan_detail_report = PostPaid.objects.filter(client=i)
+            client_minutes_report = PostPaid.objects.filter(client=i, recurring_bill=True, account_status=True).exists()
+            client_plan_detail_report = PostPaid.objects.filter(client=i, recurring_bill=True, account_status=True)
             client_minute_report = MinutesReport.objects.filter(
                 client=i, month_year=month_year
             ).exists()
