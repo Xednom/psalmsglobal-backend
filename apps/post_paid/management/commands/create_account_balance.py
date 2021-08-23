@@ -35,7 +35,7 @@ class Command(BaseCommand):
             client_balance = AccountBalance.objects.filter(client=i).exists()
             client_total_minutes = (
                 PostPaid.objects.select_related("client", "plan_type")
-                .filter(client=i)
+                .filter(client=i, recurring_bill=True, account_status=True)
                 .aggregate(total_minutes=Sum("total_minutes"))
             )
             client_total_spending = (
@@ -107,7 +107,7 @@ class Command(BaseCommand):
                             account_total_spending=client_total_spending[
                                 "total_spending"
                             ],
-                            account_total_mins_used=monthly_used["monthly_usage"],
+                            account_total_mins_used=0.00,
                             account_total_mins_unused=0.00,
                         )
                     else:
