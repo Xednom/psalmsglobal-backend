@@ -117,7 +117,9 @@ class Command(BaseCommand):
                             minute_report_data = MinutesReport.objects.filter(client=i)
                             for item in minute_report_data:
                                 if (
-                                    client_total_mins_used["total_mins_used"] != None
+                                    item
+                                    and client_total_mins_used["total_mins_used"]
+                                    != None
                                     and client_jo_total_mins_used["total_job_mins_used"]
                                     != None
                                 ):
