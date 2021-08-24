@@ -73,7 +73,7 @@ class Command(BaseCommand):
                         for item in minute_report_data:
                             if (
                                 item.month_year == month_year
-                                or client_total_mins_used["total_mins_used"] != None
+                                or client_total_mins_used["total_mins_used"] == None
                                 and client_jo_total_mins_used["total_job_mins_used"]
                                 == None
                             ):
