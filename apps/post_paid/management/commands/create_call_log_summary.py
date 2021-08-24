@@ -34,7 +34,7 @@ class Command(BaseCommand):
 
         client_name = (
             PostPaid.objects.select_related("client")
-            .all()
+            .filter(recurring_bill=True, account_status=True)
             .values_list("client", flat=True)
             .distinct()
         )
@@ -42,8 +42,12 @@ class Command(BaseCommand):
 
         for i in client:
 
-            client_minutes_report = PostPaid.objects.filter(client=i, recurring_bill=True, account_status=True).exists()
-            client_plan_detail_report = PostPaid.objects.filter(client=i, recurring_bill=True, account_status=True)
+            client_minutes_report = PostPaid.objects.filter(
+                client=i, recurring_bill=True, account_status=True
+            ).exists()
+            client_plan_detail_report = PostPaid.objects.filter(
+                client=i, recurring_bill=True, account_status=True
+            )
             client_minute_report = MinutesReport.objects.filter(
                 client=i, month_year=month_year
             ).exists()
@@ -59,144 +63,112 @@ class Command(BaseCommand):
                 .prefetch_related("va_assigned")
                 .aggregate(total_job_mins_used=Sum("total_time_consumed"))
             )
-            allocated_minutes = (
-                PostPaid.objects.filter(client=i)
-                .select_related("client", "plan_type")
-                .aggregate(total_allocated_mins=Sum("total_minutes"))
-            )
+            if client_minutes_report:
+                client_post_paid = PostPaid.objects.select_related(
+                    "client", "plan_type"
+                ).filter(client=i, recurring_bill=True, account_status=True)
+                for post_paid in client_post_paid:
+                    if post_paid:
+                        minute_report_data = MinutesReport.objects.filter(client=i)
+                        for item in minute_report_data:
+                            if (
+                                item.month_year == month_year
+                                or client_total_mins_used["total_mins_used"] != None
+                                and client_jo_total_mins_used["total_job_mins_used"]
+                                == None
+                            ):
+                                MinutesReport.objects.filter(
+                                    client=i, month_year=month_year
+                                ).update(
+                                    month_year=item.month_year,
+                                    total_minutes_unused=item.plan_allocated_minutes
+                                    - item.monthly_usage,
+                                    plan_allocated_minutes=item.plan_allocated_minutes,
+                                    ci_minutes_overview=client_total_mins_used[
+                                        "total_mins_used"
+                                    ],
+                                    general_request_total_minutes=client_jo_total_mins_used[
+                                        "total_job_mins_used"
+                                    ],
+                                    monthly_usage=Decimal(item.ci_minutes_overview)
+                                    + Decimal(item.general_request_total_minutes),
+                                    cost_of_plan=post_paid.cost_of_plan,
+                                )
 
-            used = (
-                    AccountBalance.objects.filter(client=i)
-                    .select_related("client")
-                    .aggregate(account_total_mins_used=Sum("account_total_mins_used"))
-                )
-
-            if used["account_total_mins_used"] == None:
-                account_mins_used = 0.00 + 0.00
-
-                client_account_balance = AccountBalance.objects.select_related(
-                    "client"
-                ).filter(client=i)
-                for client_account in client_account_balance:
-                    for client in client_plan_detail_report:
-
-                        if client_minutes_report:
-                            client_post_paid = PostPaid.objects.select_related(
-                                "client", "plan_type"
-                            ).filter(client=i, recurring_bill=True, account_status=True)
-
-                            client_interaction = (
-                                CustomerInteractionPostPaid.objects.select_related(
-                                    "company",
-                                    "interested_to_sell",
-                                    "interested_to_buy",
-                                    "general_call",
-                                ).filter(company__client=i)
+                        if client_minute_report:
+                            minute_report_data = MinutesReport.objects.filter(client=i)
+                            for item in minute_report_data:
+                                if (
+                                    client_total_mins_used["total_mins_used"] != None
+                                    and client_jo_total_mins_used["total_job_mins_used"]
+                                    != None
+                                ):
+                                    MinutesReport.objects.filter(
+                                        client=i, month_year=month_year
+                                    ).update(
+                                        month_year=item.month_year,
+                                        plan_allocated_minutes=item.plan_allocated_minutes,
+                                        ci_minutes_overview=client_total_mins_used[
+                                            "total_mins_used"
+                                        ],
+                                        general_request_total_minutes=client_jo_total_mins_used[
+                                            "total_job_mins_used"
+                                        ],
+                                        monthly_usage=Decimal(item.ci_minutes_overview)
+                                        + Decimal(item.general_request_total_minutes),
+                                        total_minutes_unused=item.plan_allocated_minutes
+                                        - item.monthly_usage,
+                                        cost_of_plan=post_paid.cost_of_plan,
+                                    )
+                                elif (
+                                    item
+                                    and client_total_mins_used["total_mins_used"]
+                                    == None
+                                    and client_jo_total_mins_used["total_job_mins_used"]
+                                    == None
+                                ):
+                                    MinutesReport.objects.filter(
+                                        client=i, month_year=month_year
+                                    ).update(
+                                        month_year=item.month_year,
+                                        plan_allocated_minutes=item.plan_allocated_minutes,
+                                        ci_minutes_overview=0.00,
+                                        general_request_total_minutes=0.00,
+                                        monthly_usage=Decimal(item.ci_minutes_overview)
+                                        + Decimal(item.general_request_total_minutes),
+                                        cost_of_plan=post_paid.cost_of_plan,
+                                        total_minutes_unused=item.plan_allocated_minutes
+                                        - item.monthly_usage,
+                                    )
+                        elif (
+                            client_total_mins_used["total_mins_used"] == None
+                            and client_jo_total_mins_used["total_job_mins_used"] == None
+                        ):
+                            MinutesReport.objects.create(
+                                client=i,
+                                plan_type=post_paid.plan_type,
+                                month_year=month_year,
+                                total_minutes_unused=0.00,
+                                plan_allocated_minutes=post_paid.total_minutes,
+                                ci_minutes_overview=0.00,
+                                general_request_total_minutes=0.00,
+                                monthly_usage=0.00,
+                                cost_of_plan=post_paid.cost_of_plan,
                             )
-
-                            for post_paid in client_post_paid:
-                                if post_paid:
-                                    if client_minute_report:
-                                        minute_report_data = (
-                                            MinutesReport.objects.filter(
-                                                client=i, month_year=month_year
-                                            )
-                                        )
-                                        for item in minute_report_data:
-                                            if item.month_year == month_year:
-                                                MinutesReport.objects.filter(
-                                                    client=i, month_year=month_year
-                                                ).update(
-                                                    month_year=item.month_year,
-                                                    total_minutes_unused=client_account.account_total_mins_unused,
-                                                    plan_allocated_minutes=allocated_minutes["total_allocated_mins"],
-                                                    monthly_usage=account_mins_used,
-                                                    cost_of_plan=post_paid.cost_of_plan,
-                                                )
-                                            else:
-                                                MinutesReport.objects.create(
-                                                    client=i,
-                                                    month_year=month_year,
-                                                    plan_type=post_paid.plan_type,
-                                                    total_minutes_unused=client_account.account_total_mins_unused,
-                                                    plan_allocated_minutes=allocated_minutes["total_allocated_mins"],
-                                                    monthly_usage=account_mins_used,
-                                                    cost_of_plan=post_paid.cost_of_plan,
-                                                )
-
-                                    else:
-                                        MinutesReport.objects.create(
-                                            client=i,
-                                            month_year=month_year,
-                                            plan_type=post_paid.plan_type,
-                                            total_minutes_unused=client_account.account_total_mins_unused,
-                                            monthly_usage=account_mins_used,
-                                            cost_of_plan=post_paid.cost_of_plan,
-                                        )
-            else:
-                used = (
-                    AccountBalance.objects.filter(client=i)
-                    .select_related("client")
-                    .aggregate(account_total_mins_used=Sum("account_total_mins_used"))
-                )
-
-                client_account_balance = AccountBalance.objects.select_related(
-                    "client"
-                ).filter(client=i)
-                for client_account in client_account_balance:
-                    for client in client_plan_detail_report:
-
-                        if client_minutes_report:
-                            client_post_paid = PostPaid.objects.select_related(
-                                "client", "plan_type"
-                            ).filter(client=i, recurring_bill=True, account_status=True)
-
-                            client_interaction = (
-                                CustomerInteractionPostPaid.objects.select_related(
-                                    "company",
-                                    "interested_to_sell",
-                                    "interested_to_buy",
-                                    "general_call",
-                                ).filter(company__client=i)
+                        elif (
+                            client_total_mins_used["total_mins_used"] != None
+                            and client_jo_total_mins_used["total_job_mins_used"] != None
+                        ):
+                            MinutesReport.objects.create(
+                                client=i,
+                                plan_type=post_paid.plan_type,
+                                month_year=month_year,
+                                plan_allocated_minutes=post_paid.total_minutes,
+                                ci_minutes_overview=client_total_mins_used[
+                                    "total_mins_used"
+                                ],
+                                general_request_total_minutes=client_jo_total_mins_used[
+                                    "total_job_mins_used"
+                                ],
+                                cost_of_plan=post_paid.cost_of_plan,
                             )
-
-                            for post_paid in client_post_paid:
-                                if post_paid:
-                                    if client_minute_report:
-                                        minute_report_data = (
-                                            MinutesReport.objects.filter(
-                                                client=i, month_year=month_year
-                                            )
-                                        )
-                                        for item in minute_report_data:
-                                            if item.month_year == month_year:
-                                                MinutesReport.objects.filter(
-                                                    client=i, month_year=month_year
-                                                ).update(
-                                                    month_year=item.month_year,
-                                                    total_minutes_unused=Decimal(used["account_total_mins_used"]) - Decimal(allocated_minutes["total_allocated_mins"]),
-                                                    plan_allocated_minutes=allocated_minutes["total_allocated_mins"],
-                                                    monthly_usage=used["account_total_mins_used"],
-                                                    cost_of_plan=post_paid.cost_of_plan,
-                                                )
-                                            else:
-                                                MinutesReport.objects.create(
-                                                    client=i,
-                                                    month_year=month_year,
-                                                    plan_type=post_paid.plan_type,
-                                                    total_minutes_unused=Decimal(used["account_total_mins_used"]) - Decimal(allocated_minutes["total_allocated_mins"]),
-                                                    plan_allocated_minutes=allocated_minutes["total_allocated_mins"],
-                                                    monthly_usage=used["account_total_mins_used"],
-                                                    cost_of_plan=post_paid.cost_of_plan,
-                                                )
-
-                                    else:
-                                        MinutesReport.objects.create(
-                                            client=i,
-                                            month_year=month_year,
-                                            plan_type=post_paid.plan_type,
-                                            plan_allocated_minutes=allocated_minutes["total_allocated_mins"],
-                                            total_minutes_unused=Decimal(used["account_total_mins_used"]) - Decimal(allocated_minutes["total_allocated_mins"]),
-                                            monthly_usage=used["account_total_mins_used"],
-                                            cost_of_plan=post_paid.cost_of_plan,
-                                        )
