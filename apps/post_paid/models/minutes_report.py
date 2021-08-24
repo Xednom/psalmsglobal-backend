@@ -19,11 +19,17 @@ class MinutesReport(TimeStamped):
     plan_allocated_minutes = models.DecimalField(
         max_digits=19, decimal_places=2, blank=True, null=True
     )
+    ci_minutes_overview = models.DecimalField(
+        max_digits=19, decimal_places=2, default=0.00, blank=True, null=True
+    )
+    general_request_total_minutes = models.DecimalField(
+        max_digits=19, decimal_places=2, default=0.00, blank=True, null=True
+    )
     monthly_usage = models.DecimalField(
-        max_digits=19, decimal_places=2, blank=True, null=True
+        max_digits=19, decimal_places=2, default=0.00, blank=True, null=True
     )
     total_minutes_unused = models.DecimalField(
-        max_digits=19, decimal_places=2, blank=True, null=True
+        max_digits=19, decimal_places=2, default=0.00, blank=True, null=True
     )
 
     class Meta:
