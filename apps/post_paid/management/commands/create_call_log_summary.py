@@ -140,26 +140,6 @@ class Command(BaseCommand):
                                         - item.monthly_usage,
                                         cost_of_plan=post_paid.cost_of_plan,
                                     )
-                                elif (
-                                    item
-                                    and client_total_mins_used["total_mins_used"]
-                                    == None
-                                    and client_jo_total_mins_used["total_job_mins_used"]
-                                    == None
-                                ):
-                                    MinutesReport.objects.filter(
-                                        client=i, month_year=month_year
-                                    ).update(
-                                        month_year=item.month_year,
-                                        plan_allocated_minutes=item.plan_allocated_minutes,
-                                        ci_minutes_overview=0.00,
-                                        general_request_total_minutes=0.00,
-                                        monthly_usage=Decimal(item.ci_minutes_overview)
-                                        + Decimal(item.general_request_total_minutes),
-                                        cost_of_plan=post_paid.cost_of_plan,
-                                        total_minutes_unused=item.plan_allocated_minutes
-                                        - item.monthly_usage,
-                                    )
                         elif (
                             client_total_mins_used["total_mins_used"] == None
                             and client_jo_total_mins_used["total_job_mins_used"] == None
