@@ -154,8 +154,7 @@ class Command(BaseCommand):
                                         plan_allocated_minutes=item.plan_allocated_minutes,
                                         ci_minutes_overview=0.00,
                                         general_request_total_minutes=0.00,
-                                        monthly_usage=Decimal(item.ci_minutes_overview)
-                                        + Decimal(item.general_request_total_minutes),
+                                        monthly_usage=0.00,
                                         cost_of_plan=post_paid.cost_of_plan,
                                         total_minutes_unused=item.plan_allocated_minutes
                                         - item.monthly_usage,
