@@ -20,6 +20,8 @@ class MinutesReportSerializer(serializers.ModelSerializer):
             "plan_type",
             "cost_of_plan",
             "plan_allocated_minutes",
+            "ci_minutes_overview",
+            "general_request_total_minutes",
             "monthly_usage",
             "total_minutes_unused",
         )
