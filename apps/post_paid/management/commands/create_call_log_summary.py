@@ -78,15 +78,16 @@ class Command(BaseCommand):
                                 == None
                             ):
                                 MinutesReport.objects.filter(
-                                    client=i, month_year=item.month_year
+                                    client=i, month_year__istartswith=month_year
                                 ).update(
-                                    month_year=item.month_year,
+                                    month_year=month_year,
                                     total_minutes_unused=item.plan_allocated_minutes
                                     - item.monthly_usage,
                                     plan_allocated_minutes=item.plan_allocated_minutes,
                                     ci_minutes_overview=0.00,
                                     general_request_total_minutes=0.00,
-                                    monthly_usage=0.00 + 0.00,
+                                    monthly_usage=item.ci_minutes_overview
+                                    + item.general_request_total_minutes,
                                     cost_of_plan=post_paid.cost_of_plan,
                                 )
                             elif (
@@ -96,9 +97,9 @@ class Command(BaseCommand):
                                 != None
                             ):
                                 MinutesReport.objects.filter(
-                                    client=i, month_year=item.month_year
+                                    client=i, month_year__istartswith=month_year
                                 ).update(
-                                    month_year=item.month_year,
+                                    month_year=month_year,
                                     total_minutes_unused=item.plan_allocated_minutes
                                     - item.monthly_usage,
                                     plan_allocated_minutes=item.plan_allocated_minutes,
@@ -108,57 +109,27 @@ class Command(BaseCommand):
                                     general_request_total_minutes=client_jo_total_mins_used[
                                         "total_job_mins_used"
                                     ],
-                                    monthly_usage=Decimal(item.ci_minutes_overview)
-                                    + Decimal(item.general_request_total_minutes),
+                                    monthly_usage=client_total_mins_used[
+                                        "total_mins_used"
+                                    ]
+                                    + client_jo_total_mins_used["total_job_mins_used"],
                                     cost_of_plan=post_paid.cost_of_plan,
                                 )
-                            # elif (
-                            #     client_total_mins_used["total_mins_used"] == None
-                            #     and client_jo_total_mins_used["total_job_mins_used"] == None
-                            # ):
-                            #     MinutesReport.objects.create(
-                            #         client=i,
-                            #         plan_type=post_paid.plan_type,
-                            #         month_year=month_year,
-                            #         total_minutes_unused=0.00,
-                            #         plan_allocated_minutes=post_paid.total_minutes,
-                            #         ci_minutes_overview=0.00,
-                            #         general_request_total_minutes=0.00,
-                            #         monthly_usage=0.00,
-                            #         cost_of_plan=post_paid.cost_of_plan,
-                            #     )
-                            # elif (
-                            #     client_total_mins_used["total_mins_used"] != None
-                            #     and client_jo_total_mins_used["total_job_mins_used"] != None
-                            # ):
-                            #     MinutesReport.objects.create(
-                            #         client=i,
-                            #         plan_type=post_paid.plan_type,
-                            #         month_year=month_year,
-                            #         plan_allocated_minutes=post_paid.total_minutes,
-                            #         ci_minutes_overview=client_total_mins_used[
-                            #             "total_mins_used"
-                            #         ],
-                            #         general_request_total_minutes=client_jo_total_mins_used[
-                            #             "total_job_mins_used"
-                            #         ],
-                            #         cost_of_plan=post_paid.cost_of_plan,
-                            #     )
 
                         if client_minute_report:
                             minute_report_data = MinutesReport.objects.filter(client=i)
                             for item in minute_report_data:
                                 if (
-                                    item
+                                    item.month_year == month_year
                                     and client_total_mins_used["total_mins_used"]
                                     != None
                                     and client_jo_total_mins_used["total_job_mins_used"]
                                     != None
                                 ):
                                     MinutesReport.objects.filter(
-                                        client=i, month_year=item.month_year
+                                        client=i, month_year__istartswith=month_year
                                     ).update(
-                                        month_year=item.month_year,
+                                        month_year=month_year,
                                         plan_allocated_minutes=item.plan_allocated_minutes,
                                         ci_minutes_overview=client_total_mins_used[
                                             "total_mins_used"
@@ -166,31 +137,16 @@ class Command(BaseCommand):
                                         general_request_total_minutes=client_jo_total_mins_used[
                                             "total_job_mins_used"
                                         ],
-                                        monthly_usage=Decimal(item.ci_minutes_overview)
-                                        + Decimal(item.general_request_total_minutes),
+                                        monthly_usage=client_total_mins_used[
+                                            "total_mins_used"
+                                        ]
+                                        + client_jo_total_mins_used[
+                                            "total_job_mins_used"
+                                        ],
                                         total_minutes_unused=item.plan_allocated_minutes
                                         - item.monthly_usage,
                                         cost_of_plan=post_paid.cost_of_plan,
                                     )
-                                # elif (
-                                #     item
-                                #     and client_total_mins_used["total_mins_used"]
-                                #     == None
-                                #     and client_jo_total_mins_used["total_job_mins_used"]
-                                #     == None
-                                # ):
-                                #     MinutesReport.objects.filter(
-                                #         client=i, month_year=month_year
-                                #     ).update(
-                                #         month_year=item.month_year,
-                                #         plan_allocated_minutes=item.plan_allocated_minutes,
-                                #         ci_minutes_overview=0.00,
-                                #         general_request_total_minutes=0.00,
-                                #         monthly_usage=0.00,
-                                #         cost_of_plan=post_paid.cost_of_plan,
-                                #         total_minutes_unused=item.plan_allocated_minutes
-                                #         - item.monthly_usage,
-                                #     )
                         elif (
                             client_total_mins_used["total_mins_used"] == None
                             and client_jo_total_mins_used["total_job_mins_used"] == None
@@ -221,5 +177,7 @@ class Command(BaseCommand):
                                 general_request_total_minutes=client_jo_total_mins_used[
                                     "total_job_mins_used"
                                 ],
+                                monthly_usage=client_total_mins_used["total_mins_used"]
+                                + client_jo_total_mins_used["total_job_mins_used"],
                                 cost_of_plan=post_paid.cost_of_plan,
                             )
