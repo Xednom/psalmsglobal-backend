@@ -25,7 +25,7 @@ class FormView(generics.RetrieveAPIView):
 
 
 class FormFilter(filters.FilterSet):
-    company = CharFilter(field_name="company__company_name", lookup_expr="iexact")
+    company = CharFilter(field_name="company__company_name", lookup_expr="startswith")
 
     class Meta:
         model = Form
