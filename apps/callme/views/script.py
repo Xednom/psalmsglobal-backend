@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user, get_user_model
 
-from rest_framework import generics, viewsets, permissions, filters
+from django_filters import CharFilter
+from django_filters import rest_framework as filters
+from rest_framework import generics, viewsets, permissions
 
 from apps.authentication.models import Client
 from apps.callme.models import Form, Script, Company
@@ -22,9 +24,19 @@ class FormView(generics.RetrieveAPIView):
     lookup_field = "id"
 
 
+class FormFilter(filters.FilterSet):
+    company = CharFilter(field_name="company__company_name", lookup_expr="iexact")
+
+    class Meta:
+        model = Form
+        fields = ("company",)
+
+
 class FormViewSet(viewsets.ModelViewSet):
     serializer_class = FormSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = FormFilter
 
     def get_queryset(self):
         current_user = self.request.user
