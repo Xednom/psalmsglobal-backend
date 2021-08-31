@@ -54,7 +54,9 @@ class InteractionRecord(TimeStamped):
         blank=True,
         null=True,
     )
-    total_minutes = models.IntegerField()
+    total_minutes = models.DecimalField(
+        max_digits=19, decimal_places=2, default=0.00, blank=True, null=True
+    )
     summary = models.TextField(blank=True)
     status = models.CharField(
         max_length=50,
@@ -87,11 +89,11 @@ class InteractionRecord(TimeStamped):
 
     def __str__(self):
         return self.ticket_number
-    
+
     def get_customer_interaction(self):
         client = self.customer_interaction_post_paid.company.client
         return client
-    
+
     def save(self, *args, **kwargs):
         self.client = self.get_customer_interaction()
         super(InteractionRecord, self).save(*args, **kwargs)
