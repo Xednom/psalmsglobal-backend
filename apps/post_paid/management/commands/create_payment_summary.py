@@ -39,13 +39,23 @@ class Command(BaseCommand):
         client = Client.objects.filter(id__in=client_name)
 
         for i in client:
-            client_monthly_charge = MonthlyCharge.objects.filter(client=i).exists()
+            client_monthly_charge = MonthlyCharge.objects.filter(
+                client=i, month_year=month_year
+            ).exists()
             client_post_paid = PostPaid.objects.select_related(
                 "client", "plan_type"
             ).filter(client=i, recurring_bill=True, account_status=True)
             for post_paid in client_post_paid:
                 if post_paid:
-                    if today.strftime("%d") == "31":
+                    if client_monthly_charge:
+                        MonthlyCharge.objects.filter(client=i, month_year=month_year).update(
+                            plan_type=str(post_paid.plan_type),
+                            month_year=month_year,
+                            total_minutes=post_paid.total_minutes,
+                            cost_of_plan=post_paid.cost_of_plan,
+                        )
+
+                    elif today.strftime("%d") == "31":
                         MonthlyCharge.objects.create(
                             client=i,
                             month_year=month_year,
