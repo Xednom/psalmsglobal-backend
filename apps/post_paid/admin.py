@@ -147,8 +147,10 @@ class MonthlyChargeAdmin(admin.ModelAdmin):
         "plan_type"
     )
     search_fields = (
+        "client__client_code",
         "client__user__first_name",
-        "client__user__last_name"
+        "client__user__last_name",
+        "month_year"
     )
     readonly_fields = ("created_at", "updated_at")
 
