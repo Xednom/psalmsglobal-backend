@@ -4,7 +4,7 @@ from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 from django.contrib.auth import get_user_model
 
-from apps.callme.models import Company, Form
+from apps.callme.models import Company, Form, Attribute
 
 from apps.post_paid.models import (
     InterestedToSell,
@@ -211,16 +211,31 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
         instance = super(CustomerInteractionPostPaidSerializer, self).create(
             validated_data
         )
+        scripts = Form.objects.select_related(
+            "company", "customer_interaction_post_paid"
+        ).filter(customer_interaction_post_paid__ticket_number=instance.ticket_number)
+        form_id = Form.objects.filter(
+            customer_interaction_post_paid__ticket_number=instance.ticket_number
+        ).first()
+        attributes = Attribute.objects.select_related("form").filter(
+            form=form_id
+        )
         form_mailing_lists = [
             form.mailing_lists_unpacked
             for form in Form.objects.filter(customer_interaction_post_paid=instance.id)
         ]
-        form_mailing_lists = ", ".join(form_mailing_lists).replace("[", "").replace("]", "")
-        # form_mailing_lists = (form_mailing_lists).replace("[", "").replace("]", "").replace("/", "")
+        form_mailing_lists = (
+            ", ".join(form_mailing_lists).replace("[", "").replace("]", "")
+        )
         mail.send(
             "postmaster@psalmsglobal.com",
             bcc=form_mailing_lists.split(),
             template="cust_interaction_create",
-            context={"caller_interaction": instance},
+            context={
+                "caller_interaction": instance,
+                "client": instance.company.client,
+                "scripts": scripts,
+                "form_attributes": attributes,
+            },
         )
         return instance
