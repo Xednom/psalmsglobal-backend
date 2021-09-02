@@ -172,6 +172,7 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
         model = CustomerInteractionPostPaid
         fields = (
             "id",
+            "created_at",
             "ticket_number",
             "company",
             "agent",
