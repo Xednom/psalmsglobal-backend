@@ -171,7 +171,10 @@ DJOSER = {
     },
 }
 
-POST_OFFICE = {"BACKENDS": {"default": "anymail.backends.sendinblue.EmailBackend"}}
+POST_OFFICE = {
+    "BACKENDS": {"default": "anymail.backends.sendinblue.EmailBackend"},
+    "DEFAULT_PRIORITY": "now"
+}
 
 # Email sender credentials
 ANYMAIL_SENDINBLUE_API_KEY = env.str("ANYMAIL_SENDINBLUE_API_KEY")
