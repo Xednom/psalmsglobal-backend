@@ -100,6 +100,9 @@ class CreateCustomerInteractionPostPaidComment(generics.CreateAPIView):
         customer_interaction_post_paid = get_object_or_404(
             CustomerInteractionPostPaid, id=post_paid_cust_interaction_id
         )
+        comments = CustomerInteractionPostPaidComment.objects.select_related(
+            "customer_interaction_post_paid", "user"
+        ).filter(customer_interaction_post_paid=customer_interaction_post_paid.id)
         if customer_interaction_post_paid:
             emails = (
                 customer_interaction_post_paid.agent.user.email
@@ -112,7 +115,8 @@ class CreateCustomerInteractionPostPaidComment(generics.CreateAPIView):
                 bcc=emails,
                 template="cust_interaction_comment_update",
                 context={
-                    "interaction": customer_interaction_post_paid
+                    "interaction": customer_interaction_post_paid,
+                    "comments": comments,
                 },
             )
         serializer.save(
