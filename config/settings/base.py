@@ -46,6 +46,7 @@ LOCAL_APPS = [
     "apps.callme",
     "apps.post_paid",
     "apps.prepaid",
+    "apps.newsfeed",
 ]
 
 THIRD_PARTY_APPS = [
@@ -55,6 +56,7 @@ THIRD_PARTY_APPS = [
     "post_office",
     "django_mysql",
     "ckeditor",
+    "django_extensions",
     "django_filters",
     "import_export",
     "django_bleach",
