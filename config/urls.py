@@ -24,5 +24,6 @@ urlpatterns = [
     path("api/v1/", include("apps.callme.urls")),
     path("api/v1/", include("apps.post_paid.urls")),
     path("api/v1/", include("apps.prepaid.urls")),
+    path("api/v1/", include("apps.newsfeed.urls")),
     path('__debug__/', include(debug_toolbar.urls)),
 ]

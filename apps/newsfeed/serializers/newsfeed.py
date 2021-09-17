@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from rest_framework import serializers
 
 from apps.authentication.models import Staff, Client
@@ -26,10 +28,13 @@ class NewsfeedCommentSerializer(serializers.ModelSerializer):
     def get_user_type(self, instance):
         staff_user = "staff"
         client_user = "client"
+        admin = "admin"
         if instance.user.designation_category == "staff":
             return staff_user
         elif instance.user.designation_category != "staff":
             return client_user
+        else:
+            return admin
 
     def get_commenter(self, instance):
         get_staff_code = Staff.objects.select_related("user").filter(user=instance.user)
@@ -51,7 +56,15 @@ class NewsFeedSerializer(serializers.ModelSerializer):
     news_feed_comments = NewsfeedCommentSerializer(
         many=True, required=False, allow_null=True
     )
+    was_published = serializers.SerializerMethodField()
 
     class Meta:
         model = NewsFeed
-        fields = ("id", "title", "body", "publish_to", "news_feed_comments")
+        fields = ("id", "title", "body", "publish_to", "news_feed_comments", "was_published", "created_at")
+
+    def get_was_published(self, instance):
+        now = timezone.now()
+        published = now - instance.created_at
+        if published.days == 0:
+            return "today"
+        return published.days
