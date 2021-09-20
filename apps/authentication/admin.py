@@ -29,6 +29,7 @@ class UserProfileAdmin(UserAdmin):
         "is_active",
         "groups",
     )
+    search_fields = ("first_name", "last_name", "account_type", "company_category", "designation_category")
     UserAdmin.fieldsets = (
         (None, {"fields": ("username", "password")}),
         (

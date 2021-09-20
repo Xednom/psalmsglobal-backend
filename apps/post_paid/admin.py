@@ -74,10 +74,22 @@ class CustomerInteractionPostPaidAdmin(admin.ModelAdmin):
         "general_call",
         "agent"
     )
-    list_filter = ("company",)
+    list_filter = ("company", "agent", "company")
     search_fields = (
+        "ticket_number",
         "company",
-        "company__client__user__first_name"
+        "company__client__user__first_name",
+        "company__client__user__last_name",
+        "county",
+        "state",
+        "crm",
+        "leads_transferred_crm",
+        "internal_auditor__name",
+        "interested_to_sell__name",
+        "interested_to_buy__name",
+        "general_call__name",
+        "agent__user__first_name",
+        "agent__user__last_name",
     )
     readonly_fields = ("created_at", "updated_at")
 
@@ -94,13 +106,15 @@ class InteractionRecordAdmin(admin.ModelAdmin):
     )
     list_filter = (
         "client",
-        "agent"
+        "agent",
+        "date_called"
     )
     search_fields = (
         "client__user__first_name",
         "client__user__last_name",
         "agent__user__first_name",
-        "agent__user__last_name"
+        "agent__user__last_name",
+        "date_called"
     )
     readonly_fields = ("created_at", "updated_at")
 
@@ -124,7 +138,9 @@ class MinutesReportAdmin(admin.ModelAdmin):
     search_fields = (
         "client__user__first_name",
         "client__user__last_name",
-        "month_year"
+        "month_year",
+        "cost_of_plan",
+        "plan_allocated_minutes"
     )
     readonly_fields = ("created_at", "updated_at")
 
@@ -197,11 +213,11 @@ class PostPaidAdmin(admin.ModelAdmin):
         "account_status",
         "recurring_bill"
     )
-    list_filter = ("client",)
+    list_filter = ("client", "account_status", "recurring_bill")
     search_fields = (
         "client__user__first_name",
         "client__user__last_name"
-        "plan_type__name"
+        "plan_type__name",
     )
     readonly_fields = ("created_at", "updated_at")
 
@@ -216,9 +232,9 @@ class SubscriptionAdmin(admin.ModelAdmin):
         "date_call_started",
         "status",
     )
-    list_filter = ("company",)
+    list_filter = ("company", "status")
     search_fields = (
-        "company",
+        "company__company_name",
         "company__client__user__first_name",
         "client__user__last_name",
         "client__client_code",
@@ -259,7 +275,7 @@ class JobOrderAdmin(admin.ModelAdmin):
         "url_of_the_completed_jo",
 
     )
-    list_filter = ("client",)
+    list_filter = ("client", "status")
     search_fields = (
         "caller_interaction_record__ticket_number",
         "client__user__first_name",
