@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 DJANGO_APPS = [
+    "grappelli",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -175,7 +176,7 @@ DJOSER = {
 
 POST_OFFICE = {
     "BACKENDS": {"default": "anymail.backends.sendinblue.EmailBackend"},
-    "DEFAULT_PRIORITY": "now"
+    "DEFAULT_PRIORITY": "now",
 }
 
 # Email sender credentials
@@ -189,6 +190,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
+
+GRAPPELLI_ADMIN_TITLE = "Psalmsglobal Admin"
 
 
 # Which HTML tags are allowed
