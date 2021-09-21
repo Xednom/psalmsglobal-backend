@@ -1,22 +1,22 @@
 from django.contrib import admin
 
 from apps.post_paid.models import (
-        AccountBalance,
-        AccountCharge,
-        InterestedToBuy,
-        InterestedToSell,
-        GeneralCall,
-        CustomerInteractionPostPaid,
-        InteractionRecord,
-        MinutesReport,
-        MonthlyCharge,
-        PlanType,
-        CostPlan,
-        PostPaid,
-        Subscription,
-        JobOrderPostPaid,
-        InternalAuditor
-    )
+    AccountBalance,
+    AccountCharge,
+    InterestedToBuy,
+    InterestedToSell,
+    GeneralCall,
+    CustomerInteractionPostPaid,
+    InteractionRecord,
+    MinutesReport,
+    MonthlyCharge,
+    PlanType,
+    CostPlan,
+    PostPaid,
+    Subscription,
+    JobOrderPostPaid,
+    InternalAuditor,
+)
 
 
 class AccountBalanceAdmin(admin.ModelAdmin):
@@ -26,25 +26,16 @@ class AccountBalanceAdmin(admin.ModelAdmin):
         "account_total_aquired_minutes",
         "account_total_spending",
         "account_total_mins_used",
-        "account_total_mins_unused"
+        "account_total_mins_unused",
     )
     list_filter = ("client",)
-    search_fields = (
-        "client__user__first_name",
-        "client__user__last_name"
-    )
+    search_fields = ("client__user__first_name", "client__user__last_name")
     readonly_fields = ("created_at", "updated_at")
 
 
 class AccountChargeAdmin(admin.ModelAdmin):
     model = AccountCharge
-    list_display = (
-        "client",
-        "agent",
-        "ticket_number",
-        "date_called",
-        "total_minutes"
-    )
+    list_display = ("client", "agent", "ticket_number", "date_called", "total_minutes")
     list_filter = ("client", "agent")
     search_fields = (
         "client__user__first_name",
@@ -72,9 +63,20 @@ class CustomerInteractionPostPaidAdmin(admin.ModelAdmin):
         "interested_to_sell",
         "interested_to_buy",
         "general_call",
-        "agent"
+        "agent",
     )
-    list_filter = ("company", "agent", "company")
+    list_filter = (
+        "company__company_name",
+        "agent",
+        "county",
+        "state",
+        "crm",
+        "leads_transferred_crm",
+        "internal_auditor",
+        "interested_to_sell",
+        "interested_to_buy",
+        "general_call",
+    )
     search_fields = (
         "ticket_number",
         "company",
@@ -102,19 +104,15 @@ class InteractionRecordAdmin(admin.ModelAdmin):
         "date_called",
         "total_minutes",
         "client_feedback_status",
-        "internal_management_ticket_status"
+        "internal_management_ticket_status",
     )
-    list_filter = (
-        "client",
-        "agent",
-        "date_called"
-    )
+    list_filter = ("client", "agent", "date_called")
     search_fields = (
         "client__user__first_name",
         "client__user__last_name",
         "agent__user__first_name",
         "agent__user__last_name",
-        "date_called"
+        "date_called",
     )
     readonly_fields = ("created_at", "updated_at")
 
@@ -130,17 +128,15 @@ class MinutesReportAdmin(admin.ModelAdmin):
         "ci_minutes_overview",
         "general_request_total_minutes",
         "monthly_usage",
-        "total_minutes_unused"
+        "total_minutes_unused",
     )
-    list_filter = (
-        "client",
-    )
+    list_filter = ("client", "month_year", "cost_of_plan", "plan_allocated_minutes")
     search_fields = (
         "client__user__first_name",
         "client__user__last_name",
         "month_year",
         "cost_of_plan",
-        "plan_allocated_minutes"
+        "plan_allocated_minutes",
     )
     readonly_fields = ("created_at", "updated_at")
 
@@ -155,18 +151,14 @@ class MonthlyChargeAdmin(admin.ModelAdmin):
         "cost_of_plan",
         "payment_reference",
         "payment_status",
-        "date_paid"
+        "date_paid",
     )
-    list_filter = (
-        "client",
-        "payment_status",
-        "plan_type"
-    )
+    list_filter = ("client", "month_year", "payment_status", "plan_type")
     search_fields = (
         "client__client_code",
         "client__user__first_name",
         "client__user__last_name",
-        "month_year"
+        "month_year",
     )
     readonly_fields = ("created_at", "updated_at")
 
@@ -211,13 +203,12 @@ class PostPaidAdmin(admin.ModelAdmin):
         "start_of_plan",
         "end_of_plan",
         "account_status",
-        "recurring_bill"
+        "recurring_bill",
     )
     list_filter = ("client", "account_status", "recurring_bill")
     search_fields = (
         "client__user__first_name",
-        "client__user__last_name"
-        "plan_type__name",
+        "client__user__last_name" "plan_type__name",
     )
     readonly_fields = ("created_at", "updated_at")
 
@@ -252,7 +243,7 @@ class SubscriptionAdmin(admin.ModelAdmin):
                     "date_call_started",
                     "status",
                     "script_created",
-                    "notes"
+                    "notes",
                 )
             },
         ),
@@ -273,7 +264,6 @@ class JobOrderAdmin(admin.ModelAdmin):
         "date_completed",
         "total_time_consumed",
         "url_of_the_completed_jo",
-
     )
     list_filter = ("client", "status")
     search_fields = (

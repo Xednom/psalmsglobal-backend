@@ -24,6 +24,9 @@ class UserProfileAdmin(UserAdmin):
     list_filter = (
         "designation_category",
         "company_category",
+        "first_name",
+        "last_name",
+        "account_type",
         "is_staff",
         "is_superuser",
         "is_active",

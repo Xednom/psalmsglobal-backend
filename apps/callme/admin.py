@@ -31,7 +31,7 @@ class CompanyAdmin(admin.ModelAdmin):
         "company_forwarding_email",
         "paypal_email",
     )
-    list_filter = ("client",)
+    list_filter = ("client", "company_owner_name", "company_name")
     search_fields = (
         "company_owner_name",
         "company_name",
@@ -63,8 +63,12 @@ class CompanyAdmin(admin.ModelAdmin):
 class CrmAdmin(admin.ModelAdmin):
     model = Crm
     list_display = ("company", "crm", "crm_login", "crm_url")
-    list_filter = ("company",)
-    search_fields = ("company__client__user__username", "company__client__user__first_name", "company__client__user__last_name")
+    list_filter = ("company__company_name", "crm")
+    search_fields = (
+        "company__client__user__username",
+        "company__client__user__first_name",
+        "company__client__user__last_name",
+    )
     readonly_fields = ("created_at", "updated_at")
     fieldsets = (
         (
@@ -94,14 +98,20 @@ class PhoneSystemAdmin(admin.ModelAdmin):
         "call_forwarding_number",
         "vodaconnect_line_type",
     )
-    list_filter = ("sub_number", "vodaconnect_plan", "vodaconnect_line_type")
+    list_filter = (
+        "company",
+        "sub_number",
+        "caller_id_detail",
+        "vodaconnect_plan",
+        "vodaconnect_line_type",
+    )
     search_fields = (
         "company__client__user__first_name",
         "company__client__user__last_name",
         "original_line",
         "caller_id_detail",
         "vodaconnect_line_type__line",
-        "vodaconnect_plan__range"
+        "vodaconnect_plan__range",
     )
     readonly_fields = ("created_at", "updated_at")
     fieldsets = (
@@ -132,7 +142,11 @@ class AttributeAdmin(admin.TabularInline):
 class FormAdmin(ModelAdminMixin, ImportExportModelAdmin):
     model = Form
     resource_class = FormResource
-    search_fields = ("form_title", "company__company_name",)
+    list_filter = ("form_title", "company")
+    search_fields = (
+        "form_title",
+        "company__company_name",
+    )
     list_display = (
         "form_title",
         "company",

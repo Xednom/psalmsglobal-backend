@@ -6,7 +6,7 @@ from .models import LoginCredential, AccountFile
 class LoginCredentialAdmin(admin.ModelAdmin):
     model = LoginCredential
     list_display = ("client", "get_staffs", "category", "url")
-    list_filter = ("client", "staff")
+    list_filter = ("client", "staff", "category")
     filter_horizontal = ("staff",)
     search_fields = (
         "client__user__first_name",
@@ -41,7 +41,7 @@ class LoginCredentialAdmin(admin.ModelAdmin):
 class AccountFileAdmin(admin.ModelAdmin):
     model = AccountFile
     list_display = ("client", "get_staffs", "file_name", "url")
-    list_filter = ("staff", "client")
+    list_filter = ("staff", "client", "file_name")
     filter_horizontal = ("staff",)
     search_fields = ("client__user__first_name", "client__user__last_name", "file_name")
 
