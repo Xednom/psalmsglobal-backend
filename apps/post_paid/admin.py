@@ -49,7 +49,9 @@ class AccountChargeAdmin(admin.ModelAdmin):
 class CustomerInteractionPostPaidAdmin(admin.ModelAdmin):
     model = CustomerInteractionPostPaid
     list_display = (
+        "id",
         "ticket_number",
+        "created_at",
         "company",
         "apn",
         "reference_number",
@@ -120,6 +122,8 @@ class InteractionRecordAdmin(admin.ModelAdmin):
 class MinutesReportAdmin(admin.ModelAdmin):
     model = MinutesReport
     list_display = (
+        "created_at",
+        "id",
         "client",
         "month_year",
         "plan_type",
