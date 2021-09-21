@@ -18,10 +18,12 @@ class PaymentSummary(TimeStamped):
         max_digits=19, decimal_places=2, default_currency="USD"
     )
     total_converted_minutes = models.DecimalField(max_digits=19, decimal_places=2)
+    payment_reference = models.TextField(blank=True)
+    payment_channel = models.CharField(max_length=250, blank=True)
     notes = models.TextField(blank=True)
 
     class Meta:
         ordering = ["-client"]
     
     def __str__(self):
-        return f"Payment summary of {self.client}"
+        return f"Payment history and converted minutes of {self.client}"

@@ -7,6 +7,13 @@ from apps.core.models import TimeStamped
 __all__ = ("SubscriptionInfo", "PrepaidSubscription")
 
 
+class PlanType(TimeStamped):
+    name = models.CharField(max_length=250)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class SubscriptionInfo(TimeStamped):
     company = models.ForeignKey(
         "callme.Company",
@@ -27,9 +34,16 @@ class PrepaidSubscription(TimeStamped):
         related_name="client_prepaid_subscriptions",
         on_delete=models.DO_NOTHING,
     )
+    date_paid = models.DateField(blank=True, null=True)
     month_year = models.CharField(max_length=250)
-    monthly_subscription = models.CharField(max_length=250)
-    amount = MoneyField(
+    plan_type = models.ForeignKey(
+        PlanType,
+        related_name="prepaid_plan_types",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+    monthly_fee = MoneyField(
         max_digits=19,
         decimal_places=2,
         default_currency="USD",
@@ -40,3 +54,6 @@ class PrepaidSubscription(TimeStamped):
     payment_status = models.BooleanField()
     payment_reference = models.TextField(blank=True)
     notes = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.client} monthly subscription fee({self.monthly_fee}"
