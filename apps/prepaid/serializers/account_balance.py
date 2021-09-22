@@ -17,6 +17,8 @@ class AccountBalanceSerializer(serializers.ModelSerializer):
         fields = (
             "client",
             "account_total_aquired_minutes",
+            "account_total_spending",
             "account_total_mins_used",
             "account_total_mins_unused",
+            "total_spending"
         )

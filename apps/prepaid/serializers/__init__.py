@@ -10,3 +10,4 @@ from .customer_interaction import (
 from .minutes_report import MinutesReportSerializer #noqa
 from .prepaid_payment_summary import PaymentSummarySerializer #noqa
 from .subscription import SubscriptionInfoSerializer, PrepaidSubscriptionSerializer #noqa
+from .plan_detail import PrepaidSerializer # noqa

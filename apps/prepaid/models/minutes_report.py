@@ -22,3 +22,6 @@ class MinutesReport(TimeStamped):
     consumed_minutes = models.DecimalField(
         max_digits=19, decimal_places=2, default=0.00, blank=True, null=True
     )
+
+    def __str__(self):
+        return f"Minutes report of {self.client}"

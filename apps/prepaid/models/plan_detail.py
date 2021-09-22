@@ -7,7 +7,7 @@ __all__ = ("SubscriptionType", "Prepaid")
 
 
 class SubscriptionType(TimeStamped):
-    name = models.CharField(max_lenghth=250)
+    name = models.CharField(max_length=250)
 
     def __str__(self):
         return f"{self.name}"
@@ -20,7 +20,11 @@ class Prepaid(TimeStamped):
         on_delete=models.CASCADE,
     )
     subscription_type = models.ForeignKey(
-        SubscriptionType, related_name="prepaid_subscription_types"
+        SubscriptionType,
+        related_name="prepaid_subscription_types",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
     )
     monthly_fees = models.DecimalField(
         max_digits=19, decimal_places=2, default=0.00, blank=True, null=True

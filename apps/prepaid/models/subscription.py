@@ -4,7 +4,7 @@ from djmoney.models.fields import MoneyField
 from apps.core.models import TimeStamped
 
 
-__all__ = ("SubscriptionInfo", "PrepaidSubscription")
+__all__ = ("PlanType", "SubscriptionInfo", "PrepaidSubscription")
 
 
 class PlanType(TimeStamped):

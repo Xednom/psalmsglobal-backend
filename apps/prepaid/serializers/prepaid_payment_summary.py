@@ -19,5 +19,7 @@ class PaymentSummarySerializer(serializers.ModelSerializer):
             "date_purchase",
             "total_amount_paid",
             "total_converted_minutes",
+            "payment_reference",
+            "payment_channel",
             "notes",
         )

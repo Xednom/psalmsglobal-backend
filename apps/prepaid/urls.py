@@ -12,7 +12,8 @@ from apps.prepaid.views import (
     MinutesReportViewSet,
     PrepaidPaymentSummaryViewSet,
     SubscriptionInfoViewSet,
-    PrepaidSubscriptionViewSet
+    PrepaidSubscriptionViewSet,
+    PrepaidViewSet
 )
 
 router = routers.DefaultRouter()
@@ -35,6 +36,7 @@ router.register(r"payment-summary", PrepaidPaymentSummaryViewSet, basename="prep
 router.register(r"subscription-info", SubscriptionInfoViewSet, basename="subscription-info")
 router.register(r"prepaid-subscription", PrepaidSubscriptionViewSet, basename="prepaid-subscription")
 router.register(r"minutes-report", MinutesReportViewSet, basename="minutes-report")
+router.register(r"prepaid-account", PrepaidViewSet, basename="prepaid-account")
 
 app_name = "prepaid"
 

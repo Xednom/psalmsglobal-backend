@@ -10,3 +10,4 @@ from .customer_interaction import (
 from .minutes_report import MinutesReportViewSet #noqa
 from .prepaid_payment_summary import PrepaidPaymentSummaryViewSet #noqa
 from .subscription import SubscriptionInfoViewSet, PrepaidSubscriptionViewSet #noqa
+from .plan_detail import PrepaidViewSet # noqa

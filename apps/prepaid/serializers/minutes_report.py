@@ -14,4 +14,10 @@ class MinutesReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MinutesReport
-        fields = ("client", "month_year", "monthly_usage")
+        fields = (
+            "client",
+            "month_year",
+            "customer_interaction_mins_overview",
+            "general_request_mins_overview",
+            "consumed_minutes",
+        )
