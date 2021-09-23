@@ -1,15 +1,14 @@
 from rest_framework import serializers
 
-from apps.callme.models import Company
-
+from apps.callme.models import Company, Form, Attribute
+from apps.post_paid.models import InterestedToSell, InterestedToBuy, GeneralCall
 from apps.prepaid.models import (
-    InterestedToSell,
-    InterestedToBuy,
-    GeneralCall,
     CustomerInteractionPrepaid,
     CustomerInteractionPrepaidComment,
 )
 from apps.authentication.models import Client, Staff
+
+from apps.callme.serializers import FormSerializer
 
 
 __all__ = (
@@ -46,8 +45,11 @@ class CustomerInteractionPrepaidCommentSerializer(serializers.ModelSerializer):
 
 
 class CustomerInteractionPrepaidSerializer(serializers.ModelSerializer):
-    company = serializers.PrimaryKeyRelatedField(
-        queryset=Company.objects.all(), required=False, allow_null=True
+    company = serializers.SlugRelatedField(
+        slug_field="company_name",
+        queryset=Company.objects.all(),
+        required=False,
+        allow_null=True,
     )
     interested_to_sell = serializers.SlugRelatedField(
         slug_field="name", queryset=InterestedToSell.objects.all()
@@ -62,6 +64,9 @@ class CustomerInteractionPrepaidSerializer(serializers.ModelSerializer):
         CustomerInteractionPrepaidCommentSerializer(
             many=True, required=False, allow_null=True
         )
+    )
+    customer_interaction_post_paid_forms = FormSerializer(
+        many=True, required=False, allow_null=True
     )
 
     class Meta:
@@ -84,5 +89,6 @@ class CustomerInteractionPrepaidSerializer(serializers.ModelSerializer):
             "total_minutes",
             "crm",
             "leads_transferred_crm",
+            "customer_interaction_post_paid_forms",
             "customer_interaction_prepaid_comments",
         )

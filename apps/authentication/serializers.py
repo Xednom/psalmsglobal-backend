@@ -38,7 +38,9 @@ class ClientSerializer(WritableNestedModelSerializer):
     user = serializers.PrimaryKeyRelatedField(
         queryset=Client.objects.all(), required=False, allow_null=True
     )
-    client_hourly_rate = serializers.CharField(source="hourly_rate", required=False, allow_null=True)
+    client_hourly_rate = serializers.CharField(
+        source="hourly_rate", required=False, allow_null=True
+    )
 
     class Meta:
         model = Client
@@ -58,13 +60,19 @@ class ClientSerializer(WritableNestedModelSerializer):
 
 class ClientCodeSerializer(serializers.ModelSerializer):
     client_email = serializers.SerializerMethodField()
+    client_account_type = serializers.SerializerMethodField()
+
     class Meta:
         model = Client
-        fields = ("client_code", "client_email", "hourly_rate")
-    
+        fields = ("client_code", "client_email", "client_account_type", "hourly_rate")
+
     def get_client_email(self, instance):
         email = instance.user.email
         return email
+
+    def get_client_account_type(self, instance):
+        account_type = instance.user.account_type
+        return account_type
 
 
 class UserAccountTypeSerializer(serializers.ModelSerializer):
@@ -138,5 +146,5 @@ class CurrentUserSerializer(BaseUserListSerializer, WritableNestedModelSerialize
             "last_name",
             "designation_category",
             "company_category",
-            "account_type"
+            "account_type",
         )

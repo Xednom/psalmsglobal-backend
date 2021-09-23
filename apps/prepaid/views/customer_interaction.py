@@ -66,9 +66,12 @@ class CustomerInteractionPrepaidViewSet(viewsets.ModelViewSet):
             or current_user.designation_category == "affiliate_partner"
         ):
             qs = CustomerInteractionPrepaid.objects.select_related(
-                "company", "interested_to_call", "interested_to_sell",
+                "company", "interested_to_buy", "interested_to_sell",
                 "general_call"
             ).filter(company__client__user__in=user)
+            return qs
+        elif current_user.designation_category == "staff":
+            qs = CustomerInteractionPrepaid.objects.all()
             return qs
         elif current_user.is_superuser:
             qs = CustomerInteractionPrepaid.objects.all()
