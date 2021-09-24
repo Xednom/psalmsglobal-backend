@@ -11,3 +11,4 @@ from .minutes_report import MinutesReport #noqa
 from .prepaid_payment_summary import PaymentSummary #noqa
 from .subscription import PlanType, SubscriptionInfo, PrepaidSubscription #noqa
 from .plan_detail import Prepaid, SubscriptionType # noqa
+from .job_order import JobOrderPrepaid, JobOrderCommentPrepaid # noqa

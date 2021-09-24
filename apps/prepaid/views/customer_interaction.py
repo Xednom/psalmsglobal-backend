@@ -53,6 +53,13 @@ class GeneralCallViewSet(viewsets.ModelViewSet):
 class CustomerInteractionPrepaidViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerInteractionPrepaidSerializer
     permisson_classes = [permissions.IsAuthenticated]
+    search_fields = [
+        "=ticket_number",
+        "=apn",
+        "caller_full_name",
+        "=caller_phone",
+        "=email",
+    ]
     lookup_field = "ticket_number"
 
     def get_queryset(self):

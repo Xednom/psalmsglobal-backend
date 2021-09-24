@@ -1,4 +1,7 @@
+from post_office import mail
 from rest_framework import serializers
+
+from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 from apps.callme.models import Company, Form, Attribute
 from apps.post_paid.models import InterestedToSell, InterestedToBuy, GeneralCall
@@ -44,7 +47,7 @@ class CustomerInteractionPrepaidCommentSerializer(serializers.ModelSerializer):
         fields = ("customer_interaction_prepaid", "user", "comment")
 
 
-class CustomerInteractionPrepaidSerializer(serializers.ModelSerializer):
+class CustomerInteractionPrepaidSerializer(WritableNestedModelSerializer):
     company = serializers.SlugRelatedField(
         slug_field="company_name",
         queryset=Company.objects.all(),
@@ -65,7 +68,7 @@ class CustomerInteractionPrepaidSerializer(serializers.ModelSerializer):
             many=True, required=False, allow_null=True
         )
     )
-    customer_interaction_post_paid_forms = FormSerializer(
+    customer_interaction_prepaid_forms = FormSerializer(
         many=True, required=False, allow_null=True
     )
 
@@ -89,6 +92,6 @@ class CustomerInteractionPrepaidSerializer(serializers.ModelSerializer):
             "total_minutes",
             "crm",
             "leads_transferred_crm",
-            "customer_interaction_post_paid_forms",
+            "customer_interaction_prepaid_forms",
             "customer_interaction_prepaid_comments",
         )
