@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+
 from post_office import mail
 from rest_framework import serializers
 
@@ -12,6 +14,9 @@ from apps.prepaid.models import (
 from apps.authentication.models import Client, Staff
 
 from apps.callme.serializers import FormSerializer
+
+
+User = get_user_model()
 
 
 __all__ = (
@@ -71,6 +76,7 @@ class CustomerInteractionPrepaidSerializer(WritableNestedModelSerializer):
     customer_interaction_prepaid_forms = FormSerializer(
         many=True, required=False, allow_null=True
     )
+    client_account_type = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomerInteractionPrepaid
@@ -94,4 +100,11 @@ class CustomerInteractionPrepaidSerializer(WritableNestedModelSerializer):
             "leads_transferred_crm",
             "customer_interaction_prepaid_forms",
             "customer_interaction_prepaid_comments",
+            "client_account_type"
         )
+    
+    def get_client_account_type(self, instance):
+        client_account_types = User.objects.filter(username=instance.company.client.user)
+        client_account_type = [client.account_type for client in client_account_types.all()]
+        client_account_type = "".join(client_account_type)
+        return client_account_type
