@@ -33,6 +33,13 @@ class Form(TimeStamped):
         blank=True,
         null=True,
     )
+    customer_interaction_prepaid = models.ForeignKey(
+        "prepaid.CustomerInteractionPrepaid",
+        related_name="customer_interaction_prepaid_forms",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
     mailing_lists = ListTextField(
         base_field=models.CharField(max_length=500), size=100, blank=True, null=True
     )
