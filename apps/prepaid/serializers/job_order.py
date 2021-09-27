@@ -87,7 +87,7 @@ class JobOrderPrepaidSerializer(serializers.ModelSerializer):
         return agent_codes
 
     def create(self, validated_data):
-        instance = super(JobOrderPostPaidSerializer, self).create(validated_data)
+        instance = super(JobOrderPrepaidSerializer, self).create(validated_data)
         emails = instance.client_email + " " + instance.staff_email
         mail.send(
             "postmaster@psalmsglobal.com",

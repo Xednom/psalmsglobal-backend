@@ -113,26 +113,26 @@ class CustomerInteractionPrepaid(TimeStamped):
 
         if not last_in:
             seq = 0
-            ticket_number = "PRPDCI000" + str((int(seq) + 1))
+            ticket_number = "PRCI000" + str((int(seq) + 1))
             return ticket_number
 
         if self.id:
             if self.id >= 100:
-                ticket_number = "PRPDCI" + str(self.id)
+                ticket_number = "PRCI" + str(self.id)
             elif self.id <= 9:
-                ticket_number = "PRPDCI00" + str(self.id)
+                ticket_number = "PRCI00" + str(self.id)
             elif self.id >= 10:
-                ticket_number = "PRPDCI0" + str(self.id)
+                ticket_number = "PRCI0" + str(self.id)
             return ticket_number
 
         in_id = last_in.id
         in_int = int(in_id)
         if in_int >= 100:
-            ticket_code = "PRPDCI" + str(int(in_int) + 1)
+            ticket_code = "PRCI" + str(int(in_int) + 1)
         elif in_int < 10:
-            ticket_code = "PRPDCI00" + str(int(in_int) + 1)
+            ticket_code = "PRCI00" + str(int(in_int) + 1)
         elif in_int >= 10:
-            ticket_code = "PRPDCI0" + str(int(in_int) + 1)
+            ticket_code = "PRCI0" + str(int(in_int) + 1)
 
         return ticket_code
 

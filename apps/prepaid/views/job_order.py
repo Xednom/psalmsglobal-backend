@@ -7,9 +7,9 @@ from rest_framework import viewsets, permissions, filters, generics
 from rest_framework.generics import get_object_or_404
 
 from apps.authentication.models import Client, Staff
-from apps.post_paid.models import (
-    JobOrderPostPaid,
-    JobOrderComment,
+from apps.prepaid.models import (
+    JobOrderPrepaid,
+    JobOrderCommentPrepaid,
 )
 from apps.prepaid.serializers import (
     JobOrderPrepaidSerializer,
@@ -23,7 +23,7 @@ __all__ = ("JobOrderPrepaidViewSet", "JobOrderViewSet", "CreateJobOrderComment")
 
 
 class JobOrderPrepaidViewSet(viewsets.ModelViewSet):
-    queryset = JobOrderPostPaid.objects.select_related(
+    queryset = JobOrderPrepaid.objects.select_related(
         "client", "caller_interaction_record"
     ).all()
     serializer_class = JobOrderPrepaidSerializer
@@ -47,26 +47,26 @@ class JobOrderViewSet(viewsets.ModelViewSet):
         staff = staffs.all()
 
         if current_user:
-            queryset = JobOrderPostPaid.objects.select_related("client").filter(
+            queryset = JobOrderPrepaid.objects.select_related("client").filter(
                 client__user__in=client
-            ) or JobOrderPostPaid.objects.select_related("client").filter(
+            ) or JobOrderPrepaid.objects.select_related("client").filter(
                 va_assigned__user__in=staff
             )
             return queryset
         else:
-            queryset = JobOrderPostPaid.objects.all()
+            queryset = JobOrderPrepaid.objects.all()
             return queryset
 
 
 class CreateJobOrderComment(generics.CreateAPIView):
     serializer_class = JobOrderCommentSerializer
     permission_classes = [permissions.IsAuthenticated]
-    queryset = JobOrderComment.objects.select_related("job_order", "user").all()
+    queryset = JobOrderCommentPrepaid.objects.select_related("job_order", "user").all()
 
     def perform_create(self, serializer):
         user = self.request.user
         job_order_id = self.kwargs.get("id")
-        job_order = get_object_or_404(JobOrderPostPaid, id=job_order_id)
+        job_order = get_object_or_404(JobOrderPrepaid, id=job_order_id)
         if job_order.client_email and job_order.staff_email:
             emails = job_order.client_email + ' ' + job_order.staff_email
             emails = emails.split()
