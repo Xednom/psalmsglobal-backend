@@ -19,6 +19,7 @@ class AccountBalance(TimeStamped):
     )
     account_total_mins_used = models.DecimalField(max_digits=19, decimal_places=2)
     account_total_mins_unused = models.DecimalField(max_digits=19, decimal_places=2)
+    billing_status = models.BooleanField(default=True, blank=True)
 
     class Meta:
         ordering = ["-client"]
