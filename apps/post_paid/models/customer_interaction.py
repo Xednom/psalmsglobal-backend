@@ -135,26 +135,26 @@ class CustomerInteractionPostPaid(TimeStamped):
 
         if not last_in:
             seq = 0
-            ticket_number = "CI000" + str((int(seq) + 1))
+            ticket_number = "PSCI000" + str((int(seq) + 1))
             return ticket_number
 
         if self.id:
             if self.id >= 100:
-                ticket_number = "CI" + str(self.id)
+                ticket_number = "PSCI" + str(self.id)
             elif self.id <= 9:
-                ticket_number = "CI00" + str(self.id)
+                ticket_number = "PSCI00" + str(self.id)
             elif self.id >= 10:
-                ticket_number = "CI0" + str(self.id)
+                ticket_number = "PSCI0" + str(self.id)
             return ticket_number
 
         in_id = last_in.id
         in_int = int(in_id)
         if in_int >= 100:
-            ticket_code = "CI" + str(int(in_int) + 1)
+            ticket_code = "PSCI" + str(int(in_int) + 1)
         elif in_int < 10:
-            ticket_code = "CI00" + str(int(in_int) + 1)
+            ticket_code = "PSCI00" + str(int(in_int) + 1)
         elif in_int >= 10:
-            ticket_code = "CI0" + str(int(in_int) + 1)
+            ticket_code = "PSCI0" + str(int(in_int) + 1)
 
         return ticket_code
 
