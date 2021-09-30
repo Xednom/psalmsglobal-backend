@@ -77,10 +77,13 @@ class CustomerInteractionPrepaidSerializer(WritableNestedModelSerializer):
         many=True, required=False, allow_null=True
     )
     client_account_type = serializers.SerializerMethodField()
+    company_client = serializers.SerializerMethodField()
+    company_crm = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomerInteractionPrepaid
         fields = (
+            "id",
             "ticket_number",
             "company",
             "apn",
@@ -100,8 +103,19 @@ class CustomerInteractionPrepaidSerializer(WritableNestedModelSerializer):
             "leads_transferred_crm",
             "customer_interaction_prepaid_forms",
             "customer_interaction_prepaid_comments",
-            "client_account_type"
+            "client_account_type",
+            "company_client",
+            "company_crm",
         )
+
+    def get_company_client(self, instance):
+        return f"{instance.company.client.id}"
+    
+    def get_company_crm(self, instance):
+        company_crm = [
+            company_crm.crm for company_crm in instance.company.company_crms.all()
+        ]
+        return company_crm
     
     def get_client_account_type(self, instance):
         client_account_types = User.objects.filter(username=instance.company.client.user)
