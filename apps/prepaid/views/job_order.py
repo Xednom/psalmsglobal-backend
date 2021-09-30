@@ -1,7 +1,6 @@
 from post_office import mail
 
 from django.contrib.auth import get_user_model
-from apps.post_paid import serializers
 
 from rest_framework import viewsets, permissions, filters, generics
 from rest_framework.generics import get_object_or_404
