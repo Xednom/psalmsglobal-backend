@@ -12,3 +12,4 @@ from .prepaid_payment_summary import PaymentSummarySerializer #noqa
 from .subscription import SubscriptionInfoSerializer, PrepaidSubscriptionSerializer #noqa
 from .plan_detail import PrepaidSerializer # noqa
 from .job_order import JobOrderPrepaidSerializer, JobOrderCommentSerializer # noqa
+from .interaction_record import InteractionRecordSerializer # noqa

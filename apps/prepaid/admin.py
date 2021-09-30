@@ -3,11 +3,9 @@ from django.contrib import admin
 from apps.prepaid.models import (
     AccountBalance,
     AccountCharge,
-    InterestedToBuy,
-    InterestedToSell,
-    GeneralCall,
     Prepaid,
     CustomerInteractionPrepaid,
+    InteractionRecord,
     MinutesReport,
     PlanType,
     JobOrderPrepaid,
@@ -92,6 +90,27 @@ class CustomerInteractionPrepaidAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
+class InteractionRecordAdmin(admin.ModelAdmin):
+    model = InteractionRecord
+    list_display = (
+        "client",
+        "agent",
+        "date_called",
+        "total_minutes",
+        "client_feedback_status",
+        "internal_management_ticket_status",
+    )
+    list_filter = ("client", "agent", "date_called")
+    search_fields = (
+        "client__user__first_name",
+        "client__user__last_name",
+        "agent__user__first_name",
+        "agent__user__last_name",
+        "date_called",
+    )
+    readonly_fields = ("created_at", "updated_at")
+
+
 class MinutesReportAdmin(admin.ModelAdmin):
     model = MinutesReport
     list_display = (
@@ -101,7 +120,7 @@ class MinutesReportAdmin(admin.ModelAdmin):
         "month_year",
         "customer_interaction_mins_overview",
         "general_request_mins_overview",
-        "consumed_minutes"
+        "consumed_minutes",
     )
     list_filter = ("client", "month_year")
     search_fields = (
@@ -160,7 +179,9 @@ class JobOrderAdmin(admin.ModelAdmin):
     )
     readonly_fields = ("created_at", "updated_at")
 
+
 admin.site.register(CustomerInteractionPrepaid, CustomerInteractionPrepaidAdmin)
+admin.site.register(InteractionRecord, InteractionRecordAdmin)
 admin.site.register(MinutesReport, MinutesReportAdmin)
 admin.site.register(Prepaid, PrepaidAdmin)
 admin.site.register(PlanType, PlanTypeAdmin)

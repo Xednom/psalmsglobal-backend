@@ -16,6 +16,7 @@ from apps.prepaid.views import (
     PrepaidViewSet,
     JobOrderPrepaidViewSet,
     JobOrderViewSet,
+    InteractionRecordViewSet,
     CreateJobOrderComment
 )
 
@@ -42,6 +43,7 @@ router.register(r"minutes-report", MinutesReportViewSet, basename="minutes-repor
 router.register(r"prepaid-account", PrepaidViewSet, basename="prepaid-account")
 router.register(r"job-order", JobOrderPrepaidViewSet, basename="job-order-interaction-list")
 router.register(r"job-order-general", JobOrderViewSet, basename="job-order-list")
+router.register(r"interaction-record", InteractionRecordViewSet, basename="interaction-list")
 
 app_name = "prepaid"
 
@@ -53,7 +55,7 @@ urlpatterns = [
         name="customer-interaction-prepaid-comment",
     ),
     path(
-        "job-order/<int:id>/comment/",
+        "prepaid/job-order/<int:id>/comment/",
         CreateJobOrderComment.as_view(),
         name="job-order-comment",
     ),
