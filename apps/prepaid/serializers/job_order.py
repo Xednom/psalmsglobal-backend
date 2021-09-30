@@ -22,7 +22,7 @@ class JobOrderCommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = JobOrderCommentPrepaid
-        fields = ("job_order", "user", "comment", "commenter", "created_at")
+        fields = ("id", "job_order", "user", "comment", "commenter", "created_at")
 
     def get_commenter(self, instance):
         if instance.user.designation_category == "staff":
