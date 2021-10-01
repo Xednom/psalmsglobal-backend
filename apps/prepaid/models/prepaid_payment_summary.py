@@ -23,6 +23,7 @@ class PaymentSummary(TimeStamped):
     notes = models.TextField(blank=True)
 
     class Meta:
+        verbose_name_plural = "Payment Summaries"
         ordering = ["-client"]
     
     def __str__(self):
