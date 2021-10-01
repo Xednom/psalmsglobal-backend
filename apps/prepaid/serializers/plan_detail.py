@@ -17,10 +17,12 @@ class PrepaidSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
     )
+    client_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Prepaid
         fields = (
+            "id",
             "client",
             "subscription_type",
             "monthly_fees",
@@ -28,4 +30,8 @@ class PrepaidSerializer(serializers.ModelSerializer):
             "end_of_subscription",
             "account_status",
             "notes",
+            "client_name"
         )
+    
+    def get_client_name(self, instance):
+        return f"{instance.client.user.first_name} {instance.client.user.last_name}"

@@ -9,6 +9,7 @@ from apps.prepaid.models import (
     MinutesReport,
     PlanType,
     JobOrderPrepaid,
+    SubscriptionType
 )
 
 
@@ -188,3 +189,5 @@ admin.site.register(PlanType, PlanTypeAdmin)
 admin.site.register(AccountCharge, AccountChargeAdmin)
 admin.site.register(AccountBalance, AccountBalanceAdmin)
 admin.site.register(JobOrderPrepaid, JobOrderAdmin)
+admin.site.register(SubscriptionType)
+

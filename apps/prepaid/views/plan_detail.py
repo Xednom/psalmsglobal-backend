@@ -25,7 +25,7 @@ class PrepaidViewSet(viewsets.ModelViewSet):
             or current_user.designation_category == "affiliate_partner"
         ):
             qs = Prepaid.objects.select_related("client", "subscription_type").filter(
-                client=user
+                client__user__in=user
             )
             return qs
         elif current_user.is_superuser:
