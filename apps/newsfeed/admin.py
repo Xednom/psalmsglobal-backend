@@ -14,6 +14,12 @@ class NewsFeedAdmin(admin.ModelAdmin):
     model = NewsFeed
     list_display = ("title", "body", "publish_to")
     inlines = [NewsFeedCommentAdmin]
+
+    class Media:
+        js = (
+            "grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js",
+            "grappelli/tinymce_setup/tinymce_setup.js",
+        )
     
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=False)
