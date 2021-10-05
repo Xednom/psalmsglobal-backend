@@ -24,7 +24,7 @@ class MinutesReportViewSet(viewsets.ModelViewSet):
             or current_user.designation_category == "new_client"
             or current_user.designation_category == "affiliate_partner"
         ):
-            qs = MinutesReport.objects.select_related("client").filter(client=user)
+            qs = MinutesReport.objects.select_related("client").filter(client__user__in=user)
             return qs
         elif current_user.is_superuser:
             qs = MinutesReport.objects.all()
