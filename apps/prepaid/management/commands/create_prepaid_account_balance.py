@@ -17,7 +17,7 @@ from apps.prepaid.models import (
 
 
 class Command(BaseCommand):
-    help = """Automatically create Account balance for every user in the system monthly.
+    help = """Automatically create Account balance for prepaid every user in the system monthly.
         Note: for this to work, the Client should have a Plan Details
     """
 
