@@ -7,9 +7,9 @@ from apps.prepaid.models import (
     CustomerInteractionPrepaid,
     InteractionRecord,
     MinutesReport,
-    PlanType,
     JobOrderPrepaid,
-    PrepaidSubscription
+    PrepaidSubscription,
+    SubscriptionType,
 )
 
 
@@ -132,12 +132,6 @@ class MinutesReportAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-class PlanTypeAdmin(admin.ModelAdmin):
-    model = PlanType
-    search_fields = ("name",)
-    readonly_fields = ("created_at", "updated_at")
-
-
 class PrepaidAdmin(admin.ModelAdmin):
     model = Prepaid
     list_display = (
@@ -181,12 +175,30 @@ class JobOrderAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
+class PrepaidSubscriptionAdmin(admin.ModelAdmin):
+    model = PrepaidSubscription
+    list_display = (
+        "client",
+        "date_paid",
+        "month_year",
+        "plan_type",
+        "monthly_fee",
+        "payment_status",
+    )
+    list_filter = ("client", "payment_status", "month_year", "plan_type")
+    search_fields = (
+        "client__user__first_name",
+        "client__user__last_name",
+        "client__client_code",
+    )
+
+
 admin.site.register(CustomerInteractionPrepaid, CustomerInteractionPrepaidAdmin)
 admin.site.register(InteractionRecord, InteractionRecordAdmin)
 admin.site.register(MinutesReport, MinutesReportAdmin)
 admin.site.register(Prepaid, PrepaidAdmin)
-admin.site.register(PlanType, PlanTypeAdmin)
 admin.site.register(AccountCharge, AccountChargeAdmin)
 admin.site.register(AccountBalance, AccountBalanceAdmin)
 admin.site.register(JobOrderPrepaid, JobOrderAdmin)
-admin.site.register(PrepaidSubscription)
+admin.site.register(PrepaidSubscription, PrepaidSubscriptionAdmin)
+admin.site.register(SubscriptionType)
