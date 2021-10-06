@@ -37,7 +37,7 @@ class PrepaidSubscription(TimeStamped):
     date_paid = models.DateField(blank=True, null=True)
     month_year = models.CharField(max_length=250)
     plan_type = models.ForeignKey(
-        PlanType,
+        "prepaid.SubscriptionType",
         related_name="prepaid_plan_types",
         on_delete=models.SET_NULL,
         blank=True,
