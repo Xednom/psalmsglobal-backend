@@ -48,22 +48,16 @@ class Command(BaseCommand):
             for post_paid in client_post_paid:
                 if post_paid:
                     if client_monthly_charge:
-                        MonthlyCharge.objects.filter(client=i, month_year=month_year).update(
+                        MonthlyCharge.objects.filter(
+                            client=i, month_year=month_year
+                        ).update(
                             plan_type=str(post_paid.plan_type),
                             month_year=month_year,
                             total_minutes=post_paid.total_minutes,
                             cost_of_plan=post_paid.cost_of_plan,
                         )
 
-                    elif today.strftime("%d") == "31":
-                        MonthlyCharge.objects.create(
-                            client=i,
-                            month_year=month_year,
-                            plan_type=post_paid.plan_type,
-                            total_minutes=post_paid.total_minutes,
-                            cost_of_plan=post_paid.cost_of_plan,
-                        )
-                    elif today.strftime("%d") == "30":
+                    elif today.strftime("%d") == "1":
                         MonthlyCharge.objects.create(
                             client=i,
                             month_year=month_year,
