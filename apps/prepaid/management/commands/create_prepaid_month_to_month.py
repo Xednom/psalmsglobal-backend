@@ -58,9 +58,6 @@ class Command(BaseCommand):
                 .aggregate(total_time_consumed=Sum("total_time_consumed"))
             )
 
-            print(cust_interaction_overview["total_minutes"])
-            print(general_request_total_mins["total_time_consumed"])
-
             if (
                 cust_interaction_overview["total_minutes"] == 0
                 and general_request_total_mins["total_time_consumed"] == None
