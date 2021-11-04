@@ -41,4 +41,4 @@ router.register(
 
 app_name = "vodaconnect"
 
-urlpatterns = [path("vodaconnect", include(router.urls))]
+urlpatterns = [path("vodaconnect/", include(router.urls))]
