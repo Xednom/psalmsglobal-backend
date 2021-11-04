@@ -110,7 +110,7 @@ class ZipTrunkLoginSerializer(serializers.ModelSerializer):
 
 class OtherLoginSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ZipTrunkLogin
+        model = OtherLogin
         fields = (
             "forwarding_information",
             "description",
