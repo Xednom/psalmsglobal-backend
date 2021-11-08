@@ -10,7 +10,7 @@ django-extensions = "*"
 pygraphviz = "*"
 
 [packages]
-django = "*"
+django = "~=3.2"
 djoser = "*"
 djangorestframework = "*"
 django-environ = "*"
@@ -28,7 +28,8 @@ django-import-export = "*"
 django-bleach = "*"
 django-anymail = {extras = ["mailgun"], version = "*"}
 django-grappelli = "*"
-pytest = "*"
+pytest-django = "*"
+pytest-factoryboy = "*"
 
 [requires]
 python_version = "3.8"
