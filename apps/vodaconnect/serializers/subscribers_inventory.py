@@ -30,21 +30,36 @@ class VoipInformationSerializer(serializers.ModelSerializer):
     client = serializers.PrimaryKeyRelatedField(
         queryset=Client.objects.all(), required=False, allow_null=True
     )
+    client_name = serializers.CharField(
+        source="client.user.user_full_name", read_only=True
+    )
 
     class Meta:
         model = VoipInformation
-        fields = ("vodaconnect_number", "client", "client_code", "company_name")
+        fields = (
+            "id",
+            "vodaconnect_number",
+            "client",
+            "client_name",
+            "client_code",
+            "company_name",
+        )
 
 
 class ActivationDetailSerializer(serializers.ModelSerializer):
     client = serializers.PrimaryKeyRelatedField(
         queryset=Client.objects.all(), required=False, allow_null=True
     )
+    client_name = serializers.CharField(
+        source="client.user.user_full_name", read_only=True
+    )
 
     class Meta:
         model = ActivationDetail
         fields = (
+            "id",
             "client",
+            "client_name",
             "order_request_date",
             "request_date_initiated",
             "date_line_activated",
@@ -64,11 +79,16 @@ class PlanDetailSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
     )
+    client_name = serializers.CharField(
+        source="client.user.user_full_name", read_only=True
+    )
 
     class Meta:
         model = PlanDetail
         fields = (
+            "id",
             "client",
+            "client_name",
             "plan_type",
             "total_cost",
             "recurring_bill",
@@ -81,10 +101,20 @@ class SubscriberStatusSerializer(serializers.ModelSerializer):
     client = serializers.PrimaryKeyRelatedField(
         queryset=Client.objects.all(), required=False, allow_null=True
     )
+    client_name = serializers.CharField(
+        source="client.user.user_full_name", read_only=True
+    )
 
     class Meta:
         model = SubscriberStatus
-        fields = ("client", "status_in_production", "type_of_request", "testimony")
+        fields = (
+            "id",
+            "client",
+            "client_name",
+            "status_in_production",
+            "type_of_request",
+            "testimony",
+        )
 
 
 class TotalNumberOfExtensionSerializer(serializers.ModelSerializer):

@@ -12,11 +12,15 @@ class OtherChargeSerializer(serializers.ModelSerializer):
         queryset=Client.objects.all(), required=False, allow_null=True
     )
 
+    client_name = serializers.CharField(source="client.user.user_full_name", read_only=True)
+
     class Meta:
         model = OtherCharge
         fields = (
+            "id",
             "date",
             "client",
+            "client_name",
             "vodaconnect_number",
             "type_charge",
             "amount",

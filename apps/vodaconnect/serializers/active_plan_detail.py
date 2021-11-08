@@ -19,10 +19,14 @@ class ActivePlanDetailSerializer(serializers.ModelSerializer):
         allow_null=True,
     )
 
+    client_name = serializers.CharField(source="client.user.user_full_name")
+
     class Meta:
         model = ActivePlanDetail
         fields = (
+            "id",
             "client",
+            "client_name",
             "plan_type",
             "total_minutes_included",
             "cost_of_plan",
