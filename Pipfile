@@ -28,6 +28,7 @@ django-import-export = "*"
 django-bleach = "*"
 django-anymail = {extras = ["mailgun"], version = "*"}
 django-grappelli = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.8"
