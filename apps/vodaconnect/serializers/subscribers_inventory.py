@@ -135,6 +135,7 @@ class ForwardingInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ForwardingInformation
         fields = (
+            "id",
             "client",
             "forwarding_number",
             "notes",
