@@ -12,6 +12,7 @@ from apps.vodaconnect.models import (
     TotalNumberOfExtension,
     ZipTrunkLogin,
     OtherLogin,
+    VodaconnectSignUp
 )
 
 
@@ -181,6 +182,23 @@ class SubscriberStatusAdmin(admin.ModelAdmin):
     )
 
 
+class VodaconnectSignUpAdmin(admin.ModelAdmin):
+    model = VodaconnectSignUp
+    list_display = (
+        "client",
+        "file_description",
+        "url",
+    )
+    list_filter = (
+        "client",
+    )
+    search_fields = (
+        "client__user__first_name",
+        "client__user__last_name",
+        "url",
+    )
+
+
 class ZipTrunkLoginAdmin(admin.TabularInline):
     model = ZipTrunkLogin
     extra = 1
@@ -225,3 +243,4 @@ admin.site.register(ActivationDetail, ActivationDetailAdmin)
 admin.site.register(PlanDetail, PlanDetailAdmin)
 admin.site.register(SubscriberStatus, SubscriberStatusAdmin)
 admin.site.register(ForwardingInformation, ForwardingInformationAdmin)
+admin.site.register(VodaconnectSignUp, VodaconnectSignUpAdmin)

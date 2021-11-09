@@ -10,6 +10,7 @@ from apps.vodaconnect.views import (
     PlanDetailViewSet,
     SubscriberStatusViewSet,
     ForwardingInformationViewSet,
+    VodaconnectSignUpViewSet
 )
 
 router = routers.DefaultRouter()
@@ -37,6 +38,11 @@ router.register(
     r"forwarding-information",
     ForwardingInformationViewSet,
     basename="forwarding-information",
+)
+router.register(
+    r"vodaconnect-signup",
+    VodaconnectSignUpViewSet,
+    basename="vodaconnect-signup",
 )
 
 app_name = "vodaconnect"
