@@ -37,7 +37,7 @@ router.register(r"property-info", PropertyInfoViewSet, basename="property-info")
 app_name = "callme"
 
 urlpatterns = [
-    path("/", include(router.urls), name="callme"),
+    path("", include(router.urls), name="callme"),
     path("file-upload/", FileUploadView.as_view(), name="file-upload"),
     path("interaction-form/<int:id>/", FormView.as_view(), name="form-view")
 ]
