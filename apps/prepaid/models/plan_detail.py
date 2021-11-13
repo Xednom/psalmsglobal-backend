@@ -30,7 +30,7 @@ class Prepaid(TimeStamped):
         max_digits=19, decimal_places=2, default=0.00, blank=True, null=True
     )
     start_of_subscription = models.DateField()
-    end_of_subscription = models.DateField()
+    end_of_subscription = models.DateField(blank=True, null=True)
     account_status = models.BooleanField(default=False, blank=True, null=True)
     notes = models.TextField(blank=True)
 
