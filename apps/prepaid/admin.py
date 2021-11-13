@@ -10,6 +10,7 @@ from apps.prepaid.models import (
     JobOrderPrepaid,
     PrepaidSubscription,
     SubscriptionType,
+    PaymentSummary
 )
 
 
@@ -193,6 +194,7 @@ class PrepaidSubscriptionAdmin(admin.ModelAdmin):
     )
 
 
+admin.site.register(PaymentSummary)
 admin.site.register(CustomerInteractionPrepaid, CustomerInteractionPrepaidAdmin)
 admin.site.register(InteractionRecord, InteractionRecordAdmin)
 admin.site.register(MinutesReport, MinutesReportAdmin)
