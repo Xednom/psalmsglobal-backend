@@ -94,7 +94,7 @@ class ActivationDetail(TimeStamped):
     order_request_date = models.DateField()
     request_date_initiated = models.DateField()
     date_line_activated = models.DateField()
-    date_line_terminated = models.DateField()
+    date_line_terminated = models.DateField(blank=True, null=True)
     phone_line_status = models.CharField(
         max_length=30, choices=PhoneLineStatus.choices, blank=True
     )
@@ -163,7 +163,7 @@ class TotalNumberOfExtension(TimeStamped):
         null=True,
     )
     extension_number = models.CharField(max_length=250)
-    extension_logins = models.CharField(max_length=250)
+    extension_logins = models.TextField(blank=True)
     notes = models.TextField(blank=True)
 
 

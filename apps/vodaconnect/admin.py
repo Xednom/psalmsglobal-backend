@@ -7,6 +7,7 @@ from apps.vodaconnect.models import (
     VoipInformation,
     ActivationDetail,
     PlanDetail,
+    PlanType,
     SubscriberStatus,
     ForwardingInformation,
     TotalNumberOfExtension,
@@ -241,6 +242,7 @@ admin.site.register(PlanSummaryAndPayment, PlanSummaryAndPaymentAdmin)
 admin.site.register(VoipInformation, VoipInformationAdmin)
 admin.site.register(ActivationDetail, ActivationDetailAdmin)
 admin.site.register(PlanDetail, PlanDetailAdmin)
+admin.site.register(PlanType)
 admin.site.register(SubscriberStatus, SubscriberStatusAdmin)
 admin.site.register(ForwardingInformation, ForwardingInformationAdmin)
 admin.site.register(VodaconnectSignUp, VodaconnectSignUpAdmin)

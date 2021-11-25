@@ -10,7 +10,7 @@ django-extensions = "*"
 pygraphviz = "*"
 
 [packages]
-django = "~=3.2"
+django = "==3.2.8"
 djoser = "*"
 djangorestframework = "*"
 django-environ = "*"
