@@ -84,6 +84,11 @@ class VoipInformation(TimeStamped):
     def __str__(self):
         return f"{self.client} vodaconnect number of {self.vodaconnect_number}"
 
+    def save(self, *args, **kwargs):
+        if self.client:
+            self.client_code = self.client.client_code
+        super(VoipInformation, self).save(*args, **kwargs)
+
 
 class ActivationDetail(TimeStamped):
     client = models.ForeignKey(
