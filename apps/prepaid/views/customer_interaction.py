@@ -1,3 +1,5 @@
+from post_office import mail
+
 from django.contrib.auth import get_user, get_user_model
 
 from rest_framework import generics, viewsets, permissions, filters
@@ -73,8 +75,7 @@ class CustomerInteractionPrepaidViewSet(viewsets.ModelViewSet):
             or current_user.designation_category == "affiliate_partner"
         ):
             qs = CustomerInteractionPrepaid.objects.select_related(
-                "company", "interested_to_buy", "interested_to_sell",
-                "general_call"
+                "company", "interested_to_buy", "interested_to_sell", "general_call"
             ).filter(company__client__user__in=user)
             return qs
         elif current_user.designation_category == "staff":
@@ -95,7 +96,29 @@ class CreateCustomerInteractionPrepaidComment(generics.CreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         prepaid_cust_interaction_id = self.kwargs.get("id")
-        customer_interaction = get_object_or_404(
-            CustomerInteractionPrepaidComment, id=prepaid_cust_interaction_id
+        customer_interaction_prepaid = get_object_or_404(
+            CustomerInteractionPrepaid, id=prepaid_cust_interaction_id
         )
-        serializer.save(user=user, customer_interaction_prepaid=customer_interaction)
+        comments = CustomerInteractionPrepaidComment.objects.select_related(
+            "customer_interaction_prepaid", "user"
+        ).filter(customer_interaction_prepaid=customer_interaction_prepaid.id)
+
+        if customer_interaction_prepaid:
+            emails = (
+                customer_interaction_prepaid.agent.user.email
+                + " "
+                + customer_interaction_prepaid.company.client.user.email
+            )
+            emails = emails.split()
+            mail.send(
+                "postmaster@gmail.com",
+                bcc=emails,
+                template="prepaid_customer_interaction_comment",
+                context={
+                    "interaction": customer_interaction_prepaid,
+                    "comments": comments,
+                },
+            )
+        serializer.save(
+            user=user, customer_interaction_prepaid=customer_interaction_prepaid
+        )

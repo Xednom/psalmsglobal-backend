@@ -47,9 +47,30 @@ class GeneralCallSerializer(serializers.ModelSerializer):
 
 
 class CustomerInteractionPrepaidCommentSerializer(serializers.ModelSerializer):
+    created_at = serializers.DateTimeField(read_only=True, allow_null=True)
+    commenter = serializers.SerializerMethodField()
+
     class Meta:
         model = CustomerInteractionPrepaidComment
-        fields = ("customer_interaction_prepaid", "user", "comment")
+        fields = (
+            "customer_interaction_prepaid",
+            "user",
+            "comment",
+            "commenter",
+            "created_at",
+        )
+
+    def get_commenter(self, instance):
+        if instance.user.designation_category == "staff":
+            user = User.objects.filter(username=instance.user)
+            staffs = Staff.objects.select_related("user").filter(user__in=user)
+            staff_code = [staff.staff_id for staff in staffs]
+            return "".join(staff_code)
+        else:
+            user = User.objects.filter(username=instance.user)
+            clients = Client.objects.select_related("user").filter(user__in=user)
+            client_code = [client.client_code for client in clients]
+            return "".join(client_code)
 
 
 class CustomerInteractionPrepaidSerializer(WritableNestedModelSerializer):
@@ -68,10 +89,8 @@ class CustomerInteractionPrepaidSerializer(WritableNestedModelSerializer):
     general_call = serializers.SlugRelatedField(
         slug_field="name", queryset=GeneralCall.objects.all()
     )
-    customer_interaction_prepaid_comments = (
-        CustomerInteractionPrepaidCommentSerializer(
-            many=True, required=False, allow_null=True
-        )
+    customer_interaction_prepaid_comments = CustomerInteractionPrepaidCommentSerializer(
+        many=True, required=False, allow_null=True
     )
     customer_interaction_prepaid_forms = FormSerializer(
         many=True, required=False, allow_null=True
@@ -110,15 +129,19 @@ class CustomerInteractionPrepaidSerializer(WritableNestedModelSerializer):
 
     def get_company_client(self, instance):
         return f"{instance.company.client.id}"
-    
+
     def get_company_crm(self, instance):
         company_crm = [
             company_crm.crm for company_crm in instance.company.company_crms.all()
         ]
         return company_crm
-    
+
     def get_client_account_type(self, instance):
-        client_account_types = User.objects.filter(username=instance.company.client.user)
-        client_account_type = [client.account_type for client in client_account_types.all()]
+        client_account_types = User.objects.filter(
+            username=instance.company.client.user
+        )
+        client_account_type = [
+            client.account_type for client in client_account_types.all()
+        ]
         client_account_type = "".join(client_account_type)
         return client_account_type
