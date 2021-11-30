@@ -30,7 +30,7 @@ class JobOrderCommentSerializer(serializers.ModelSerializer):
             staffs = Staff.objects.select_related("user").filter(user__in=user)
             staff_code = [staff.staff_id for staff in staffs]
             return "".join(staff_code)
-        else:
+        elif instance.user.designation_category != "staff":
             user = User.objects.filter(username=instance.user)
             clients = Client.objects.select_related("user").filter(user__in=user)
             client_code = [client.client_code for client in clients]
@@ -50,7 +50,7 @@ class JobOrderPrepaidSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
     )
-    job_order_comments = JobOrderCommentSerializer(
+    prepaid_job_order_comments = JobOrderCommentSerializer(
         many=True, required=False, allow_null=True
     )
     agent_code = serializers.SerializerMethodField()
@@ -78,7 +78,7 @@ class JobOrderPrepaidSerializer(serializers.ModelSerializer):
             "date_completed",
             "total_time_consumed",
             "url_of_the_completed_jo",
-            "job_order_comments",
+            "prepaid_job_order_comments",
         )
 
     def get_agent_code(self, instance):
