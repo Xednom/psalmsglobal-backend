@@ -19,6 +19,7 @@ class PlanSummaryAndPaymentSerializer(serializers.ModelSerializer):
         model = PlanSummaryAndPayment
         fields = (
             "id",
+            "created_at",
             "client",
             "client_name",
             "month_year",
