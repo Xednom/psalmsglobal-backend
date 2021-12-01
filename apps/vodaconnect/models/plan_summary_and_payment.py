@@ -18,4 +18,4 @@ class PlanSummaryAndPayment(TimeStamped):
     cost_of_plan = models.DecimalField(max_digits=19, decimal_places=2)
     payment_reference = models.TextField(blank=True)
     status = models.BooleanField(default=True)
-    date_of_paid = models.DateField()
+    date_of_paid = models.DateField(blank=True, null=True)

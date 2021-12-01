@@ -70,6 +70,7 @@ class OtherChargeAdmin(admin.ModelAdmin):
 class PlanSummaryAndPaymentAdmin(admin.ModelAdmin):
     model = PlanSummaryAndPayment
     list_display = (
+        "created_at",
         "date_of_paid",
         "client",
         "month_year",
