@@ -46,8 +46,9 @@ class ActivePlanDetailAdmin(admin.ModelAdmin):
 class OtherChargeAdmin(admin.ModelAdmin):
     model = OtherCharge
     list_display = (
-        "date",
         "client",
+        "created_at",
+        "date",
         "vodaconnect_number",
         "type_charge",
         "amount",

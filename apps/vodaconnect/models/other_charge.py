@@ -14,7 +14,7 @@ class PaymentStatus(models.TextChoices):
 
 
 class OtherCharge(TimeStamped):
-    date = models.DateField()
+    date = models.DateField(blank=True, null=True)
     client = models.ForeignKey(
         "authentication.Client",
         related_name="client_other_charges",
