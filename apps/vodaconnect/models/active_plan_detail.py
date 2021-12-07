@@ -33,7 +33,7 @@ class ActivePlanDetail(TimeStamped):
         max_digits=19, decimal_places=2, default=0.00, blank=True, null=True
     )
     start_of_plan = models.DateField()
-    end_of_plan = models.DateField()
+    end_of_plan = models.DateField(blank=True, null=True)
     account_status = models.BooleanField(default=True)
     recurring_bill = models.BooleanField(default=True)
 
