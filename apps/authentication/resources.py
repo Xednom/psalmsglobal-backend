@@ -8,6 +8,7 @@ class ClientResource(resources.ModelResource):
         fields = (
             "user__first_name",
             "user__last_name",
+            "user__email",
             "client_code",
             "affiliate_partner_code",
             "affiliate_partner_name",
