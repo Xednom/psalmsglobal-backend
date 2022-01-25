@@ -49,6 +49,7 @@ LOCAL_APPS = [
     "apps.prepaid",
     "apps.newsfeed",
     "apps.vodaconnect",
+    "apps.resolution",
 ]
 
 THIRD_PARTY_APPS = [
