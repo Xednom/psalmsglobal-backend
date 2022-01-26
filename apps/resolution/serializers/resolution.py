@@ -5,7 +5,13 @@ from apps.resolution.models import Resolution, ResolutionConversation
 from apps.core.models import ResolutionCategory
 
 
-__all__ = ("ResolutionSerializer", "ResolutionConversationSerializer")
+__all__ = ("ResolutionSerializer", "ResolutionConversationSerializer", "ResolutionCategorySerializer")
+
+
+class ResolutionCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ResolutionCategory
+        fields = ("id", "name")
 
 
 class ResolutionSerializer(serializers.ModelSerializer):

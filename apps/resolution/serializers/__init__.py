@@ -1,1 +1,5 @@
-from .resolution import ResolutionSerializer, ResolutionConversationSerializer  # noqa
+from .resolution import (
+    ResolutionSerializer,
+    ResolutionConversationSerializer,
+    ResolutionCategorySerializer,
+)  # noqa
