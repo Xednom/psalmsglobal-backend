@@ -50,7 +50,7 @@ class ResolutionConversation(TimeStamped):
         Resolution, related_name="resolution_conversations", on_delete=models.CASCADE
     )
     user = models.ForeignKey(
-        "authentication.Staff",
+        "authentication.User",
         related_name="user_resolution_conversations",
         on_delete=models.CASCADE,
     )
