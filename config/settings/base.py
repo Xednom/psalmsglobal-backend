@@ -50,6 +50,7 @@ LOCAL_APPS = [
     "apps.newsfeed",
     "apps.vodaconnect",
     "apps.resolution",
+    "apps.grading",
 ]
 
 THIRD_PARTY_APPS = [
