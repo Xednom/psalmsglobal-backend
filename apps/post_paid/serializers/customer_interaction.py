@@ -17,6 +17,7 @@ from apps.post_paid.models import (
 )
 from apps.authentication.models import Client, Staff
 from apps.callme.serializers import AttributeSerializer, FormSerializer
+from apps.grading.serializers import PostpaidInteractionRateSerializer
 
 User = get_user_model()
 
@@ -168,7 +169,9 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
         many=True, required=False, allow_null=True
     )
     client_account_type = serializers.SerializerMethodField()
-
+    post_paid_interaction_rates = PostpaidInteractionRateSerializer(
+        many=True, required=False, allow_null=True
+    )
 
     class Meta:
         model = CustomerInteractionPostPaid
@@ -199,7 +202,8 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
             "customer_interaction_post_paid_records",
             "customer_interaction_post_paid_forms",
             "interaction_job_orders",
-            "client_account_type"
+            "client_account_type",
+            "post_paid_interaction_rates",
         )
 
     def get_company_client(self, instance):
@@ -210,10 +214,14 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
             company_crm.crm for company_crm in instance.company.company_crms.all()
         ]
         return company_crm
-    
+
     def get_client_account_type(self, instance):
-        client_account_types = User.objects.filter(username=instance.company.client.user)
-        client_account_type = [client.account_type for client in client_account_types.all()]
+        client_account_types = User.objects.filter(
+            username=instance.company.client.user
+        )
+        client_account_type = [
+            client.account_type for client in client_account_types.all()
+        ]
         client_account_type = "".join(client_account_type)
         return client_account_type
 
@@ -227,9 +235,7 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
         form_id = Form.objects.filter(
             customer_interaction_post_paid__ticket_number=instance.ticket_number
         ).first()
-        attributes = Attribute.objects.select_related("form").filter(
-            form=form_id
-        )
+        attributes = Attribute.objects.select_related("form").filter(form=form_id)
         form_mailing_lists = [
             form.mailing_lists_unpacked
             for form in Form.objects.filter(customer_interaction_post_paid=instance.id)
