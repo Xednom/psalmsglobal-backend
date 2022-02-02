@@ -14,6 +14,7 @@ from apps.prepaid.models import (
 from apps.authentication.models import Client, Staff
 
 from apps.callme.serializers import FormSerializer
+from apps.grading.serializers import PrepaidInteractionRateSerializer
 
 
 User = get_user_model()
@@ -98,6 +99,9 @@ class CustomerInteractionPrepaidSerializer(WritableNestedModelSerializer):
     client_account_type = serializers.SerializerMethodField()
     company_client = serializers.SerializerMethodField()
     company_crm = serializers.SerializerMethodField()
+    prepaid_interaction_rates = PrepaidInteractionRateSerializer(
+        many=True, required=False, allow_null=True
+    )
 
     class Meta:
         model = CustomerInteractionPrepaid
@@ -125,6 +129,7 @@ class CustomerInteractionPrepaidSerializer(WritableNestedModelSerializer):
             "client_account_type",
             "company_client",
             "company_crm",
+            "prepaid_interaction_rates",
         )
 
     def get_company_client(self, instance):
