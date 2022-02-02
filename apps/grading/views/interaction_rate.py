@@ -20,7 +20,6 @@ class PostpaidInteractionRatingView(generics.CreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         client = Client.objects.get(user=user)
-        print(client)
         post_paid_id = self.kwargs.get("id")
         post_paid = get_object_or_404(CustomerInteractionPostPaid, id=post_paid_id)
         serializer.save(client=client, post_paid=post_paid)
@@ -33,7 +32,6 @@ class PrepaidInteractionRatingView(generics.CreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         client = Client.objects.get(user=user)
-        print(client)
         prepaid_id = self.kwargs.get("id")
         prepaid = get_object_or_404(CustomerInteractionPrepaid, id=prepaid_id)
         serializer.save(client=client, prepaid=prepaid)
