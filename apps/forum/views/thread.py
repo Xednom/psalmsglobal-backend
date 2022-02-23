@@ -8,8 +8,6 @@ from apps.authentication.models import Client, Staff
 from apps.forum.models import Thread, Comment, Reply
 from apps.forum.serializers import ThreadSerializer, CommentSerializer, ReplySerializer
 
-from notifications.signals import notify
-
 
 User = get_user_model()
 
