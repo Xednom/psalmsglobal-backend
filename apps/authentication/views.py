@@ -3,7 +3,12 @@ from rest_framework import viewsets, permissions, filters, generics
 from djoser.email import ConfirmationEmail, PasswordResetEmail
 
 from .models import Staff, Client
-from .serializers import StaffSerializer, ClientSerializer, ClientCodeSerializer, UserAccountTypeSerializer
+from .serializers import (
+    StaffSerializer,
+    ClientSerializer,
+    ClientCodeSerializer,
+    UserAccountTypeSerializer,
+)
 
 User = get_user_model()
 

@@ -8,6 +8,7 @@ __all__ = ("SubscriptionSerializer",)
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     company = serializers.CharField()
+
     class Meta:
         model = Subscription
         fields = (

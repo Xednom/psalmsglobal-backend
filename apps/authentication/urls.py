@@ -15,5 +15,9 @@ urlpatterns = [
     path("", include(router.urls)),
     path("", include("djoser.urls")),
     path("", include("djoser.urls.jwt")),
-    path("user-account-type/<int:id>/", UserAccountTypeView.as_view(), name="user-account-type")
+    path(
+        "user-account-type/<int:id>/",
+        UserAccountTypeView.as_view(),
+        name="user-account-type",
+    ),
 ]

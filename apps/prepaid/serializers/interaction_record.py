@@ -56,7 +56,9 @@ class InteractionRecordSerializer(serializers.ModelSerializer):
     def get_client_account_type(self, instance):
         if instance.client:
             client_account_types = User.objects.filter(username=instance.client.user)
-            client_account_type = [client.account_type for client in client_account_types.all()]
+            client_account_type = [
+                client.account_type for client in client_account_types.all()
+            ]
             client_account_type = "".join(client_account_type)
             return client_account_type
 

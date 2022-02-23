@@ -11,7 +11,7 @@ from .minutes_report import MinutesReportViewSet  # noqa
 from .prepaid_payment_summary import PrepaidPaymentSummaryViewSet  # noqa
 from .subscription import SubscriptionInfoViewSet, PrepaidSubscriptionViewSet  # noqa
 from .plan_detail import PrepaidViewSet  # noqa
-from .interaction_record import InteractionRecordViewSet #noqa
+from .interaction_record import InteractionRecordViewSet  # noqa
 from .job_order import (
     JobOrderPrepaidViewSet,
     JobOrderViewSet,

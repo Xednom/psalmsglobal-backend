@@ -5,7 +5,10 @@ from rest_framework import viewsets, permissions, filters
 from apps.authentication.models import Client
 from apps.callme.models import Company
 from apps.prepaid.models import SubscriptionInfo, PrepaidSubscription
-from apps.prepaid.serializers import SubscriptionInfoSerializer, PrepaidSubscriptionSerializer
+from apps.prepaid.serializers import (
+    SubscriptionInfoSerializer,
+    PrepaidSubscriptionSerializer,
+)
 
 User = get_user_model()
 
@@ -50,7 +53,9 @@ class PrepaidSubscriptionViewSet(viewsets.ModelViewSet):
             or current_user.designation_category == "new_client"
             or current_user.designation_category == "affiliate_partner"
         ):
-            qs = PrepaidSubscription.objects.select_related("client").filter(client__user__in=user)
+            qs = PrepaidSubscription.objects.select_related("client").filter(
+                client__user__in=user
+            )
             return qs
         elif current_user.is_superuser:
             qs = PrepaidSubscription.objects.all()

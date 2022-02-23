@@ -36,14 +36,14 @@ class CompanySerializer(serializers.ModelSerializer):
             "company_complete_address",
             "company_forwarding_email",
             "paypal_email",
-            "notes"
+            "notes",
         )
-    
+
     def get_company_crm(self, instance):
         company_crm = Crm.objects.filter(company=instance.id)
         company_crm = [company_crm.crm for company_crm in company_crm.all()]
         return company_crm
-    
+
     def get_company_client_code(self, instance):
         client_codes = Client.objects.filter(client_code=instance.client.client_code)
         client_code = [client_code.client_code for client_code in client_codes.all()]
@@ -52,6 +52,8 @@ class CompanySerializer(serializers.ModelSerializer):
 
     def get_company_client_account_type(self, instance):
         client_account_types = User.objects.filter(username=instance.client.user)
-        client_account_type = [client.account_type for client in client_account_types.all()]
+        client_account_type = [
+            client.account_type for client in client_account_types.all()
+        ]
         client_account_type = "".join(client_account_type)
         return client_account_type

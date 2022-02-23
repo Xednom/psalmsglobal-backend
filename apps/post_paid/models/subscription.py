@@ -8,7 +8,9 @@ __all__ = ("Subscription",)
 
 class Subscription(TimeStamped):
     company = models.ForeignKey(
-        "callme.Company", related_name="post_paid_company_subscriptions", on_delete=models.CASCADE
+        "callme.Company",
+        related_name="post_paid_company_subscriptions",
+        on_delete=models.CASCADE,
     )
     signed_up_date = models.DateField(blank=True, null=True)
     signed_out_date = models.DateField(blank=True, null=True)

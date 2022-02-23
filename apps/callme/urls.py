@@ -16,7 +16,7 @@ from apps.callme.views import (
     OfferStatusViewSet,
     PropertyInfoViewSet,
     FileUploadView,
-    FormView
+    FormView,
 )
 
 router = routers.DefaultRouter()
@@ -24,8 +24,14 @@ router = routers.DefaultRouter()
 router.register(r"company", CompanyViewSet, basename="company")
 router.register(r"crm", CrmViewSet, basename="crm")
 router.register(r"phone-system", PhoneSystemViewSet, basename="phone-system")
-router.register(r"vodaconnect-plan", VodaconnectPlanViewSet, basename="vodaconnect-plan")
-router.register(r"vodaconnect-line-type", VodaconnectLineTypeViewSet, basename="vodaconnect-line-type")
+router.register(
+    r"vodaconnect-plan", VodaconnectPlanViewSet, basename="vodaconnect-plan"
+)
+router.register(
+    r"vodaconnect-line-type",
+    VodaconnectLineTypeViewSet,
+    basename="vodaconnect-line-type",
+)
 router.register(r"script", ScriptViewSet, basename="script")
 router.register(r"form", FormViewSet, basename="form")
 router.register(r"state", StateViewSet, basename="state")
@@ -39,5 +45,5 @@ app_name = "callme"
 urlpatterns = [
     path("", include(router.urls), name="callme"),
     path("file-upload/", FileUploadView.as_view(), name="file-upload"),
-    path("interaction-form/<int:id>/", FormView.as_view(), name="form-view")
+    path("interaction-form/<int:id>/", FormView.as_view(), name="form-view"),
 ]

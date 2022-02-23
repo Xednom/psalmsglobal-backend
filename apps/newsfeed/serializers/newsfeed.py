@@ -60,7 +60,15 @@ class NewsFeedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = NewsFeed
-        fields = ("id", "title", "body", "publish_to", "news_feed_comments", "was_published", "created_at")
+        fields = (
+            "id",
+            "title",
+            "body",
+            "publish_to",
+            "news_feed_comments",
+            "was_published",
+            "created_at",
+        )
 
     def get_was_published(self, instance):
         now = timezone.now()

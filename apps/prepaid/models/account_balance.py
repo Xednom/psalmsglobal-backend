@@ -26,6 +26,6 @@ class AccountBalance(TimeStamped):
 
     class Meta:
         ordering = ["-client"]
-    
+
     def __str__(self):
         return f"Account Balance of {self.client}"

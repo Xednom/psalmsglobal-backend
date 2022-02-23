@@ -23,7 +23,7 @@ class CallMeInfoSerializer(serializers.ModelSerializer):
         slug_field="company_name",
         queryset=Company.objects.all(),
         required=False,
-        allow_null=True
+        allow_null=True,
     )
     company_name = serializers.SerializerMethodField()
 

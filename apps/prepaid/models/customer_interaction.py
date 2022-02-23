@@ -96,17 +96,17 @@ class CustomerInteractionPrepaid(TimeStamped):
         related_name="prepaid_customer_interaction_auditors",
         on_delete=models.SET_NULL,
         blank=True,
-        null=True
+        null=True,
     )
 
     class Meta:
         verbose_name = "Prepaid Customer Interaction board"
         verbose_name_plural = "Prepaid Customer Interactions board"
         ordering = ["-ticket_number"]
-    
+
     def __str__(self):
         return f"Prepaid Customer Interaction reocrd of {self.ticket_number}"
-    
+
     def create_ticket_number(self):
         ticket_code = ""
         last_in = CustomerInteractionPrepaid.objects.all().order_by("id").last()

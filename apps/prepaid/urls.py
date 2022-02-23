@@ -17,7 +17,7 @@ from apps.prepaid.views import (
     JobOrderPrepaidViewSet,
     JobOrderViewSet,
     InteractionRecordViewSet,
-    CreateJobOrderComment
+    CreateJobOrderComment,
 )
 
 router = routers.DefaultRouter()
@@ -36,14 +36,24 @@ router.register(
     CustomerInteractionPrepaidViewSet,
     basename="customer-interaction",
 )
-router.register(r"payment-summary", PrepaidPaymentSummaryViewSet, basename="prepaid-payment-summary")
-router.register(r"subscription-info", SubscriptionInfoViewSet, basename="subscription-info")
-router.register(r"prepaid-subscription", PrepaidSubscriptionViewSet, basename="prepaid-subscription")
+router.register(
+    r"payment-summary", PrepaidPaymentSummaryViewSet, basename="prepaid-payment-summary"
+)
+router.register(
+    r"subscription-info", SubscriptionInfoViewSet, basename="subscription-info"
+)
+router.register(
+    r"prepaid-subscription", PrepaidSubscriptionViewSet, basename="prepaid-subscription"
+)
 router.register(r"minutes-report", MinutesReportViewSet, basename="minutes-report")
 router.register(r"prepaid-account", PrepaidViewSet, basename="prepaid-account")
-router.register(r"job-order", JobOrderPrepaidViewSet, basename="job-order-interaction-list")
+router.register(
+    r"job-order", JobOrderPrepaidViewSet, basename="job-order-interaction-list"
+)
 router.register(r"job-order-general", JobOrderViewSet, basename="job-order-list")
-router.register(r"interaction-record", InteractionRecordViewSet, basename="interaction-list")
+router.register(
+    r"interaction-record", InteractionRecordViewSet, basename="interaction-list"
+)
 
 app_name = "prepaid"
 
