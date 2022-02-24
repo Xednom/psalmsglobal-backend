@@ -12,7 +12,7 @@ from apps.forum.serializers import ThreadSerializer, CommentSerializer, ReplySer
 User = get_user_model()
 
 
-__all__ = ("ThreadViewSet", "CommentView")
+__all__ = ("ThreadViewSet", "CommentView", "ReplyView")
 
 
 class ThreadViewSet(viewsets.ModelViewSet):
@@ -28,13 +28,13 @@ class ThreadViewSet(viewsets.ModelViewSet):
             queryset = (
                 Thread.objects.select_related("author")
                 .prefetch_related("staff_carbon_copy", "client_carbon_copy")
-                .filter(Q(author=current_user) | Q(client_carbon_copy__in=client))
+                .filter(Q(author=current_user) or Q(client_carbon_copy__in=client))
             )
         elif staff:
             queryset = (
                 Thread.objects.select_related("author")
                 .prefetch_related("staff_carbon_copy", "client_carbon_copy")
-                .filter(Q(author=current_user) | Q(staff_carbon_copy__in=staff))
+                .filter(Q(author=current_user) or Q(staff_carbon_copy__in=staff))
             )
         return queryset
 
@@ -49,3 +49,15 @@ class CommentView(generics.CreateAPIView):
         thread_id = self.kwargs.get("id")
         thread = get_object_or_404(Thread, id=thread_id)
         serializer.save(author=author, thread=thread)
+
+
+class ReplyView(generics.CreateAPIView):
+    serializer_class = ReplySerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Reply.objects.select_related("comment", "author").all()
+
+    def perform_create(self, serializer):
+        author = self.request.user
+        comment_id = self.kwargs.get("id")
+        comment = get_object_or_404(Comment, id=comment_id)
+        serializer.save(author=author, comment=comment)

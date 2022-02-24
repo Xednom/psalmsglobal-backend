@@ -24,6 +24,54 @@ class ClientCarbonCopySerializer(serializers.ModelSerializer):
         fields = ("client_code",)
 
 
+class ReplySerializer(serializers.ModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), required=False, allow_null=True
+    )
+    comment = serializers.PrimaryKeyRelatedField(
+        queryset=Comment.objects.all(), required=False, allow_null=True
+    )
+    user_type = serializers.SerializerMethodField()
+    commenter = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Reply
+        fields = (
+            "id",
+            "comment",
+            "author",
+            "content",
+            "user_type",
+            "commenter",
+            "created_at",
+        )
+
+    def get_user_type(self, instance):
+        staff_user = "staff"
+        client_user = "client"
+        if instance.author.designation_category == "staff":
+            return staff_user
+        elif instance.author.designation_category != "staff":
+            return client_user
+
+    def get_commenter(self, instance):
+        get_staff_code = Staff.objects.select_related("user").filter(
+            user=instance.author
+        )
+        get_client_code = Client.objects.select_related("user").filter(
+            user=instance.author
+        )
+
+        if instance.author.designation_category == "staff":
+            staff_code = [staff.staff_id for staff in get_staff_code]
+            staff_code = "".join(staff_code)
+            return staff_code
+        elif instance.author.designation_category != "staff":
+            client_code = [client.client_code for client in get_client_code]
+            client_code = "".join(client_code)
+            return client_code
+
+
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), required=False, allow_null=True
@@ -31,6 +79,7 @@ class CommentSerializer(serializers.ModelSerializer):
     thread = serializers.PrimaryKeyRelatedField(
         queryset=Thread.objects.all(), required=False, allow_null=True
     )
+    comment_replies = ReplySerializer(many=True, required=False, allow_null=True)
     user_type = serializers.SerializerMethodField()
     commenter = serializers.SerializerMethodField()
 
@@ -44,6 +93,7 @@ class CommentSerializer(serializers.ModelSerializer):
             "commenter",
             "created_at",
             "user_type",
+            "comment_replies",
         )
 
     def get_user_type(self, instance):
@@ -107,17 +157,3 @@ class ThreadSerializer(WritableNestedModelSerializer):
             client_code = [client.client_code for client in get_client_code]
             client_code = "".join(client_code)
             return client_code
-
-
-class ReplySerializer(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    comment = serializers.PrimaryKeyRelatedField(queryset=Comment.objects.all())
-
-    class Meta:
-        model = Reply
-        fields = (
-            "id",
-            "comment",
-            "author",
-            "content",
-        )

@@ -1,1 +1,1 @@
-from .thread import ThreadViewSet, CommentView  # noqa
+from .thread import ThreadViewSet, CommentView, ReplyView  # noqa
