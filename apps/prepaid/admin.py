@@ -10,7 +10,7 @@ from apps.prepaid.models import (
     JobOrderPrepaid,
     PrepaidSubscription,
     SubscriptionType,
-    PaymentSummary
+    PaymentSummary,
 )
 
 

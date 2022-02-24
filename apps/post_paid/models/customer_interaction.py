@@ -118,7 +118,7 @@ class CustomerInteractionPostPaid(TimeStamped):
         related_name="post_paid_customer_interaction_auditors",
         on_delete=models.SET_NULL,
         blank=True,
-        null=True
+        null=True,
     )
 
     class Meta:

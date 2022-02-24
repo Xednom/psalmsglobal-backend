@@ -15,8 +15,10 @@ class InteractionRecordSerializer(serializers.ModelSerializer):
         queryset=Staff.objects.all(), required=False, allow_null=True
     )
     customer_interaction_post_paid = serializers.SlugRelatedField(
-        slug_field="ticket_number", queryset=CustomerInteractionPostPaid.objects.all(),
-        required=False, allow_null=True
+        slug_field="ticket_number",
+        queryset=CustomerInteractionPostPaid.objects.all(),
+        required=False,
+        allow_null=True,
     )
     agent_name = serializers.SerializerMethodField()
     agent_code = serializers.SerializerMethodField()

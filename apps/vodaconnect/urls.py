@@ -10,7 +10,7 @@ from apps.vodaconnect.views import (
     PlanDetailViewSet,
     SubscriberStatusViewSet,
     ForwardingInformationViewSet,
-    VodaconnectSignUpViewSet
+    VodaconnectSignUpViewSet,
 )
 
 router = routers.DefaultRouter()

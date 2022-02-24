@@ -20,5 +20,5 @@ class AccountBalanceSerializer(serializers.ModelSerializer):
             "account_total_spending",
             "account_total_mins_used",
             "account_total_mins_unused",
-            "total_spending"
+            "total_spending",
         )

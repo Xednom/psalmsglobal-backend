@@ -24,6 +24,6 @@ class PaymentSummary(TimeStamped):
 
     class Meta:
         ordering = ["-client"]
-    
+
     def __str__(self):
         return f"Payment history and converted minutes of {self.client}"

@@ -20,7 +20,9 @@ class MinutesReportViewSet(viewsets.ModelViewSet):
         current_user = self.request.user
         user = User.objects.filter(username=current_user)
         if current_user:
-            qs = MinutesReport.objects.select_related("client").filter(client__user__in=user)
+            qs = MinutesReport.objects.select_related("client").filter(
+                client__user__in=user
+            )
             return qs
         elif current_user.is_superuser:
             qs = MinutesReport.objects.all()

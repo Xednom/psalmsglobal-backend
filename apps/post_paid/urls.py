@@ -18,7 +18,7 @@ from apps.post_paid.views import (
     JobOrderViewSet,
     CreateJobOrderComment,
     PlanTypeListView,
-    CostOfPlanListView
+    CostOfPlanListView,
 )
 
 router = routers.DefaultRouter()
@@ -37,12 +37,16 @@ router.register(
     CustomerInteractionPostPaidViewSet,
     basename="customer-interaction-post-paid",
 )
-router.register(r"interaction-record", InteractionRecordViewSet, basename="interaction-record")
+router.register(
+    r"interaction-record", InteractionRecordViewSet, basename="interaction-record"
+)
 router.register(r"minutes-report", MinutesReportViewSet, basename="minutes-report")
 router.register(r"monthly-charge", MonthlyChargeViewSet, basename="minutes-charge")
 router.register(r"post-paid", PostPaidViewSet, basename="post-paid")
 router.register(r"subscription", SubscriptionViewSet, basename="subscription-list")
-router.register(r"job-order", JobOrderPostPaidViewSet, basename="job-order-interaction-list")
+router.register(
+    r"job-order", JobOrderPostPaidViewSet, basename="job-order-interaction-list"
+)
 router.register(r"job-order-general", JobOrderViewSet, basename="job-order-list")
 
 app_name = "post_paid"
@@ -60,6 +64,9 @@ urlpatterns = [
         name="job-order-comment",
     ),
     path("post-paid/plan-types/", PlanTypeListView.as_view(), name="plan-type-list"),
-    path("post-paid/cost-of-plan/", CostOfPlanListView.as_view(), name="cost-of-plan-list"),
-
+    path(
+        "post-paid/cost-of-plan/",
+        CostOfPlanListView.as_view(),
+        name="cost-of-plan-list",
+    ),
 ]

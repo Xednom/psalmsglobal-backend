@@ -51,6 +51,7 @@ LOCAL_APPS = [
     "apps.vodaconnect",
     "apps.resolution",
     "apps.grading",
+    "apps.forum",
 ]
 
 THIRD_PARTY_APPS = [

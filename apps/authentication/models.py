@@ -45,7 +45,9 @@ class User(AbstractUser):
     company_category = models.CharField(
         choices=CompanyCategory.choices, blank=True, max_length=40
     )
-    account_type = models.CharField(choices=AccountType.choices, blank=True, max_length=40)
+    account_type = models.CharField(
+        choices=AccountType.choices, blank=True, max_length=40
+    )
     REQUIRED_FIELDS = [
         "first_name",
         "last_name",
@@ -53,7 +55,7 @@ class User(AbstractUser):
         "email",
         "designation_category",
         "company_category",
-        "account_type"
+        "account_type",
     ]
 
     @property

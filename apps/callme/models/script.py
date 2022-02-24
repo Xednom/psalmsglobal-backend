@@ -52,11 +52,11 @@ class Form(TimeStamped):
 
     def __str__(self):
         return f"{self.form_title}"
-    
+
     def unpack_mailing_lists(self):
         mailing = " ".join(self.mailing_lists)
         return mailing
-    
+
     # @property
     # def get_mailing_list(self):
     #     if self.mailing_lists:

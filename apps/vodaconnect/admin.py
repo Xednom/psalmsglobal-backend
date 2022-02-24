@@ -13,7 +13,7 @@ from apps.vodaconnect.models import (
     TotalNumberOfExtension,
     ZipTrunkLogin,
     OtherLogin,
-    VodaconnectSignUp
+    VodaconnectSignUp,
 )
 
 
@@ -192,9 +192,7 @@ class VodaconnectSignUpAdmin(admin.ModelAdmin):
         "file_description",
         "url",
     )
-    list_filter = (
-        "client",
-    )
+    list_filter = ("client",)
     search_fields = (
         "client__user__first_name",
         "client__user__last_name",
@@ -227,9 +225,7 @@ class ForwardingInformationAdmin(admin.ModelAdmin):
         "forwarding_number",
         "notes",
     )
-    list_filter = (
-        "client",
-    )
+    list_filter = ("client",)
     search_fields = (
         "client__user__first_name",
         "client__user__last_name",

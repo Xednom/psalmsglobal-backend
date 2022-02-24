@@ -13,6 +13,7 @@ from import_export.admin import ImportExportModelAdmin
 
 User = get_user_model()
 
+
 class UserProfileAdmin(UserAdmin):
     list_display = (
         "username",
@@ -35,7 +36,13 @@ class UserProfileAdmin(UserAdmin):
         "is_active",
         "groups",
     )
-    search_fields = ("first_name", "last_name", "account_type", "company_category", "designation_category")
+    search_fields = (
+        "first_name",
+        "last_name",
+        "account_type",
+        "company_category",
+        "designation_category",
+    )
     UserAdmin.fieldsets = (
         (None, {"fields": ("username", "password")}),
         (
