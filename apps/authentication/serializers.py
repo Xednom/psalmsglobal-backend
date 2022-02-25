@@ -81,6 +81,12 @@ class UserAccountTypeSerializer(serializers.ModelSerializer):
         fields = ("id", "account_type")
 
 
+class StaffCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Staff
+        fields = ("id", "staff_id")
+
+
 class StaffSerializer(WritableNestedModelSerializer):
     user = serializers.PrimaryKeyRelatedField(
         queryset=Staff.objects.all(), required=False, allow_null=True

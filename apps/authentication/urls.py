@@ -2,7 +2,13 @@ from rest_framework import routers
 
 from django.urls import include, path
 
-from .views import StaffViewSet, ClientViewSet, ClientCodeViewSet, UserAccountTypeView
+from .views import (
+    StaffViewSet,
+    ClientViewSet,
+    ClientCodeViewSet,
+    UserAccountTypeView,
+    StaffCodeList,
+)
 
 router = routers.DefaultRouter()
 router.register(r"staff", StaffViewSet, basename="staff")
@@ -20,4 +26,5 @@ urlpatterns = [
         UserAccountTypeView.as_view(),
         name="user-account-type",
     ),
+    path("staff-code/", StaffCodeList.as_view(), name="staff-code"),
 ]

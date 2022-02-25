@@ -4,6 +4,7 @@ from djoser.email import ConfirmationEmail, PasswordResetEmail
 
 from .models import Staff, Client
 from .serializers import (
+    StaffCodeSerializer,
     StaffSerializer,
     ClientSerializer,
     ClientCodeSerializer,
@@ -35,6 +36,12 @@ class ClientCodeViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     filter_backends = [filters.SearchFilter]
     search_fields = ["=client_code"]
+
+
+class StaffCodeList(generics.ListAPIView):
+    serializer_class = StaffCodeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Staff.objects.all()
 
 
 class UserAccountTypeView(generics.RetrieveAPIView):
