@@ -69,6 +69,7 @@ class CustomerInteractionPostPaidViewSet(viewsets.ModelViewSet):
         current_user = self.request.user
         users = User.objects.filter(username=current_user)
         user = users.all()
+        print(current_user)
 
         if (
             current_user.designation_category == "current_client"
@@ -83,7 +84,9 @@ class CustomerInteractionPostPaidViewSet(viewsets.ModelViewSet):
             qs = CustomerInteractionPostPaid.objects.all()
             return qs
         elif current_user.is_superuser:
-            qs = CustomerInteractionPostPaid.objects.all()
+            qs = CustomerInteractionPostPaid.objects.filter(
+                ticket_number__icontains="PSCI"
+            )
             return qs
 
 
