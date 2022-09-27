@@ -124,7 +124,7 @@ class CustomerInteractionPostPaid(TimeStamped):
     class Meta:
         verbose_name = "Postpaid Customer Interaction Board"
         verbose_name_plural = "Postpaid Customer Interaction Board"
-        ordering = ["-ticket_number"]
+        ordering = ["-id"]
 
     def __str__(self):
         return self.ticket_number
