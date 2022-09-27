@@ -39,6 +39,9 @@ class NewsFeedViewSet(viewsets.ModelViewSet):
                 Q(publish_to="staff") | Q(publish_to="both")
             )
             return newsfeed
+        elif user.is_superuser:
+            qs = NewsFeed.objects.all()
+            return qs
 
 
 class CreateNewsFeedComment(generics.CreateAPIView):

@@ -153,4 +153,5 @@ class CurrentUserSerializer(BaseUserListSerializer, WritableNestedModelSerialize
             "designation_category",
             "company_category",
             "account_type",
+            "is_superuser",
         )
