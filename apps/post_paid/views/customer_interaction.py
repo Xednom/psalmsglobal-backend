@@ -86,7 +86,7 @@ class CustomerInteractionPostPaidViewSet(viewsets.ModelViewSet):
         elif current_user.is_superuser:
             qs = CustomerInteractionPostPaid.objects.filter(
                 ticket_number__icontains="PSCI"
-            )
+            ).order_by("-ticket_number")
             return qs
 
 
