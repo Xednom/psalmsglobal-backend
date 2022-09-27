@@ -5,6 +5,7 @@ ALLOWED_HOSTS = ["callme.pythonanywhere.com"]
 CORS_ALLOWED_ORIGINS = [
     "https://psalmsglobal-frontend.vercel.app",
     "https://psalmsglobal.app",
+    "https://psalmsglobal-frontend-git-feature-admin-interaction-xednom.vercel.app",  # added for demo url specific
 ]
 
 
