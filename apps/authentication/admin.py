@@ -7,7 +7,7 @@ from apps.authentication.models import (
     Client,
     Staff,
 )
-from apps.authentication.resources import ClientResource
+from apps.authentication.resources import ClientResource, StaffResource, UserResource
 
 from import_export.admin import ImportExportModelAdmin
 
@@ -130,8 +130,9 @@ class ClientProfileAdmin(ImportExportModelAdmin):
     get_email.short_description = "User email"
 
 
-class StaffProfileAdmin(admin.ModelAdmin):
+class StaffProfileAdmin(ImportExportModelAdmin):
     model = Staff
+    resource_class = StaffResource
     list_display = (
         "get_user",
         "get_email",
