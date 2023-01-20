@@ -2,9 +2,14 @@ from django.contrib import admin
 
 from .models import LoginCredential, AccountFile
 
+from apps.account.resources import LoginCredentialResource, AccountFileResource
 
-class LoginCredentialAdmin(admin.ModelAdmin):
+from import_export.admin import ImportExportModelAdmin
+
+
+class LoginCredentialAdmin(ImportExportModelAdmin):
     model = LoginCredential
+    resource_class = LoginCredentialResource
     list_display = ("client", "get_staffs", "category", "url")
     list_filter = ("client", "staff", "category")
     filter_horizontal = ("staff",)
@@ -38,8 +43,9 @@ class LoginCredentialAdmin(admin.ModelAdmin):
     get_staffs.short_description = "Staffs"
 
 
-class AccountFileAdmin(admin.ModelAdmin):
+class AccountFileAdmin(ImportExportModelAdmin):
     model = AccountFile
+    resource_class = AccountFileResource
     list_display = ("client", "get_staffs", "file_name", "url")
     list_filter = ("staff", "client", "file_name")
     filter_horizontal = ("staff",)
