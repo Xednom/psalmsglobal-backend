@@ -16,12 +16,23 @@ from apps.callme.models import (
     PropertyInfo,
     OfferStatus,
 )
-from apps.callme.resources import FormResource
+from apps.callme.resources import (
+    FormResource,
+    CompanyResource,
+    PropertyInfoResource,
+    StateResource,
+    CountyResource,
+    CrmResource,
+    VodaconnectPlanResource,
+    VodaconnectLineTypeResource,
+    PhoneSystemResource,
+)
 from apps.core.admin import ModelAdminMixin
 
 
-class CompanyAdmin(admin.ModelAdmin):
+class CompanyAdmin(ImportExportModelAdmin):
     model = Company
+    resource_class = CompanyResource
     list_display = (
         "client",
         "company_owner_name",
@@ -60,8 +71,9 @@ class CompanyAdmin(admin.ModelAdmin):
     )
 
 
-class CrmAdmin(admin.ModelAdmin):
+class CrmAdmin(ImportExportModelAdmin):
     model = Crm
+    resource_class = CrmResource
     list_display = ("company", "crm", "crm_login", "crm_url")
     list_filter = ("company__company_name", "crm")
     search_fields = (
@@ -87,8 +99,9 @@ class CrmAdmin(admin.ModelAdmin):
     )
 
 
-class PhoneSystemAdmin(admin.ModelAdmin):
+class PhoneSystemAdmin(ImportExportModelAdmin):
     model = PhoneSystem
+    resource_class = PhoneSystemResource
     list_display = (
         "company",
         "sub_number",
@@ -173,13 +186,87 @@ class FormAdmin(ModelAdminMixin, ImportExportModelAdmin):
             return qs.filter(original_script=True)
 
 
+class StateAdmin(ImportExportModelAdmin):
+    model = State
+    resource_class = StateResource
+    list_display = ("name",)
+    list_filter = ("name",)
+
+
+class CountyAdmin(ImportExportModelAdmin):
+    model = County
+    resource_class = CountyResource
+    list_display = ("name", "state")
+    list_filter = ("name", "state")
+
+
+class VodaconnectLineTypeAdmin(ImportExportModelAdmin):
+    model = VodaconnectLineType
+    resource_class = VodaconnectLineTypeResource
+    list_display = ("line",)
+    list_filter = ("line",)
+
+
+class VodaconnectPlanAdmin(ImportExportModelAdmin):
+    model = VodaconnectPlan
+    resource_class = VodaconnectPlanResource
+    list_display = ("range",)
+    list_filter = ("range",)
+
+
+class PropertyInfoAdmin(ImportExportModelAdmin):
+    model = PropertyInfo
+    resource_class = PropertyInfoResource
+    list_display = (
+        "company",
+        "apn",
+        "reference",
+        "property_address",
+        "offer_status",
+    )
+    list_filter = (
+        "company",
+        "offer_status",
+    )
+    search_fields = ("company__company_name",)
+    fieldsets = (
+        (
+            "Property info",
+            {
+                "fields": (
+                    "company",
+                    "apn",
+                    "reference",
+                    "property_size",
+                    "short_legal_description",
+                    "property_address",
+                    "property_city",
+                    "property_county",
+                    "property_state",
+                    "property_zip",
+                    "full_name",
+                    "company_name",
+                    "buyer_offer_amount",
+                    "approved_option_amount",
+                    "other_terms",
+                    "seller_offer_amount",
+                    "other_offer_terms",
+                    "notes",
+                    "offer_status",
+                    "offer_status_notes",
+                )
+            },
+        ),
+    )
+
+
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Crm, CrmAdmin)
 admin.site.register(PhoneSystem, PhoneSystemAdmin)
-admin.site.register(VodaconnectLineType)
-admin.site.register(VodaconnectPlan)
+admin.site.register(VodaconnectLineType, VodaconnectLineTypeAdmin)
+admin.site.register(VodaconnectPlan, VodaconnectPlanAdmin)
 admin.site.register(Form, FormAdmin)
-admin.site.register(State)
-admin.site.register(County)
-admin.site.register(PropertyInfo)
+admin.site.register(State, StateAdmin)
+admin.site.register(County, CountyAdmin)
+admin.site.register(PropertyInfo, PropertyInfoAdmin)
 admin.site.register(OfferStatus)
