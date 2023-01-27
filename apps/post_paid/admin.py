@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from import_export.admin import ImportExportModelAdmin
+
 from apps.post_paid.models import (
     AccountBalance,
     AccountCharge,
@@ -18,9 +20,12 @@ from apps.post_paid.models import (
     InternalAuditor,
 )
 
+from apps.post_paid import resources
 
-class AccountBalanceAdmin(admin.ModelAdmin):
+
+class AccountBalanceAdmin(ImportExportModelAdmin):
     model = AccountBalance
+    resource_class = resources.AccountBalanceResource
     list_display = (
         "client",
         "account_total_aquired_minutes",
@@ -33,8 +38,9 @@ class AccountBalanceAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-class AccountChargeAdmin(admin.ModelAdmin):
+class AccountChargeAdmin(ImportExportModelAdmin):
     model = AccountCharge
+    resource_class = resources.AccountChargeResource
     list_display = ("client", "agent", "ticket_number", "date_called", "total_minutes")
     list_filter = ("client", "agent")
     search_fields = (
