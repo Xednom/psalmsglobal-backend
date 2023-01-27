@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from import_export.admin import ImportExportModelAdmin
+
 from apps.prepaid.models import (
     AccountBalance,
     AccountCharge,
@@ -13,9 +15,12 @@ from apps.prepaid.models import (
     PaymentSummary,
 )
 
+from apps.prepaid import resources
 
-class AccountBalanceAdmin(admin.ModelAdmin):
+
+class AccountBalanceAdmin(ImportExportModelAdmin):
     model = AccountBalance
+    resources = resources.AccountBalanceResource
     list_display = (
         "client",
         "account_total_aquired_minutes",
@@ -28,8 +33,9 @@ class AccountBalanceAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-class AccountChargeAdmin(admin.ModelAdmin):
+class AccountChargeAdmin(ImportExportModelAdmin):
     model = AccountCharge
+    resources = resources.AccountChargeResource
     list_display = ("client", "agent", "ticket_number", "date_called", "total_minutes")
     list_filter = ("client", "agent")
     search_fields = (
@@ -41,8 +47,9 @@ class AccountChargeAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-class CustomerInteractionPrepaidAdmin(admin.ModelAdmin):
+class CustomerInteractionPrepaidAdmin(ImportExportModelAdmin):
     model = CustomerInteractionPrepaid
+    resources = resources.CustomerInteractionPrepaidResource
     list_display = (
         "id",
         "ticket_number",
@@ -92,8 +99,9 @@ class CustomerInteractionPrepaidAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-class InteractionRecordAdmin(admin.ModelAdmin):
+class InteractionRecordAdmin(ImportExportModelAdmin):
     model = InteractionRecord
+    resources = resources.InteractionRecordResource
     list_display = (
         "client",
         "agent",
@@ -113,8 +121,9 @@ class InteractionRecordAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-class MinutesReportAdmin(admin.ModelAdmin):
+class MinutesReportAdmin(ImportExportModelAdmin):
     model = MinutesReport
+    resources = resources.MinutesReportResource
     list_display = (
         "created_at",
         "id",
@@ -133,8 +142,9 @@ class MinutesReportAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-class PrepaidAdmin(admin.ModelAdmin):
+class PrepaidAdmin(ImportExportModelAdmin):
     model = Prepaid
+    resources = resources.PrepaidResource
     list_display = (
         "client",
         "subscription_type",
@@ -151,8 +161,9 @@ class PrepaidAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-class JobOrderAdmin(admin.ModelAdmin):
+class JobOrderAdmin(ImportExportModelAdmin):
     model = JobOrderPrepaid
+    resources = resources.JobOrderPrepaidResource
     list_display = (
         "client",
         "client_file",
@@ -176,8 +187,40 @@ class JobOrderAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-class PrepaidSubscriptionAdmin(admin.ModelAdmin):
+class PrepaidSubscriptionAdmin(ImportExportModelAdmin):
     model = PrepaidSubscription
+    resources = resources.PrepaidSubscriptionResource
+    list_display = (
+        "client",
+        "date_paid",
+        "month_year",
+        "plan_type",
+        "monthly_fee",
+        "payment_status",
+    )
+    list_filter = ("client", "payment_status", "month_year", "plan_type")
+    search_fields = (
+        "client__user__first_name",
+        "client__user__last_name",
+        "client__client_code",
+    )
+
+
+class SubscriptionTypeAdmin(ImportExportModelAdmin):
+    model = SubscriptionType
+    resources = resources.SubscriptionTypeResource
+    list_display = (
+        "name",
+    )
+    list_filter = ("name",)
+    search_fields = (
+        "name",
+    )
+
+
+class PaymentSummaryAdmin(ImportExportModelAdmin):
+    model = PaymentSummary
+    resources = resources.PaymentSummaryResource
     list_display = (
         "client",
         "date_paid",
@@ -203,4 +246,4 @@ admin.site.register(AccountCharge, AccountChargeAdmin)
 admin.site.register(AccountBalance, AccountBalanceAdmin)
 admin.site.register(JobOrderPrepaid, JobOrderAdmin)
 admin.site.register(PrepaidSubscription, PrepaidSubscriptionAdmin)
-admin.site.register(SubscriptionType)
+admin.site.register(SubscriptionType, SubscriptionTypeAdmin)
