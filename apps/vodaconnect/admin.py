@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from import_export.admin import ImportExportModelAdmin
+
 from apps.vodaconnect.models import (
     ActivePlanDetail,
     OtherCharge,
@@ -16,9 +18,12 @@ from apps.vodaconnect.models import (
     VodaconnectSignUp,
 )
 
+from apps.vodaconnect import resources
 
-class ActivePlanDetailAdmin(admin.ModelAdmin):
+
+class ActivePlanDetailAdmin(ImportExportModelAdmin):
     model = ActivePlanDetail
+    resources = resources.ActivePlanDetailResource
     list_display = (
         "client",
         "plan_type",
@@ -43,8 +48,9 @@ class ActivePlanDetailAdmin(admin.ModelAdmin):
     )
 
 
-class OtherChargeAdmin(admin.ModelAdmin):
+class OtherChargeAdmin(ImportExportModelAdmin):
     model = OtherCharge
+    resources = resources.OtherChargeResource
     list_display = (
         "client",
         "created_at",
@@ -68,8 +74,9 @@ class OtherChargeAdmin(admin.ModelAdmin):
     )
 
 
-class PlanSummaryAndPaymentAdmin(admin.ModelAdmin):
+class PlanSummaryAndPaymentAdmin(ImportExportModelAdmin):
     model = PlanSummaryAndPayment
+    resources = resources.PlanSummaryAndPaymentResource
     list_display = (
         "created_at",
         "date_of_paid",
@@ -97,8 +104,9 @@ class PlanSummaryAndPaymentAdmin(admin.ModelAdmin):
     )
 
 
-class VoipInformationAdmin(admin.ModelAdmin):
+class VoipInformationAdmin(ImportExportModelAdmin):
     model = VoipInformation
+    resources = resources.VoipInformationResource
     list_display = (
         "vodaconnect_number",
         "client",
@@ -118,8 +126,9 @@ class VoipInformationAdmin(admin.ModelAdmin):
     )
 
 
-class ActivationDetailAdmin(admin.ModelAdmin):
+class ActivationDetailAdmin(ImportExportModelAdmin):
     model = ActivationDetail
+    resources = resources.ActivationDetailResource
     list_display = (
         "client",
         "order_request_date",
@@ -142,8 +151,9 @@ class ActivationDetailAdmin(admin.ModelAdmin):
     )
 
 
-class PlanDetailAdmin(admin.ModelAdmin):
+class PlanDetailAdmin(ImportExportModelAdmin):
     model = PlanDetail
+    resources = resources.PlanDetailResource
     list_display = (
         "due_date",
         "client",
@@ -163,8 +173,9 @@ class PlanDetailAdmin(admin.ModelAdmin):
     )
 
 
-class SubscriberStatusAdmin(admin.ModelAdmin):
+class SubscriberStatusAdmin(ImportExportModelAdmin):
     model = SubscriberStatus
+    resources = resources.SubscriberStatusResource
     list_display = (
         "client",
         "status_in_production",
@@ -185,8 +196,9 @@ class SubscriberStatusAdmin(admin.ModelAdmin):
     )
 
 
-class VodaconnectSignUpAdmin(admin.ModelAdmin):
+class VodaconnectSignUpAdmin(ImportExportModelAdmin):
     model = VodaconnectSignUp
+    resources = resources.VodaconnectSignUpResource
     list_display = (
         "client",
         "file_description",
@@ -218,8 +230,9 @@ class TotalNumberOfExtensionAdmin(admin.TabularInline):
     fields = ("extension_number", "extension_logins", "notes")
 
 
-class ForwardingInformationAdmin(admin.ModelAdmin):
+class ForwardingInformationAdmin(ImportExportModelAdmin):
     model = ForwardingInformation
+    resources = resources.ForwardingInformationResource
     list_display = (
         "client",
         "forwarding_number",
@@ -232,6 +245,18 @@ class ForwardingInformationAdmin(admin.ModelAdmin):
         "forwarding_number",
     )
     inlines = [TotalNumberOfExtensionAdmin, OtherLoginAdmin, ZipTrunkLoginAdmin]
+
+
+class PlanTypeAdmin(ImportExportModelAdmin):
+    model = PlanType
+    resources = resources.PlanTypeResource
+    list_display = (
+        "name",
+    )
+    list_filter = ("name",)
+    search_fields = (
+        "name",
+    )
 
 
 admin.site.register(ActivePlanDetail, ActivePlanDetailAdmin)
