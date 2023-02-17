@@ -67,10 +67,19 @@ class CountyResource(resources.ModelResource):
 
 class CompanyResource(resources.ModelResource):
     class Meta:
-        model = County
+        model = Company
         fields = (
-            "name",
-            "state__name",
+            "client__user__first_name",
+            "client__user__last_name",
+            "company_owner_name",
+            "company_name",
+            "business_type",
+            "company_phone",
+            "company_email",
+            "company_complete_address",
+            "company_forwarding_email",
+            "paypal_email",
+            "notes",
         )
 
 
