@@ -52,8 +52,9 @@ class AccountChargeAdmin(ImportExportModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-class CustomerInteractionPostPaidAdmin(admin.ModelAdmin):
+class CustomerInteractionPostPaidAdmin(ImportExportModelAdmin):
     model = CustomerInteractionPostPaid
+    resource_class = resources.CustomerInteractionPostPaidResource
     list_display = (
         "id",
         "ticket_number",
