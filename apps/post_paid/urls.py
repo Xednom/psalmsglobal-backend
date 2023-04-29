@@ -19,6 +19,7 @@ from apps.post_paid.views import (
     CreateJobOrderComment,
     PlanTypeListView,
     CostOfPlanListView,
+    TicketSummaryViewSet
 )
 
 router = routers.DefaultRouter()
@@ -48,6 +49,7 @@ router.register(
     r"job-order", JobOrderPostPaidViewSet, basename="job-order-interaction-list"
 )
 router.register(r"job-order-general", JobOrderViewSet, basename="job-order-list")
+router.register(r"ticket-summary", TicketSummaryViewSet, basename="ticket-summary")
 
 app_name = "post_paid"
 

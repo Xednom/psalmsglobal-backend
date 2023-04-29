@@ -18,6 +18,7 @@ from apps.post_paid.models import (
     Subscription,
     JobOrderPostPaid,
     InternalAuditor,
+    TicketSummary,
 )
 
 from apps.post_paid import resources
@@ -307,6 +308,59 @@ class JobOrderAdmin(admin.ModelAdmin):
     # )
 
 
+class TicketSummaryAdmin(ImportExportModelAdmin):
+    model = TicketSummary
+    resource_class = resources.TicketSummaryResource
+    list_display = (
+        "id",
+        "ticket_number",
+        "created_at",
+        "company",
+        "apn",
+        "reference_number",
+        "state",
+        "crm",
+        "leads_transferred_crm",
+        "internal_auditor",
+        "caller_full_name",
+        "caller_phone",
+        "email",
+        "interested_to_sell",
+        "interested_to_buy",
+        "general_call",
+        "agent",
+    )
+    list_filter = (
+        "company__company_name",
+        "agent",
+        "county",
+        "state",
+        "crm",
+        "leads_transferred_crm",
+        "internal_auditor",
+        "interested_to_sell",
+        "interested_to_buy",
+        "general_call",
+    )
+    search_fields = (
+        "ticket_number",
+        "company",
+        "company__client__user__first_name",
+        "company__client__user__last_name",
+        "county",
+        "state",
+        "crm",
+        "leads_transferred_crm",
+        "internal_auditor__name",
+        "interested_to_sell__name",
+        "interested_to_buy__name",
+        "general_call__name",
+        "agent__user__first_name",
+        "agent__user__last_name",
+    )
+    readonly_fields = ("created_at", "updated_at")
+
+
 admin.site.register(Subscription, SubscriptionAdmin)
 admin.site.register(CustomerInteractionPostPaid, CustomerInteractionPostPaidAdmin)
 admin.site.register(InteractionRecord, InteractionRecordAdmin)
@@ -322,3 +376,4 @@ admin.site.register(AccountBalance, AccountBalanceAdmin)
 admin.site.register(GeneralCall, GeneralCallAdmin)
 admin.site.register(JobOrderPostPaid, JobOrderAdmin)
 admin.site.register(InternalAuditor)
+admin.site.register(TicketSummary, TicketSummaryAdmin)

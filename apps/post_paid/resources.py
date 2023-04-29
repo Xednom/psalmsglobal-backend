@@ -172,3 +172,33 @@ class GeneralCallResource(resources.ModelResource):
         model = models.GeneralCall
         fields = ("name",)
 
+
+class TicketSummaryResource(resources.ModelResource):
+    class Meta:
+        model = models.TicketSummary
+        fields = (
+            "created_at",
+            "updated_at",
+            "ticket_number",
+            "company",
+            "agent",
+            "apn",
+            "reference_number",
+            "county",
+            "state",
+            "address",
+            "caller_full_name",
+            "caller_phone",
+            "email",
+            "reason_of_the_call",
+            "interested_to_sell",
+            "interested_to_buy",
+            "general_call",
+            "crm",
+            "leads_transferred_crm",
+            "internal_auditor",
+            "acquisition_tagging",
+            "prep_for_marketing",
+            "disposition_tagging",
+            "sales_team_assigned"
+        )
