@@ -17,3 +17,4 @@ from .job_order import (
     JobOrderViewSet,
     CreateJobOrderComment,
 )  # noqa
+from .ticket_summary import TicketSummaryViewSet # noqa
