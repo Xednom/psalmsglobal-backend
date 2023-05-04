@@ -17,3 +17,4 @@ from .plan_detail import (
 )  # noqa
 from .subscription import SubscriptionSerializer  # noqa
 from .job_order import JobOrderPostPaidSerializer, JobOrderCommentSerializer  # noqa
+from .ticket_summary import TicketSummarySerializer # noqa
