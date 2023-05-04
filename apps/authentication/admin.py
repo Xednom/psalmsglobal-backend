@@ -24,6 +24,7 @@ class UserProfileAdmin(UserAdmin):
         "company_category",
         "account_type",
         "is_staff",
+        "sub_category"
     )
     list_filter = (
         "designation_category",
@@ -35,6 +36,7 @@ class UserProfileAdmin(UserAdmin):
         "is_superuser",
         "is_active",
         "groups",
+        "sub_category"
     )
     search_fields = (
         "first_name",
@@ -42,6 +44,7 @@ class UserProfileAdmin(UserAdmin):
         "account_type",
         "company_category",
         "designation_category",
+        "username"
     )
     UserAdmin.fieldsets = (
         (None, {"fields": ("username", "password")}),
@@ -55,6 +58,7 @@ class UserProfileAdmin(UserAdmin):
                     "designation_category",
                     "company_category",
                     "account_type",
+                    "sub_category"
                 )
             },
         ),

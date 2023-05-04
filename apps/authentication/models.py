@@ -37,6 +37,12 @@ class StaffCategory(models.TextChoices):
     home_based = "home_based", ("Home Based")
 
 
+class SubCategory(models.TextChoices):
+    na = "n_a", ("N/A")
+    regular = "regular", ("Regular")
+    ftm = "ftm", ("FTM")
+
+
 class User(AbstractUser):
     phone = models.CharField(blank=True, max_length=50)
     email = models.EmailField(unique=True)
@@ -48,6 +54,9 @@ class User(AbstractUser):
     )
     account_type = models.CharField(
         choices=AccountType.choices, blank=True, max_length=40
+    )
+    sub_category = models.CharField(
+        max_length=50, choices=SubCategory.choices, default=SubCategory.na
     )
     REQUIRED_FIELDS = [
         "first_name",
@@ -232,7 +241,6 @@ class Staff(TimeStamped):
 
         last_in = Staff.objects.all().order_by("id").last()
         if not last_in:
-
             seq = 0
             staff_code = staff_initials + staff_code + "000" + str((int(seq) + 1))
             return staff_code
