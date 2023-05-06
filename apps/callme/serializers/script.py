@@ -34,7 +34,7 @@ class FormSerializer(WritableNestedModelSerializer):
     )
     attribute_forms = AttributeSerializer(many=True, required=False, allow_null=True)
     id_form = serializers.SerializerMethodField()
-    mailing_lists = serializers.JSONField()
+    mailing_lists = serializers.JSONField(required=False, allow_null=True)
 
     class Meta:
         model = Form
@@ -67,7 +67,7 @@ class ScriptSerializer(serializers.ModelSerializer):
         allow_null=True,
         required=False,
     )
-    mailing_lists = serializers.JSONField()
+    mailing_lists = serializers.JSONField(required=False, allow_null=True)
 
     class Meta:
         model = Script

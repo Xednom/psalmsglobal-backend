@@ -18,7 +18,7 @@ class AttributeDataType(models.TextChoices):
 
 
 class Form(TimeStamped):
-    form_title = models.CharField(max_length=250)
+    form_title = models.CharField(max_length=250, blank=True)
     company = models.ForeignKey(
         "callme.Company",
         related_name="company_forms",
@@ -54,7 +54,9 @@ class Form(TimeStamped):
         return f"{self.form_title}"
 
     def unpack_mailing_lists(self):
-        mailing = " ".join(self.mailing_lists)
+        mailing = []
+        if self.mailing_lists:
+            mailing = " ".join(self.mailing_lists)
         return mailing
 
     # @property
