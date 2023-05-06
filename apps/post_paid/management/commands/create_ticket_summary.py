@@ -6,16 +6,22 @@ from apps.post_paid.models import CustomerInteractionPostPaid, TicketSummary
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
-        interactions = CustomerInteractionPostPaid.objects.all()
+        interactions = CustomerInteractionPostPaid.objects.filter(
+            company__client__user__sub_category="FTM"
+        )
+
+        # TicketSummary.objects.all().delete()
 
         if interactions:
             for interaction in interactions:
                 interaction_exists = TicketSummary.objects.filter(
-                    ticket_number=interaction.ticket_number
+                    ticket_number=interaction.ticket_number,
+                    company__client__user__sub_category="FTM",
                 ).exists()
 
                 if not interaction_exists:
                     TicketSummary.objects.get_or_create(
+                        company__client__user__sub_category="FTM",
                         ticket_number=interaction.ticket_number,
                         company=interaction.company,
                         agent=interaction.agent,
