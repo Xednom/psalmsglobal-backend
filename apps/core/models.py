@@ -19,3 +19,9 @@ class ResolutionCategory(TimeStamped):
         ordering = ["-created_at"]
         verbose_name = "Resolution Category"
         verbose_name_plural = "Resolution Categories"
+
+
+class Tagging(TimeStamped):
+    description = models.TextField(blank=True)
+    notes = models.TextField(blank=True)
+    additional_info = models.TextField(blank=True)

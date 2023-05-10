@@ -5,6 +5,7 @@ from import_export.admin import ImportExportModelAdmin
 from apps.post_paid.models import (
     AccountBalance,
     AccountCharge,
+    Acquisition,
     InterestedToBuy,
     InterestedToSell,
     GeneralCall,
@@ -19,6 +20,8 @@ from apps.post_paid.models import (
     JobOrderPostPaid,
     InternalAuditor,
     TicketSummary,
+    PrepForMarketing,
+    Disposition,
 )
 
 from apps.post_paid import resources
@@ -362,6 +365,24 @@ class TicketSummaryAdmin(ImportExportModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
+class AcquisitionAdmin(admin.ModelAdmin):
+    model = Acquisition
+    list_display = ("description",)
+    search_fields = ("description", "notes", "additional_info")
+
+
+class PrepForMarketingAdmin(admin.ModelAdmin):
+    model = PrepForMarketing
+    list_display = ("description",)
+    search_fields = ("description", "notes", "additional_info")
+
+
+class DispositionAdmin(admin.ModelAdmin):
+    model = Disposition
+    list_display = ("description",)
+    search_fields = ("description", "notes", "additional_info")
+
+
 admin.site.register(Subscription, SubscriptionAdmin)
 admin.site.register(CustomerInteractionPostPaid, CustomerInteractionPostPaidAdmin)
 admin.site.register(InteractionRecord, InteractionRecordAdmin)
@@ -378,3 +399,6 @@ admin.site.register(GeneralCall, GeneralCallAdmin)
 admin.site.register(JobOrderPostPaid, JobOrderAdmin)
 admin.site.register(InternalAuditor)
 admin.site.register(TicketSummary, TicketSummaryAdmin)
+admin.site.register(Acquisition, AcquisitionAdmin)
+admin.site.register(PrepForMarketing, PrepForMarketingAdmin)
+admin.site.register(Disposition, DispositionAdmin)

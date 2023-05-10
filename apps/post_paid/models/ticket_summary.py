@@ -73,14 +73,14 @@ class TicketSummary(models.Model):
         null=True,
     )
     prep_for_marketing = models.ForeignKey(
-        "post_paid.Acquisition",
+        "post_paid.PrepForMarketing",
         related_name="ticket_summary_pre_for_marketings",
         on_delete=models.PROTECT,
         blank=True,
         null=True,
     )
     disposition_tagging = models.ForeignKey(
-        "post_paid.Acquisition",
+        "post_paid.Disposition",
         related_name="ticket_summary_dispotions",
         on_delete=models.PROTECT,
         blank=True,
