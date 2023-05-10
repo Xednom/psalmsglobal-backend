@@ -333,6 +333,10 @@ class TicketSummaryAdmin(ImportExportModelAdmin):
         "interested_to_buy",
         "general_call",
         "agent",
+        "acquisition_tagging",
+        "prep_for_marketing",
+        "disposition_tagging",
+        "sales_team_assigned",
     )
     list_filter = (
         "company__company_name",
