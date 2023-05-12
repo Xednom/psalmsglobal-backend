@@ -22,6 +22,7 @@ from apps.post_paid.models import (
     TicketSummary,
     PrepForMarketing,
     Disposition,
+    OverallTagging
 )
 
 from apps.post_paid import resources
@@ -386,6 +387,12 @@ class DispositionAdmin(admin.ModelAdmin):
     list_display = ("description",)
     search_fields = ("description", "notes", "additional_info")
 
+class OverallTaggingAdmin(admin.ModelAdmin):
+    model = OverallTagging
+    list_display = ("description",)
+    search_fields = ("description", "notes", "additional_info")
+
+
 
 admin.site.register(Subscription, SubscriptionAdmin)
 admin.site.register(CustomerInteractionPostPaid, CustomerInteractionPostPaidAdmin)
@@ -406,3 +413,4 @@ admin.site.register(TicketSummary, TicketSummaryAdmin)
 admin.site.register(Acquisition, AcquisitionAdmin)
 admin.site.register(PrepForMarketing, PrepForMarketingAdmin)
 admin.site.register(Disposition, DispositionAdmin)
+admin.site.register(OverallTagging, DispositionAdmin)

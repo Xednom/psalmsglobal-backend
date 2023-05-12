@@ -93,6 +93,13 @@ class TicketSummary(models.Model):
         blank=True,
         null=True,
     )
+    overall_tagging = models.ForeignKey(
+        "post_paid.OverallTagging",
+        related_name="ticket_summary_overall_taggings",
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

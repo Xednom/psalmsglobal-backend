@@ -3,7 +3,7 @@ from django.db import models
 from apps.core.models import Tagging
 
 
-__all__ = ["Acquisition", "PrepForMarketing", "Disposition"]
+__all__ = ["Acquisition", "PrepForMarketing", "Disposition", "OverallTagging"]
 
 
 class Acquisition(models.Model):
@@ -23,6 +23,13 @@ class PrepForMarketing(Tagging):
 
 
 class Disposition(Tagging):
+    # Inherited from Tagging
+
+    def __str__(self):
+        return f"{self.description}"
+
+
+class OverallTagging(Tagging):
     # Inherited from Tagging
 
     def __str__(self):
