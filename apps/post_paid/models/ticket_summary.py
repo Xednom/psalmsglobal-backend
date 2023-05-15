@@ -1,5 +1,6 @@
 from django.db import models
 
+from apps.core.models import TimeStamped
 from apps.post_paid.models import (
     CrmChoices,
     LeadTransferredCrm,
@@ -106,3 +107,26 @@ class TicketSummary(models.Model):
     class Meta:
         verbose_name = "Ticket Summary"
         verbose_name_plural = "Ticket Summaries"
+
+    def __str__(self):
+        return f"Ticket summary {self.ticket_number}"
+
+
+class TicketSummaryComment(TimeStamped):
+    ticket_summary = models.ForeignKey(
+        TicketSummary,
+        related_name="ticket_summary_comments",
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+    )
+    user = models.ForeignKey(
+        "authentication.User", on_delete=models.SET_NULL, blank=True, null=True
+    )
+    comment = models.TextField()
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Comment in Ticket summary {self.ticket_summary}"
