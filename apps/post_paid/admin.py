@@ -349,6 +349,7 @@ class TicketSummaryAdmin(ImportExportModelAdmin):
     )
     list_filter = (
         "company__company_name",
+        "company__company_owner_name",
         "agent",
         "county",
         "state",
