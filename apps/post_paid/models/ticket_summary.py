@@ -6,7 +6,7 @@ from apps.post_paid.models import (
     LeadTransferredCrm,
 )
 
-__all__ = ["TicketSummary"]
+__all__ = ["TicketSummary", "TicketSummaryComment"]
 
 
 class TicketSummary(models.Model):

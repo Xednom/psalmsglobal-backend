@@ -22,10 +22,18 @@ from apps.post_paid.models import (
     TicketSummary,
     PrepForMarketing,
     Disposition,
-    OverallTagging
+    OverallTagging,
+    TicketSummaryComment,
 )
 
 from apps.post_paid import resources
+
+
+class TicketSummaryComment(admin.TabularInline):
+    model = TicketSummaryComment
+    extra = 1
+    fields = ("user", "comment", "created_at", "updated_at")
+    readonly_fields = ("user", "created_at", "updated_at")
 
 
 class AccountBalanceAdmin(ImportExportModelAdmin):
@@ -367,6 +375,7 @@ class TicketSummaryAdmin(ImportExportModelAdmin):
         "agent__user__last_name",
     )
     readonly_fields = ("created_at", "updated_at")
+    inlines = [TicketSummaryComment]
 
 
 class AcquisitionAdmin(admin.ModelAdmin):
@@ -386,11 +395,11 @@ class DispositionAdmin(admin.ModelAdmin):
     list_display = ("description",)
     search_fields = ("description", "notes", "additional_info")
 
+
 class OverallTaggingAdmin(admin.ModelAdmin):
     model = OverallTagging
     list_display = ("description",)
     search_fields = ("description", "notes", "additional_info")
-
 
 
 admin.site.register(Subscription, SubscriptionAdmin)
