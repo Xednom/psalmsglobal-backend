@@ -353,7 +353,6 @@ class TicketSummaryAdmin(ImportExportModelAdmin):
     )
     search_fields = (
         "ticket_number",
-        "company",
         "company__client__user__first_name",
         "company__client__user__last_name",
         "county",
