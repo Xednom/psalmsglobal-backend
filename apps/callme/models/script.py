@@ -40,6 +40,13 @@ class Form(TimeStamped):
         blank=True,
         null=True,
     )
+    ticket_summary = models.ForeignKey(
+        "post_paid.TicketSummary",
+        related_name="ticket_summary_forms",
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+    )
     mailing_lists = ListTextField(
         base_field=models.CharField(max_length=500), size=100, blank=True, null=True
     )
