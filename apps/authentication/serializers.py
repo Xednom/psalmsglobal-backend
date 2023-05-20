@@ -61,10 +61,19 @@ class ClientSerializer(WritableNestedModelSerializer):
 class ClientCodeSerializer(serializers.ModelSerializer):
     client_email = serializers.SerializerMethodField()
     client_account_type = serializers.SerializerMethodField()
+    client_sub_category = serializers.CharField(
+        source="user.sub_category", default=None
+    )
 
     class Meta:
         model = Client
-        fields = ("client_code", "client_email", "client_account_type", "hourly_rate")
+        fields = (
+            "client_code",
+            "client_email",
+            "client_account_type",
+            "hourly_rate",
+            "client_sub_category",
+        )
 
     def get_client_email(self, instance):
         email = instance.user.email
@@ -154,4 +163,5 @@ class CurrentUserSerializer(BaseUserListSerializer, WritableNestedModelSerialize
             "company_category",
             "account_type",
             "is_superuser",
+            "sub_category",
         )
