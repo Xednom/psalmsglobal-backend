@@ -8,7 +8,12 @@ from apps.account.models import AccountFile
 User = get_user_model()
 
 
-__all__ = ("JobOrderPostPaid", "JobOrderComment")
+__all__ = (
+    "JobOrderPostPaid",
+    "JobOrderComment",
+    "JobOrderTicketSummary",
+    "JobOrderTicketSummaryComment",
+)
 
 
 class JobOrderStatus(models.TextChoices):

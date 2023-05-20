@@ -16,5 +16,10 @@ from .plan_detail import (
     CostPlanSerializer,
 )  # noqa
 from .subscription import SubscriptionSerializer  # noqa
-from .job_order import JobOrderPostPaidSerializer, JobOrderCommentSerializer  # noqa
-from .ticket_summary import TicketSummarySerializer # noqa
+from .job_order import (
+    JobOrderPostPaidSerializer,
+    JobOrderCommentSerializer,
+    JobOrderTicketSummaryCommentSerializer,
+    JobOrderTicketSummarySerializer,
+)  # noqa
+from .ticket_summary import TicketSummarySerializer  # noqa
