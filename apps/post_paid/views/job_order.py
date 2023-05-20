@@ -23,7 +23,13 @@ from apps.post_paid.serializers import (
 User = get_user_model()
 
 
-__all__ = ("JobOrderPostPaidViewSet", "JobOrderViewSet", "CreateJobOrderComment")
+__all__ = (
+    "JobOrderPostPaidViewSet",
+    "JobOrderViewSet",
+    "CreateJobOrderComment",
+    "JobOrderTicketSummaryViewSet",
+    "CreateJobOrderTicketSummaryComment",
+)
 
 
 class JobOrderPostPaidViewSet(viewsets.ModelViewSet):
@@ -81,16 +87,6 @@ class CreateJobOrderComment(generics.CreateAPIView):
                 context={"job_order": job_order},
             )
         serializer.save(user=user, job_order=job_order)
-
-
-class JobOrderTicketSummaryViewSet(viewsets.ModelViewSet):
-    queryset = JobOrderTicketSummary.objects.select_related(
-        "client", "caller_interaction_record"
-    ).all()
-    serializer_class = JobOrderTicketSummarySerializer
-    permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ["=caller_interaction_record__ticket_number"]
 
 
 class JobOrderTicketSummaryViewSet(viewsets.ModelViewSet):
