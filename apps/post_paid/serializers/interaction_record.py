@@ -1,10 +1,15 @@
 from rest_framework import serializers
 
-from apps.post_paid.models import InteractionRecord, CustomerInteractionPostPaid
+from apps.post_paid.models import (
+    InteractionRecord,
+    CustomerInteractionPostPaid,
+    TicketSummaryRecord,
+    TicketSummary,
+)
 from apps.authentication.models import Client, Staff
 
 
-__all__ = ("InteractionRecordSerializer",)
+__all__ = ("InteractionRecordSerializer", "TicketSummaryInteractionRecordSerializer")
 
 
 class InteractionRecordSerializer(serializers.ModelSerializer):
@@ -20,8 +25,8 @@ class InteractionRecordSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
     )
-    agent_name = serializers.SerializerMethodField()
-    agent_code = serializers.SerializerMethodField()
+    agent_name = serializers.CharField(source="agent.staff_name")
+    agent_code = serializers.CharField(source="agent.staff_id")
 
     class Meta:
         model = InteractionRecord
@@ -46,8 +51,42 @@ class InteractionRecordSerializer(serializers.ModelSerializer):
             "customer_interaction_post_paid",
         )
 
-    def get_agent_name(self, instance):
-        return f"{instance.agent.staff_name}"
 
-    def get_agent_code(self, instance):
-        return f"{instance.agent.staff_id}"
+class TicketSummaryInteractionRecordSerializer(serializers.ModelSerializer):
+    client = serializers.PrimaryKeyRelatedField(
+        queryset=Client.objects.all(), required=False, allow_null=True
+    )
+    agent = serializers.PrimaryKeyRelatedField(
+        queryset=Staff.objects.all(), required=False, allow_null=True
+    )
+    ticket_summary = serializers.SlugRelatedField(
+        slug_field="ticket_number",
+        queryset=TicketSummary.objects.all(),
+        required=False,
+        allow_null=True,
+    )
+    agent_name = serializers.CharField(source="agent.staff_name")
+    agent_code = serializers.CharField(source="agent.staff_id")
+
+    class Meta:
+        model = TicketSummaryRecord
+        fields = (
+            "id",
+            "client",
+            "agent",
+            "agent_code",
+            "agent_name",
+            "date_called",
+            "ticket_number",
+            "total_minutes",
+            "summary",
+            "status",
+            "client_feedback_status",
+            "dispute_details",
+            "other_feedback",
+            "client_notes",
+            "internal_management_ticket_status",
+            "memo_solution_from_the_mgmt",
+            "other_ticket_status",
+            "ticket_summary",
+        )

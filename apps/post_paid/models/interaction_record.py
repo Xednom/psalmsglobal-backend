@@ -4,7 +4,7 @@ from apps.core.models import TimeStamped
 from apps.post_paid.models import CustomerInteractionPostPaid
 
 
-__all__ = ("InteractionRecord",)
+__all__ = ("InteractionRecord", "TicketSummaryRecord")
 
 
 class FeedBackStatus(models.TextChoices):

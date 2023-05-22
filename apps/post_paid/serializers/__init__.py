@@ -7,7 +7,10 @@ from .customer_interaction import (
     CustomerInteractionPostPaidCommentSerializer,
     CustomerInteractionPostPaidSerializer,
 )
-from .interaction_record import InteractionRecordSerializer  # noqa
+from .interaction_record import (
+    InteractionRecordSerializer,
+    TicketSummaryInteractionRecordSerializer,
+)  # noqa
 from .minutes_report import MinutesReportSerializer  # noqa
 from .montly_plan_charge import MonthlyChargeSerializer  # noqa
 from .plan_detail import (

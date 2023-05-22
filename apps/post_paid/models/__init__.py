@@ -10,7 +10,7 @@ from .customer_interaction import (
     LeadTransferredCrm,
     CrmChoices
 )  # noqa
-from .interaction_record import InteractionRecord  # noqa
+from .interaction_record import InteractionRecord, TicketSummaryRecord  # noqa
 from .minutes_report import MinutesReport  # noqa
 from .monthly_plan_charge import MonthlyCharge  # noqa
 from .plan_detail import PlanType, CostPlan, PostPaid  # noqa

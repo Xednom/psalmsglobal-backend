@@ -7,7 +7,10 @@ from .customer_interaction import (
     CustomerInteractionPostPaidViewSet,
     CreateCustomerInteractionPostPaidComment,
 )  # noqa
-from .interaction_record import InteractionRecordViewSet  # noqa
+from .interaction_record import (
+    InteractionRecordViewSet,
+    TicketSummaryInteractionRecordViewSet,
+)  # noqa
 from .minutes_report import MinutesReportViewSet  # noqa
 from .monthly_plan_charge import MonthlyChargeViewSet  # noqa
 from .plan_detail import PostPaidViewSet, PlanTypeListView, CostOfPlanListView  # noqa
@@ -16,5 +19,7 @@ from .job_order import (
     JobOrderPostPaidViewSet,
     JobOrderViewSet,
     CreateJobOrderComment,
+    JobOrderTicketSummaryViewSet,
+    CreateJobOrderTicketSummaryComment,
 )  # noqa
-from .ticket_summary import TicketSummaryViewSet # noqa
+from .ticket_summary import TicketSummaryViewSet  # noqa
