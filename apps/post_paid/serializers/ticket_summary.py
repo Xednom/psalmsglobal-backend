@@ -159,6 +159,7 @@ class TicketSummarySerializer(WritableNestedModelSerializer):
     post_paid_interaction_rates = PostpaidInteractionRateSerializer(
         many=True, required=False, allow_null=True
     )
+    client_sub_category = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomerInteractionPostPaid
@@ -191,6 +192,7 @@ class TicketSummarySerializer(WritableNestedModelSerializer):
             "interaction_job_orders",
             "client_account_type",
             "post_paid_interaction_rates",
+            "client_sub_category"
         )
 
     def get_company_client(self, instance):
@@ -211,3 +213,13 @@ class TicketSummarySerializer(WritableNestedModelSerializer):
         ]
         client_account_type = "".join(client_account_type)
         return client_account_type
+    
+    def get_client_sub_category(self, instance):
+        client_sub_categories = User.objects.filter(
+            username=instance.company.client.user
+        )
+        client_sub_category = [
+            client.sub_category for client in client_sub_categories.all()
+        ]
+        client_sub_category = "".join(client_sub_category)
+        return client_sub_category

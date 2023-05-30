@@ -22,6 +22,7 @@ from apps.post_paid.views import (
     TicketSummaryViewSet,
     JobOrderTicketSummaryViewSet,
     TicketSummaryInteractionRecordViewSet,
+    CreateJobOrderTicketSummaryComment
 )
 
 router = routers.DefaultRouter()
@@ -82,5 +83,10 @@ urlpatterns = [
         "post-paid/cost-of-plan/",
         CostOfPlanListView.as_view(),
         name="cost-of-plan-list",
+    ),
+    path(
+        "job-order-ticket-summary/<int:id>/comment/",
+        CreateJobOrderTicketSummaryComment.as_view(),
+        name="job-order-ticket-summary-comment",
     ),
 ]

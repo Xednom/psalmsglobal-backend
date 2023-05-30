@@ -9,6 +9,7 @@ from apps.post_paid.models import (
     JobOrderComment,
     TicketSummary,
     JobOrderTicketSummaryComment,
+    JobOrderTicketSummary,
 )
 from apps.authentication.models import Client, Staff
 
@@ -142,9 +143,10 @@ class JobOrderTicketSummarySerializer(serializers.ModelSerializer):
         many=True, required=False, allow_null=True
     )
     agent_code = serializers.SerializerMethodField()
+    client_sub_category = serializers.SerializerMethodField()
 
     class Meta:
-        model = JobOrderPostPaid
+        model = JobOrderTicketSummary
         fields = (
             "id",
             "ticket_summary_job_order",
@@ -167,12 +169,23 @@ class JobOrderTicketSummarySerializer(serializers.ModelSerializer):
             "total_time_consumed",
             "url_of_the_completed_jo",
             "ticket_summary_job_order_comments",
+            "client_sub_category",
         )
 
     def get_agent_code(self, instance):
         agent_codes = [agent.staff_id for agent in instance.va_assigned.all()]
         agent_codes = ", ".join(agent_codes)
         return agent_codes
+
+    def get_client_sub_category(self, instance):
+        client_sub_categories = User.objects.filter(
+            username=instance.client.user
+        )
+        client_sub_category = [
+            client.sub_category for client in client_sub_categories.all()
+        ]
+        client_sub_category = "".join(client_sub_category)
+        return client_sub_category
 
     def create(self, validated_data):
         instance = super(JobOrderTicketSummarySerializer, self).create(validated_data)

@@ -24,6 +24,7 @@ from apps.post_paid.models import (
     Disposition,
     OverallTagging,
     TicketSummaryComment,
+    JobOrderTicketSummary
 )
 
 from apps.post_paid import resources
@@ -428,3 +429,4 @@ admin.site.register(Acquisition, AcquisitionAdmin)
 admin.site.register(PrepForMarketing, PrepForMarketingAdmin)
 admin.site.register(Disposition, DispositionAdmin)
 admin.site.register(OverallTagging, DispositionAdmin)
+admin.site.register(JobOrderTicketSummary)

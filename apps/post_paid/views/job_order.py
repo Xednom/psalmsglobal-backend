@@ -93,7 +93,7 @@ class JobOrderTicketSummaryViewSet(viewsets.ModelViewSet):
     serializer_class = JobOrderTicketSummarySerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [filters.SearchFilter]
-    search_fields = ["=caller_interaction_record__ticket_number"]
+    search_fields = ["=ticket_summary_job_order__ticket_number"]
     lookup_field = "ticket_number"
 
     def get_queryset(self):
@@ -110,7 +110,7 @@ class JobOrderTicketSummaryViewSet(viewsets.ModelViewSet):
                 va_assigned__user__in=staff
             )
             return queryset
-        else:
+        elif self.request.user.is_superuser:
             queryset = JobOrderTicketSummary.objects.all()
             return queryset
 
