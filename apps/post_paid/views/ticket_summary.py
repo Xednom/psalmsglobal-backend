@@ -12,14 +12,15 @@ from apps.post_paid.models import (
     InterestedToBuy,
     GeneralCall,
     TicketSummary,
+    TicketSummaryComment
 )
-from apps.post_paid.serializers import TicketSummarySerializer
+from apps.post_paid.serializers import TicketSummarySerializer, TicketSummaryCommentSerializer
 
 
 User = get_user_model()
 
 
-__all__ = ("TicketSummaryViewSet",)
+__all__ = ("TicketSummaryViewSet", "CreateTicketSummaryComment")
 
 
 class TicketSummaryViewSet(viewsets.ModelViewSet):
@@ -52,3 +53,41 @@ class TicketSummaryViewSet(viewsets.ModelViewSet):
         elif current_user.is_superuser:
             qs = TicketSummary.objects.filter(ticket_number__icontains="PSCI")
             return qs
+
+
+class CreateTicketSummaryComment(generics.CreateAPIView):
+    serializer_class = TicketSummaryCommentSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = TicketSummaryComment.objects.select_related(
+        "ticket_summary", "user"
+    ).all()
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        ticket_summary_id = self.kwargs.get("id")
+        ticket_summary = get_object_or_404(
+            TicketSummary, id=ticket_summary_id
+        )
+        comments = TicketSummaryComment.objects.select_related(
+            "ticket_summary", "user"
+        ).filter(ticket_summary=ticket_summary.id)
+        if ticket_summary:
+            emails = (
+                ticket_summary.agent.user.email
+                + " "
+                + ticket_summary.company.client.user.email
+            )
+            emails = emails.split()
+
+            # mail.send(
+            #     "postmaster@psalmsglobal.com",
+            #     bcc=emails,
+            #     template="cust_interaction_comment_update",
+            #     context={
+            #         "interaction": ticket_summary,
+            #         "comments": comments,
+            #     },
+            # )
+        serializer.save(
+            user=user, ticket_summary=ticket_summary
+        )

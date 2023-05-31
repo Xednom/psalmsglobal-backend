@@ -22,4 +22,4 @@ from .job_order import (
     JobOrderTicketSummaryViewSet,
     CreateJobOrderTicketSummaryComment,
 )  # noqa
-from .ticket_summary import TicketSummaryViewSet  # noqa
+from .ticket_summary import TicketSummaryViewSet, CreateTicketSummaryComment  # noqa

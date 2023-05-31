@@ -1,1 +1,1 @@
-from .interaction_rate import PostpaidInteractionRate, PrepaidInteractionRate  # noqa
+from .interaction_rate import PostpaidInteractionRate, PrepaidInteractionRate, TicketSummaryRate  # noqa

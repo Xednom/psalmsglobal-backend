@@ -25,4 +25,4 @@ from .job_order import (
     JobOrderTicketSummaryCommentSerializer,
     JobOrderTicketSummarySerializer,
 )  # noqa
-from .ticket_summary import TicketSummarySerializer  # noqa
+from .ticket_summary import TicketSummarySerializer, TicketSummaryCommentSerializer  # noqa

@@ -11,19 +11,20 @@ from apps.post_paid.models import (
     InterestedToBuy,
     GeneralCall,
     CustomerInteractionPostPaid,
-    CustomerInteractionPostPaidComment,
-    InteractionRecord,
-    JobOrderPostPaid,
+    TicketSummaryComment,
+    TicketSummaryRecord,
+    JobOrderTicketSummary,
 )
 from apps.authentication.models import Client, Staff
 from apps.callme.serializers import AttributeSerializer, FormSerializer
-from apps.grading.serializers import PostpaidInteractionRateSerializer
+from apps.grading.serializers import TicketSummaryRateSerializer
 
 User = get_user_model()
 
 
-__all__ = (
-)
+__all__ = ()
+
+
 class InterestedToBuySerializer(serializers.ModelSerializer):
     class Meta:
         model = InterestedToBuy
@@ -36,14 +37,14 @@ class GeneralCallSerializer(serializers.ModelSerializer):
         fields = ("name",)
 
 
-class CustomerInteractionPostPaidCommentSerializer(serializers.ModelSerializer):
+class TicketSummaryCommentSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(required=False, allow_null=True)
     commenter = serializers.SerializerMethodField()
 
     class Meta:
-        model = CustomerInteractionPostPaidComment
+        model = TicketSummaryComment
         fields = (
-            "customer_interaction_post_paid",
+            "ticket_summary",
             "user",
             "comment",
             "commenter",
@@ -51,30 +52,40 @@ class CustomerInteractionPostPaidCommentSerializer(serializers.ModelSerializer):
         )
 
     def get_commenter(self, instance):
-        if instance.user.designation_category == "staff":
-            user = User.objects.filter(username=instance.user)
-            staffs = Staff.objects.select_related("user").filter(user__in=user)
-            staff_code = [staff.staff_id for staff in staffs]
-            return "".join(staff_code)
-        else:
-            user = User.objects.filter(username=instance.user)
-            clients = Client.objects.select_related("user").filter(user__in=user)
-            client_code = [client.client_code for client in clients]
-            return "".join(client_code)
+        if instance.user:
+            if instance.user.designation_category == "current_client":
+                user = User.objects.filter(username=instance.user)
+                clients = Client.objects.select_related("user").filter(user__in=user)
+                client_code = [client.client_code for client in clients]
+                return "".join(client_code)
+            if instance.user.designation_category == "staff":
+                user = User.objects.filter(username=instance.user)
+                staffs = Staff.objects.select_related("user").filter(user__in=user)
+                staff_code = [staff.staff_id for staff in staffs]
+                return "".join(staff_code)
+            else:
+                user = User.objects.filter(username=instance.user)
+                clients = Client.objects.select_related("user").filter(user__in=user)
+                client_code = [client.client_code for client in clients]
+                return "".join(client_code)
 
 
-class CustomerInteractionPostPaidRecordSerializer(serializers.ModelSerializer):
+class TicketSummaryRecordSerializer(serializers.ModelSerializer):
     client = serializers.PrimaryKeyRelatedField(
         queryset=Client.objects.all(), required=False, allow_null=True
     )
     agent = serializers.PrimaryKeyRelatedField(
         queryset=Staff.objects.all(), required=False, allow_null=True
     )
-    agent_name = serializers.SerializerMethodField()
-    agent_code = serializers.SerializerMethodField()
+    agent_name = serializers.CharField(
+        source="agent.staff_name", default=None, allow_null=True, required=False
+    )
+    agent_code = serializers.CharField(
+        source="agent.staff_id", default=None, allow_null=True, required=False
+    )
 
     class Meta:
-        model = InteractionRecord
+        model = TicketSummaryRecord
         fields = (
             "client",
             "agent",
@@ -86,18 +97,12 @@ class CustomerInteractionPostPaidRecordSerializer(serializers.ModelSerializer):
             "summary",
         )
 
-    def get_agent_name(self, instance):
-        return f"{instance.agent.staff_name}"
 
-    def get_agent_code(self, instance):
-        return f"{instance.agent.staff_id}"
-
-
-class JobOrderSerializer(serializers.ModelSerializer):
+class JobOrderTicketSummarySerializer(serializers.ModelSerializer):
     class Meta:
-        model = JobOrderPostPaid
+        model = JobOrderTicketSummary
         fields = (
-            "caller_interaction_record",
+            "ticket_summary_job_order",
             "client",
             "client_file",
             "client_email",
@@ -139,24 +144,22 @@ class TicketSummarySerializer(WritableNestedModelSerializer):
     general_call = serializers.SlugRelatedField(
         slug_field="name", queryset=GeneralCall.objects.all()
     )
-    customer_interaction_post_paid_comments = (
-        CustomerInteractionPostPaidCommentSerializer(
-            many=True, required=False, allow_null=True
-        )
-    )
-    customer_interaction_post_paid_records = (
-        CustomerInteractionPostPaidRecordSerializer(
-            many=True, required=False, allow_null=True
-        )
-    )
-    customer_interaction_post_paid_forms = FormSerializer(
+    ticket_summary_comments = TicketSummaryCommentSerializer(
         many=True, required=False, allow_null=True
     )
-    interaction_job_orders = JobOrderSerializer(
+    ticket_summary_records = (
+        TicketSummaryRecordSerializer(
+            many=True, required=False, allow_null=True
+        )
+    )
+    ticket_summary_forms = FormSerializer(
+        many=True, required=False, allow_null=True
+    )
+    ticket_summary_job_orders = JobOrderTicketSummarySerializer(
         many=True, required=False, allow_null=True
     )
     client_account_type = serializers.SerializerMethodField()
-    post_paid_interaction_rates = PostpaidInteractionRateSerializer(
+    ticket_summary_rates = TicketSummaryRateSerializer(
         many=True, required=False, allow_null=True
     )
     client_sub_category = serializers.SerializerMethodField()
@@ -186,13 +189,13 @@ class TicketSummarySerializer(WritableNestedModelSerializer):
             "crm",
             "leads_transferred_crm",
             "internal_auditor",
-            "customer_interaction_post_paid_comments",
-            "customer_interaction_post_paid_records",
-            "customer_interaction_post_paid_forms",
-            "interaction_job_orders",
+            "ticket_summary_comments",
+            "ticket_summary_records",
+            "ticket_summary_forms",
+            "ticket_summary_job_orders",
             "client_account_type",
-            "post_paid_interaction_rates",
-            "client_sub_category"
+            "ticket_summary_rates",
+            "client_sub_category",
         )
 
     def get_company_client(self, instance):
@@ -213,7 +216,7 @@ class TicketSummarySerializer(WritableNestedModelSerializer):
         ]
         client_account_type = "".join(client_account_type)
         return client_account_type
-    
+
     def get_client_sub_category(self, instance):
         client_sub_categories = User.objects.filter(
             username=instance.company.client.user

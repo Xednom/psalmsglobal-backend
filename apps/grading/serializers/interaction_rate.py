@@ -2,11 +2,11 @@ from rest_framework import serializers
 
 from apps.post_paid.models import CustomerInteractionPostPaid
 from apps.prepaid.models import CustomerInteractionPrepaid
-from apps.grading.models import PostpaidInteractionRate, PrepaidInteractionRate
+from apps.grading.models import PostpaidInteractionRate, PrepaidInteractionRate, TicketSummaryRate
 from apps.authentication.models import Client
 
 
-__all__ = ("PostpaidInteractionRateSerializer", "PrepaidInteractionRateSerializer")
+__all__ = ("PostpaidInteractionRateSerializer", "PrepaidInteractionRateSerializer", "TicketSummaryRateSerializer")
 
 
 class PostpaidInteractionRateSerializer(serializers.ModelSerializer):
@@ -41,6 +41,25 @@ class PrepaidInteractionRateSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "prepaid",
+            "rating",
+            "comment",
+            "client",
+        )
+
+
+class TicketSummaryRateSerializer(serializers.ModelSerializer):
+    client = serializers.PrimaryKeyRelatedField(
+        queryset=Client.objects.all(), required=False, allow_null=True
+    )
+    ticket_summary = serializers.PrimaryKeyRelatedField(
+        queryset=TicketSummaryRate.objects.all()
+    )
+
+    class Meta:
+        model = PostpaidInteractionRate
+        fields = (
+            "id",
+            "ticket_summary",
             "rating",
             "comment",
             "client",
