@@ -25,8 +25,8 @@ class InteractionRecordSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
     )
-    agent_name = serializers.CharField(source="agent.staff_name")
-    agent_code = serializers.CharField(source="agent.staff_id")
+    agent_name = serializers.SerializerMethodField()
+    agent_code = serializers.SerializerMethodField()
 
     class Meta:
         model = InteractionRecord
@@ -50,6 +50,12 @@ class InteractionRecordSerializer(serializers.ModelSerializer):
             "other_ticket_status",
             "customer_interaction_post_paid",
         )
+    
+    def get_agent_name(self, instance):
+        return f"{instance.agent.staff_name}"
+    
+    def get_agent_code(self, instance):
+        return f"{instance.agent.staff_id}"
 
 
 class TicketSummaryInteractionRecordSerializer(serializers.ModelSerializer):
