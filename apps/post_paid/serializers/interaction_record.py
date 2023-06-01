@@ -72,8 +72,12 @@ class TicketSummaryInteractionRecordSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
     )
-    agent_name = serializers.CharField(source="agent.staff_name")
-    agent_code = serializers.CharField(source="agent.staff_id")
+    agent_name = serializers.CharField(
+        source="agent.staff_name", allow_null=True, required=False
+    )
+    agent_code = serializers.CharField(
+        source="agent.staff_id", allow_null=True, required=False
+    )
 
     class Meta:
         model = TicketSummaryRecord

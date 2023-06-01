@@ -41,7 +41,7 @@ class TicketSummaryInteractionRecordViewSet(viewsets.ModelViewSet):
     serializer_class = TicketSummaryInteractionRecordSerializer
     permisson_classes = [permissions.IsAuthenticated]
     filter_backends = [filters.SearchFilter]
-    search_fields = ["ticket_summary__id"]
+    search_fields = ["ticket_summary__ticket_number"]
 
     def get_queryset(self):
         current_user = self.request.user

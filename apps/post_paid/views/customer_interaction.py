@@ -113,15 +113,16 @@ class CreateCustomerInteractionPostPaidComment(generics.CreateAPIView):
                 + customer_interaction_post_paid.company.client.user.email
             )
             emails = emails.split()
-            mail.send(
-                "postmaster@psalmsglobal.com",
-                bcc=emails,
-                template="cust_interaction_comment_update",
-                context={
-                    "interaction": customer_interaction_post_paid,
-                    "comments": comments,
-                },
-            )
+
+            # mail.send(
+            #     "postmaster@psalmsglobal.com",
+            #     bcc=emails,
+            #     template="cust_interaction_comment_update",
+            #     context={
+            #         "interaction": customer_interaction_post_paid,
+            #         "comments": comments,
+            #     },
+            # )
         serializer.save(
             user=user, customer_interaction_post_paid=customer_interaction_post_paid
         )

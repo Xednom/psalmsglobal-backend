@@ -83,8 +83,8 @@ class CustomerInteractionPostPaidRecordSerializer(serializers.ModelSerializer):
     agent = serializers.PrimaryKeyRelatedField(
         queryset=Staff.objects.all(), required=False, allow_null=True
     )
-    agent_name = serializers.SerializerMethodField()
-    agent_code = serializers.SerializerMethodField()
+    agent_name = serializers.CharField(source="agent.staff_name", allow_null=True, required=False)
+    agent_code = serializers.CharField(source="agent.staff_id", allow_null=True, required=False)
 
     class Meta:
         model = InteractionRecord
@@ -98,9 +98,6 @@ class CustomerInteractionPostPaidRecordSerializer(serializers.ModelSerializer):
             "total_minutes",
             "summary",
         )
-
-    def get_agent_name(self, instance):
-        return f"{instance.agent.staff_name}"
 
     def get_agent_code(self, instance):
         return f"{instance.agent.staff_id}"
@@ -172,6 +169,7 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
     post_paid_interaction_rates = PostpaidInteractionRateSerializer(
         many=True, required=False, allow_null=True
     )
+    client_sub_category = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomerInteractionPostPaid
@@ -204,6 +202,7 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
             "interaction_job_orders",
             "client_account_type",
             "post_paid_interaction_rates",
+            "client_sub_category"
         )
 
     def get_company_client(self, instance):
@@ -224,6 +223,16 @@ class CustomerInteractionPostPaidSerializer(WritableNestedModelSerializer):
         ]
         client_account_type = "".join(client_account_type)
         return client_account_type
+
+    def get_client_sub_category(self, instance):
+        client_sub_categories = User.objects.filter(
+            username=instance.company.client.user
+        )
+        client_sub_category = [
+            client.sub_category for client in client_sub_categories.all()
+        ]
+        client_sub_category = "".join(client_sub_category)
+        return client_sub_category
 
     def create(self, validated_data):
         instance = super(CustomerInteractionPostPaidSerializer, self).create(
