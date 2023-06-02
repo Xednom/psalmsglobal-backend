@@ -19,6 +19,7 @@ class CompanySerializer(serializers.ModelSerializer):
     company_crm = serializers.SerializerMethodField()
     company_client_code = serializers.SerializerMethodField()
     company_client_account_type = serializers.SerializerMethodField()
+    company_client_sub_category = serializers.SerializerMethodField()
 
     class Meta:
         model = Company
@@ -37,6 +38,7 @@ class CompanySerializer(serializers.ModelSerializer):
             "company_forwarding_email",
             "paypal_email",
             "notes",
+            "company_client_sub_category"
         )
 
     def get_company_crm(self, instance):
@@ -57,3 +59,11 @@ class CompanySerializer(serializers.ModelSerializer):
         ]
         client_account_type = "".join(client_account_type)
         return client_account_type
+
+    def get_company_client_sub_category(self, instance):
+        clients = User.objects.filter(username=instance.client.user)
+        client_sub_category = [
+            client.sub_category for client in clients.all()
+        ]
+        client_sub_category = "".join(client_sub_category)
+        return client_sub_category
