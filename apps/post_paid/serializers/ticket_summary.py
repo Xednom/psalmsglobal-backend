@@ -10,7 +10,7 @@ from apps.post_paid.models import (
     InterestedToSell,
     InterestedToBuy,
     GeneralCall,
-    CustomerInteractionPostPaid,
+    TicketSummary,
     TicketSummaryComment,
     TicketSummaryRecord,
     JobOrderTicketSummary,
@@ -165,7 +165,7 @@ class TicketSummarySerializer(WritableNestedModelSerializer):
     client_sub_category = serializers.SerializerMethodField()
 
     class Meta:
-        model = CustomerInteractionPostPaid
+        model = TicketSummary
         fields = (
             "id",
             "created_at",
