@@ -108,8 +108,41 @@ class TicketSummary(models.Model):
         verbose_name = "Ticket Summary"
         verbose_name_plural = "Ticket Summaries"
 
+    def create_ticket_number(self):
+        ticket_code = ""
+        last_in = TicketSummary.objects.all().order_by("id").last()
+
+        if not last_in:
+            seq = 0
+            ticket_number = "TS000" + str((int(seq) + 1))
+            return ticket_number
+
+        if self.id:
+            if self.id >= 100:
+                ticket_number = "TS" + str(self.id)
+            elif self.id <= 9:
+                ticket_number = "TS00" + str(self.id)
+            elif self.id >= 10:
+                ticket_number = "TS0" + str(self.id)
+            return ticket_number
+
+        in_id = last_in.id
+        in_int = int(in_id)
+        if in_int >= 100:
+            ticket_code = "TS" + str(int(in_int) + 1)
+        elif in_int < 10:
+            ticket_code = "TS00" + str(int(in_int) + 1)
+        elif in_int >= 10:
+            ticket_code = "TS0" + str(int(in_int) + 1)
+
+        return ticket_code
+
     def __str__(self):
         return f"Ticket summary {self.ticket_number}"
+
+    def save(self, *args, **kwargs):
+        self.ticket_number = self.create_ticket_number()
+        super(TicketSummary, self).save(*args, **kwargs)
 
 
 class TicketSummaryComment(TimeStamped):
