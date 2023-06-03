@@ -14,6 +14,10 @@ from apps.post_paid.models import (
     TicketSummaryComment,
     TicketSummaryRecord,
     JobOrderTicketSummary,
+    Acquisition,
+    PrepForMarketing,
+    Disposition,
+    OverallTagging,
 )
 from apps.authentication.models import Client, Staff
 from apps.callme.serializers import AttributeSerializer, FormSerializer
@@ -147,14 +151,10 @@ class TicketSummarySerializer(WritableNestedModelSerializer):
     ticket_summary_comments = TicketSummaryCommentSerializer(
         many=True, required=False, allow_null=True
     )
-    ticket_summary_records = (
-        TicketSummaryRecordSerializer(
-            many=True, required=False, allow_null=True
-        )
-    )
-    ticket_summary_forms = FormSerializer(
+    ticket_summary_records = TicketSummaryRecordSerializer(
         many=True, required=False, allow_null=True
     )
+    ticket_summary_forms = FormSerializer(many=True, required=False, allow_null=True)
     ticket_summary_job_orders = JobOrderTicketSummarySerializer(
         many=True, required=False, allow_null=True
     )
@@ -163,6 +163,34 @@ class TicketSummarySerializer(WritableNestedModelSerializer):
         many=True, required=False, allow_null=True
     )
     client_sub_category = serializers.SerializerMethodField()
+    acquisition_tagging = serializers.PrimaryKeyRelatedField(
+        queryset=Acquisition.objects.all(), default=None
+    )
+    prep_for_marketing = serializers.PrimaryKeyRelatedField(
+        queryset=PrepForMarketing.objects.all(), default=None
+    )
+    disposition_tagging = serializers.PrimaryKeyRelatedField(
+        queryset=Disposition.objects.all(), default=None
+    )
+    sales_team_assigned = serializers.PrimaryKeyRelatedField(
+        queryset=Staff.objects.all(), default=None
+    )
+    overall_tagging = serializers.PrimaryKeyRelatedField(
+        queryset=OverallTagging.objects.all(), default=None
+    )
+    acquisition__description = serializers.CharField(
+        source="acquisition.description", allow_null=True, required=False
+    )
+    prep_for_marketing__description = serializers.CharField(
+        source="prep_for_marketing.description", allow_null=True, required=False
+    )
+    disposition_tagging__description = serializers.CharField(
+        source="disposition_tagging.description", allow_null=True, required=False
+    )
+    sales_team_assigned_full_name = serializers.SerializerMethodField()
+    overall_tagging__description = serializers.CharField(
+        source="overall_tagging.description", allow_null=True, required=False
+    )
 
     class Meta:
         model = TicketSummary
@@ -196,6 +224,16 @@ class TicketSummarySerializer(WritableNestedModelSerializer):
             "client_account_type",
             "ticket_summary_rates",
             "client_sub_category",
+            "acquisition_tagging",
+            "prep_for_marketing",
+            "disposition_tagging",
+            "sales_team_assigned",
+            "overall_tagging",
+            "acquisition__description",
+            "prep_for_marketing__description",
+            "disposition_tagging__description",
+            "sales_team_assigned_full_name",
+            "overall_tagging__description",
         )
 
     def get_company_client(self, instance):
@@ -226,3 +264,8 @@ class TicketSummarySerializer(WritableNestedModelSerializer):
         ]
         client_sub_category = "".join(client_sub_category)
         return client_sub_category
+
+    def get_sales_team_assigned_full_name(self, instance):
+        user = instance.sales_team_assigned
+        staff_name = User.objects.filter(username=user).first()
+        return staff_name
