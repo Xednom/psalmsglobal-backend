@@ -178,14 +178,15 @@ class JobOrderTicketSummarySerializer(serializers.ModelSerializer):
         return agent_codes
 
     def get_client_sub_category(self, instance):
-        client_sub_categories = User.objects.filter(
-            username=instance.client.user
-        )
-        client_sub_category = [
-            client.sub_category for client in client_sub_categories.all()
-        ]
-        client_sub_category = "".join(client_sub_category)
-        return client_sub_category
+        if instance.client:
+            client_sub_categories = User.objects.filter(
+                username=instance.client.user
+            )
+            client_sub_category = [
+                client.sub_category for client in client_sub_categories.all()
+            ]
+            client_sub_category = "".join(client_sub_category)
+            return client_sub_category
 
     def create(self, validated_data):
         instance = super(JobOrderTicketSummarySerializer, self).create(validated_data)
