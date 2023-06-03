@@ -107,6 +107,7 @@ class TicketSummary(models.Model):
     class Meta:
         verbose_name = "Ticket Summary"
         verbose_name_plural = "Ticket Summaries"
+        ordering = ["-created_at"]
 
     def create_ticket_number(self):
         ticket_code = ""
