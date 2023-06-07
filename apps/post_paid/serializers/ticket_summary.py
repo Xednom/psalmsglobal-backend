@@ -179,7 +179,7 @@ class TicketSummarySerializer(WritableNestedModelSerializer):
         queryset=OverallTagging.objects.all(), default=None
     )
     acquisition__description = serializers.CharField(
-        source="acquisition.description", allow_null=True, required=False
+        source="acquisition_tagging.description", allow_null=True, required=False
     )
     prep_for_marketing__description = serializers.CharField(
         source="prep_for_marketing.description", allow_null=True, required=False
