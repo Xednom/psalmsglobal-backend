@@ -90,6 +90,7 @@ class CustomerInteractionPostPaidAdmin(ImportExportModelAdmin):
     )
     list_filter = (
         "company__company_name",
+        "company__client",
         "agent",
         "county",
         "state",
