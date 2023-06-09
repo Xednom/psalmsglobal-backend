@@ -17,6 +17,7 @@ from apps.callme.serializers import (
     OfferStatusSerializer,
     PropertyFileSerializer,
 )
+from apps.authentication import models
 
 User = get_user_model()
 
@@ -46,7 +47,7 @@ class CallMeInfoFilter(filters.FilterSet):
 
 
 class CallMeInfoViewSet(viewsets.ModelViewSet):
-    queryset = PropertyInfo.objects.select_related("company").all()
+    queryset = PropertyInfo.objects.all()
     serializer_class = CallMeInfoSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = (filters.DjangoFilterBackend,)
@@ -59,15 +60,15 @@ class PropertyInfoViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         current_user = self.request.user
-        user = User.objects.filter(username=current_user)
+        user = User.objects.filter(username=current_user).first()
+        client = models.Client.objects.filter(user=user).first()
+        print("User: ", client.client_code)
         if (
             current_user.designation_category == "current_client"
             or current_user.designation_category == "new_client"
             or current_user.designation_category == "affiliate_partner"
         ):
-            qs = PropertyInfo.objects.select_related("company", "offer_status").filter(
-                company__client__user__in=user
-            )
+            qs = PropertyInfo.objects.filter(client_code=client.client_code)
             return qs
         elif current_user.is_superuser:
             qs = PropertyInfo.objects.all()

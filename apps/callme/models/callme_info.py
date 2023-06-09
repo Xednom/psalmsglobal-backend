@@ -18,43 +18,39 @@ class OfferStatus(TimeStamped):
 
 
 class PropertyInfo(TimeStamped):
-    company = models.ForeignKey(
-        "callme.Company",
-        related_name="company_customer_infos",
-        on_delete=models.CASCADE,
-    )
-    apn = models.CharField(max_length=250, unique=True)
-    reference = models.CharField(max_length=250, unique=True)
-    property_size = models.CharField(max_length=250, blank=True)
-    short_legal_description = models.TextField(blank=True)
-    property_address = models.TextField(blank=True)
-    property_city = models.TextField(blank=True)
-    property_county = models.CharField(max_length=250, blank=True)
-    property_state = models.CharField(max_length=250, blank=True)
-    property_zip = models.CharField(max_length=250, blank=True)
+    client_code = models.CharField(max_length=250, blank=True)
     full_name = models.CharField(max_length=250, blank=True)
     company_name = models.CharField(max_length=250, blank=True)
-    buyer_offer_amount = models.TextField(blank=True)
-    approved_option_amount = models.TextField(blank=True)
-    other_terms = models.TextField(blank=True)
-    seller_offer_amount = models.TextField(blank=True)
-    other_offer_terms = models.TextField(blank=True)
-    notes = models.TextField(blank=True)
-    offer_status = models.ForeignKey(
-        OfferStatus,
-        related_name="customer_info_status",
-        on_delete=models.DO_NOTHING,
-        blank=True,
-        null=True,
-    )
-    offer_status_notes = models.TextField(blank=True)
+    reference_number = models.CharField(max_length=250, blank=True)
+    apn = models.CharField(max_length=250, blank=True)
+    county = models.CharField(max_length=250, blank=True)
+    state = models.CharField(max_length=250, blank=True)
+    size = models.CharField(max_length=250, blank=True)
+    address = models.CharField(max_length=250, blank=True)
+    price = models.CharField(max_length=250, blank=True)
+    due_diligence = models.TextField(blank=True)
+    ad_content = models.TextField(blank=True)
+    images = models.TextField(blank=True)
+    website = models.TextField(blank=True)
+    comment_offer_tab_customer = models.TextField(blank=True)
+    comment_offer_tab_client = models.TextField(blank=True)
+    comment_sales_agent_notes = models.TextField(blank=True)
+    facebook = models.CharField(max_length=250, blank=True)
+    fb_groups = models.CharField(max_length=250, blank=True)
+    landmodo = models.CharField(max_length=250, blank=True)
+    fsbo = models.CharField(max_length=250, blank=True)
+    instagram = models.CharField(max_length=250, blank=True)
+    land_listing = models.CharField(max_length=250, blank=True)
+    land_flip = models.CharField(max_length=250, blank=True)
+    land_hub = models.CharField(max_length=250, blank=True)
+    land_century = models.CharField(max_length=250, blank=True)
 
     class Meta:
         verbose_name = "Sellers Property Inventory List"
         verbose_name_plural = "Sellers Property Inventory List"
 
     def __str__(self):
-        return f"{self.company} - {self.apn}"
+        return f"{self.company_name} - {self.apn}"
 
 
 class PropertyFileInfo(TimeStamped):
