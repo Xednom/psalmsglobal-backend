@@ -27,12 +27,13 @@ django-grappelli = "*"
 pytest-django = "*"
 pytest-factoryboy = "*"
 pipenv-poetry-migrate = "*"
+openpyxl = "^3.1.2"
+django-storages = "^1.13.2"
 
 [tool.poetry.dev-dependencies]
 black = "*"
 django-debug-toolbar = "*"
 django-extensions = "*"
-pygraphviz = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
