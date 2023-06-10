@@ -4,4 +4,3 @@ from .phone_system import PhoneSystem, VodaconnectLineType, VodaconnectPlan  # n
 from .script import Script, Attribute, AttributeDataType, Form  # noqa
 from .geography import State, County  # noqa
 from .callme_info import OfferStatus, PropertyInfo, PropertyFileInfo  # noqa
-from .property import Property  # noqa
