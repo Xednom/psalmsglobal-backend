@@ -299,3 +299,7 @@ BLEACH_STRIP_TAGS = True
 BLEACH_STRIP_COMMENTS = False
 
 BLEACH_DEFAULT_WIDGET = "ckeditor.widgets.CKEditorWidget"
+
+FILE_UPLOAD_HANDLERS = (
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+)
