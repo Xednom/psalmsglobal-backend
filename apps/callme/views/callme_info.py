@@ -17,7 +17,7 @@ from apps.callme.serializers import (
     OfferStatusSerializer,
     PropertyFileSerializer,
 )
-from apps.authentication import models
+from apps.authentication.models import Client
 
 
 from openpyxl import load_workbook
@@ -84,74 +84,69 @@ class FileUploadView(APIView):
 
     def post(self, request, format=None):
         file_obj = request.data["file"]
-        # workbook = xlrd.open_workbook(file_obj.temporary_file_path())
+        username = request.data["username"]
+        user = User.objects.filter(username=username).first()
+        client = Client.objects.filter(user=user).first()
         wb_obj = load_workbook(filename=file_obj)
         sheet_name = "Sheet1"
-        print("File obj: ", wb_obj)
         sheet = wb_obj[sheet_name]
-        print("Sheet name: ", sheet)
 
         for sheet_name in wb_obj.sheetnames:
             print(f"Title = {sheet.title}")
             for value in sheet.iter_rows(values_only=True):
-                print("Value: ", value)
-                # atpac = models.CodeGearSystem.objects.filter(id=2).first()
-                # active_start_date = today
-                # code = value[1]
-                # description = value[2]
-                # item_weight = float(value[3])
-                # pallet_count = float(value[4])
+                print("Value: ", value[0])
+                full_name = value[0]
+                company_name = value[1]
+                reference_number = value[2]
+                apn = value[3]
+                county = value[4]
+                state = value[5]
+                size = value[6]
+                address = value[7]
+                price = value[8]
+                due_diligence = value[9]
+                ad_content = value[10]
+                images = value[11]
+                website = value[12]
+                comment_offer_tab_customer = value[13]
+                comment_offer_tab_client = value[14]
+                comment_sales_agent_notes = value[15]
+                facebook = value[16]
+                fb_groups = value[17]
+                landmodo = value[18]
+                fsbo = value[19]
+                instagram = value[20]
+                land_listing = value[21]
+                land_flip = value[22]
+                land_hub = value[23]
+                land_century = value[24]
 
-        # if file_obj:
-        #     loc = "{file_obj}".format(file_obj=file_obj)
-        #     wb = xlrd.open_workbook(file_obj)
-        #     sheet = wb.sheet_by_index(0)
-        #     sheet.cell_value(0, 0)
-
-        #     for i in range(sheet.nrows):
-        #         if sheet.cell_value(i, 0):
-        #             company = sheet.cell_value(i, 0)
-        #             apn = sheet.cell_value(i, 1)
-        #             reference = sheet.cell_value(i, 2)
-        #             property_size = sheet.cell_value(i, 3)
-        #             short_legal_description = sheet.cell_value(i, 4)
-        #             property_address = sheet.cell_value(i, 5)
-        #             property_city = sheet.cell_value(i, 6)
-        #             property_county = sheet.cell_value(i, 7)
-        #             property_state = sheet.cell_value(i, 8)
-        #             property_zip = sheet.cell_value(i, 9)
-        #             address_modification = sheet.cell_value(i, 10)
-        #             first_name = sheet.cell_value(i, 12)
-        #             last_name = sheet.cell_value(i, 13)
-        #             company_name = sheet.cell_value(i, 14)
-        #             buyer_offer_amount = sheet.cell_value(i, 15)
-        #             buyer_approved_option_amount = sheet.cell_value(i, 16)
-        #             buyer_other_terms = sheet.cell_value(i, 17)
-        #             buyer_notes = sheet.cell_value(i, 18)
-        #             seller_offer_amount = sheet.cell_value(i, 19)
-        #             seller_other_offer_terms = sheet.cell_value(i, 20)
-        #             seller_notes = sheet.cell_value(i, 21)
-
-        #             co = Company.objects.filter(company_name=company).first()
-
-        #             property_info = PropertyInfo.objects.create(
-        #                 company=co,
-        #                 apn=apn,
-        #                 reference=reference,
-        #                 property_size=property_size,
-        #                 short_legal_description=short_legal_description,
-        #                 property_address=property_address,
-        #                 property_city=property_city,
-        #                 property_county=property_county,
-        #                 property_state=property_state,
-        #                 property_zip=property_zip,
-        #                 full_name=first_name + " " + last_name,
-        #                 company_name=company_name,
-        #                 buyer_offer_amount=buyer_offer_amount,
-        #                 approved_option_amount=buyer_approved_option_amount,
-        #                 other_terms=buyer_other_terms,
-        #                 seller_offer_amount=seller_offer_amount,
-        #                 other_offer_terms=seller_other_offer_terms,
-        #                 notes=seller_notes,
-        #             )
-        return Response(status=201)
+                PropertyInfo.objects.create(
+                    client_code=client.client_code,
+                    full_name=full_name,
+                    company_name=company_name,
+                    reference_number=reference_number,
+                    apn=apn,
+                    county=county,
+                    state=state,
+                    size=size,
+                    address=address,
+                    price=price,
+                    due_diligence=due_diligence,
+                    ad_content=ad_content,
+                    images=images,
+                    website=website,
+                    comment_offer_tab_customer=comment_offer_tab_customer,
+                    comment_offer_tab_client=comment_offer_tab_client,
+                    comment_sales_agent_notes=comment_sales_agent_notes,
+                    facebook=facebook,
+                    fb_groups=fb_groups,
+                    landmodo=landmodo,
+                    fsbo=fsbo,
+                    instagram=instagram,
+                    land_listing=land_listing,
+                    land_flip=land_flip,
+                    land_hub=land_hub,
+                    land_century=land_century,
+                )
+        return Response(status=200)
