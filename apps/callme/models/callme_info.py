@@ -3,7 +3,14 @@ from django.db import models
 from apps.core.models import TimeStamped, Comment
 
 
-__all__ = ("OfferStatus", "PropertyInfo", "PropertyFileInfo")
+__all__ = (
+    "OfferStatus",
+    "PropertyInfo",
+    "PropertyFileInfo",
+    "CommentOfferTabCustomer",
+    "CommentOfferTabClient",
+    "CommentOfferTabAgent",
+)
 
 
 class OfferStatus(TimeStamped):
@@ -76,11 +83,12 @@ class CommentOfferTabCustomer(Comment):
 class CommentOfferTabClient(Comment):
     property_info = models.ForeignKey(
         PropertyInfo,
-        related_name="property_info_comment_tab_client",
+        related_name="property_info_comment_tab_clients",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
     )
+
     class Meta:
         ordering = ["-created_at"]
 
@@ -88,10 +96,11 @@ class CommentOfferTabClient(Comment):
 class CommentOfferTabAgent(Comment):
     property_info = models.ForeignKey(
         PropertyInfo,
-        related_name="property_info_comment_tab_agent",
+        related_name="property_info_comment_tab_agents",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
     )
+
     class Meta:
         ordering = ["-created_at"]
