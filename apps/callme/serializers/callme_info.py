@@ -70,6 +70,7 @@ class CallMeInfoSerializer(WritableNestedModelSerializer):
     class Meta:
         model = PropertyInfo
         fields = (
+            "id",
             "client_code",
             "full_name",
             "company_name",
