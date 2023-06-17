@@ -30,9 +30,11 @@ class Tagging(TimeStamped):
 class Comment(TimeStamped):
     user = models.ForeignKey(
         "authentication.User",
-        related_name="user_comments",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
     )
     comment = models.TextField()
+
+    class Meta:
+        abstract = True
