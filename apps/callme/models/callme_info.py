@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.core.models import TimeStamped
+from apps.core.models import TimeStamped, Comment
 
 
 __all__ = ("OfferStatus", "PropertyInfo", "PropertyFileInfo")
@@ -58,3 +58,40 @@ class PropertyFileInfo(TimeStamped):
 
     def __str__(self):
         return self.file
+
+
+class CommentOfferTabCustomer(Comment):
+    property_info = models.ForeignKey(
+        PropertyInfo,
+        related_name="property_info_comment_tab_customers",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+
+
+class CommentOfferTabClient(Comment):
+    property_info = models.ForeignKey(
+        PropertyInfo,
+        related_name="property_info_comment_tab_client",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+    class Meta:
+        ordering = ["-created_at"]
+
+
+class CommentOfferTabAgent(Comment):
+    property_info = models.ForeignKey(
+        PropertyInfo,
+        related_name="property_info_comment_tab_agent",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+    class Meta:
+        ordering = ["-created_at"]

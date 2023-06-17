@@ -25,3 +25,14 @@ class Tagging(TimeStamped):
     description = models.TextField(blank=True)
     notes = models.TextField(blank=True)
     additional_info = models.TextField(blank=True)
+
+
+class Comment(TimeStamped):
+    user = models.ForeignKey(
+        "authentication.User",
+        related_name="user_comments",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+    comment = models.TextField()
