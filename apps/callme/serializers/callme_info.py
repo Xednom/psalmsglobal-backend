@@ -31,10 +31,23 @@ class CommentOfferTabAgentSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), required=False, allow_null=True
     )
+    commenter = serializers.SerializerMethodField()
 
     class Meta:
         model = CommentOfferTabAgent
-        fields = ("user", "property_info", "comment")
+        fields = ("user", "property_info", "comment", "commenter")
+    
+    def get_commenter(self, instance):
+        if instance.user.designation_category == "staff":
+            user = User.objects.filter(username=instance.user)
+            staffs = Staff.objects.select_related("user").filter(user__in=user)
+            staff_code = [staff.staff_id for staff in staffs]
+            return "".join(staff_code)
+        else:
+            user = User.objects.filter(username=instance.user)
+            clients = Client.objects.select_related("user").filter(user__in=user)
+            client_code = [client.client_code for client in clients]
+            return "".join(client_code)
 
 
 class CommentOfferTabCustomerSerializer(serializers.ModelSerializer):
@@ -65,10 +78,23 @@ class CommentOfferTabClientSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), required=False, allow_null=True
     )
+    commenter = serializers.SerializerMethodField()
 
     class Meta:
         model = CommentOfferTabClient
-        fields = ("user", "property_info", "comment")
+        fields = ("user", "property_info", "comment", "commenter")
+
+    def get_commenter(self, instance):
+        if instance.user.designation_category == "staff":
+            user = User.objects.filter(username=instance.user)
+            staffs = Staff.objects.select_related("user").filter(user__in=user)
+            staff_code = [staff.staff_id for staff in staffs]
+            return "".join(staff_code)
+        else:
+            user = User.objects.filter(username=instance.user)
+            clients = Client.objects.select_related("user").filter(user__in=user)
+            client_code = [client.client_code for client in clients]
+            return "".join(client_code)
 
 
 class OfferStatusSerializer(serializers.ModelSerializer):
