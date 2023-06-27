@@ -19,9 +19,15 @@ from apps.callme.serializers import (
     OfferStatusSerializer,
     PropertyFileSerializer,
     CommentOfferTabCustomerSerializer,
+    CommentOfferTabClientSerializer,
+    CommentOfferTabAgentSerializer,
 )
 from apps.authentication.models import Client
-from apps.callme.models import CommentOfferTabCustomer
+from apps.callme.models import (
+    CommentOfferTabCustomer,
+    CommentOfferTabClient,
+    CommentOfferTabAgent,
+)
 
 
 from openpyxl import load_workbook
@@ -35,6 +41,8 @@ __all__ = (
     "PropertyInfoViewSet",
     "FileUploadView",
     "CreatePropertyInfoCustomerComment",
+    "CreatePropertyInfoClientComment",
+    "CreatePropertyInfoAgentComment",
 )
 
 
@@ -93,9 +101,35 @@ class CreatePropertyInfoCustomerComment(generics.CreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         property_info_id = self.kwargs.get("id")
-        property_info = get_object_or_404(
-            PropertyInfo, id=property_info_id
-        )
+        property_info = get_object_or_404(PropertyInfo, id=property_info_id)
+        serializer.save(user=user, property_info=property_info)
+
+
+class CreatePropertyInfoClientComment(generics.CreateAPIView):
+    serializer_class = CommentOfferTabClientSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = CommentOfferTabClient.objects.select_related(
+        "property_info", "user"
+    ).all()
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        property_info_id = self.kwargs.get("id")
+        property_info = get_object_or_404(PropertyInfo, id=property_info_id)
+        serializer.save(user=user, property_info=property_info)
+
+
+class CreatePropertyInfoAgentComment(generics.CreateAPIView):
+    serializer_class = CommentOfferTabAgentSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = CommentOfferTabAgent.objects.select_related(
+        "property_info", "user"
+    ).all()
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        property_info_id = self.kwargs.get("id")
+        property_info = get_object_or_404(PropertyInfo, id=property_info_id)
         serializer.save(user=user, property_info=property_info)
 
 

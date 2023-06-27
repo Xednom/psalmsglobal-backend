@@ -12,5 +12,7 @@ from .callme_info import (
     OfferStatusViewSet,
     PropertyInfoViewSet,
     FileUploadView,
-    CreatePropertyInfoCustomerComment
+    CreatePropertyInfoCustomerComment,
+    CreatePropertyInfoClientComment,
+    CreatePropertyInfoAgentComment
 )  # noqa

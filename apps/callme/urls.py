@@ -17,7 +17,9 @@ from apps.callme.views import (
     PropertyInfoViewSet,
     FileUploadView,
     FormView,
-    CreatePropertyInfoCustomerComment
+    CreatePropertyInfoCustomerComment,
+    CreatePropertyInfoClientComment,
+    CreatePropertyInfoAgentComment
 )
 
 router = routers.DefaultRouter()
@@ -50,6 +52,16 @@ urlpatterns = [
     path(
         "property-info/<int:id>/customer-comment/",
         CreatePropertyInfoCustomerComment.as_view(),
-        name="property-info-comment",
+        name="property-info-customer-comment",
+    ),
+    path(
+        "property-info/<int:id>/client-comment/",
+        CreatePropertyInfoClientComment.as_view(),
+        name="property-info-client-comment",
+    ),
+    path(
+        "property-info/<int:id>/agent-comment/",
+        CreatePropertyInfoAgentComment.as_view(),
+        name="property-info-agent-comment",
     ),
 ]
