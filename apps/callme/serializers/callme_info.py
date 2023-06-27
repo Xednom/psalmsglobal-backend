@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
-from apps.authentication.models import User
+from apps.authentication.models import User, Staff, Client
 from apps.callme.models import (
     Company,
     PropertyInfo,
@@ -17,7 +17,14 @@ from apps.callme.models import (
 # User = get_user_model
 
 
-__all__ = ("CallMeInfoSerializer", "OfferStatusSerializer", "PropertyFileSerializer")
+__all__ = (
+    "CallMeInfoSerializer",
+    "OfferStatusSerializer",
+    "PropertyFileSerializer",
+    "CommentOfferTabAgentSerializer",
+    "CommentOfferTabCustomerSerializer",
+    "CommentOfferTabClientSerializer",
+)
 
 
 class CommentOfferTabAgentSerializer(serializers.ModelSerializer):
@@ -34,10 +41,24 @@ class CommentOfferTabCustomerSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), required=False, allow_null=True
     )
+    commenter = serializers.SerializerMethodField()
 
     class Meta:
         model = CommentOfferTabCustomer
-        fields = ("user", "property_info", "comment")
+        fields = ("created_at", "user", "property_info", "comment", "commenter")
+
+    def get_commenter(self, instance):
+        if instance.user.designation_category == "staff":
+            user = User.objects.filter(username=instance.user)
+            staffs = Staff.objects.select_related("user").filter(user__in=user)
+            staff_code = [staff.staff_id for staff in staffs]
+            return "".join(staff_code)
+        else:
+            user = User.objects.filter(username=instance.user)
+            clients = Client.objects.select_related("user").filter(user__in=user)
+            client_code = [client.client_code for client in clients]
+            return "".join(client_code)
+
 
 
 class CommentOfferTabClientSerializer(serializers.ModelSerializer):

@@ -11,4 +11,7 @@ from .callme_info import (
     CallMeInfoSerializer,
     OfferStatusSerializer,
     PropertyFileSerializer,
+    CommentOfferTabAgentSerializer,
+    CommentOfferTabCustomerSerializer,
+    CommentOfferTabClientSerializer,
 )  # noqa

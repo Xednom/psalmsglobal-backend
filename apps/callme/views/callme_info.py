@@ -7,6 +7,8 @@ from django_filters import CharFilter
 from django_filters import rest_framework as filters
 from rest_framework import viewsets, permissions
 
+from rest_framework import generics
+from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -16,8 +18,10 @@ from apps.callme.serializers import (
     CallMeInfoSerializer,
     OfferStatusSerializer,
     PropertyFileSerializer,
+    CommentOfferTabCustomerSerializer,
 )
 from apps.authentication.models import Client
+from apps.callme.models import CommentOfferTabCustomer
 
 
 from openpyxl import load_workbook
@@ -30,6 +34,7 @@ __all__ = (
     "OfferStatusViewSet",
     "PropertyInfoViewSet",
     "FileUploadView",
+    "CreatePropertyInfoCustomerComment",
 )
 
 
@@ -64,7 +69,7 @@ class PropertyInfoViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         current_user = self.request.user
         user = User.objects.filter(username=current_user).first()
-        client = models.Client.objects.filter(user=user).first()
+        client = Client.objects.filter(user=user).first()
         print("User: ", client.client_code)
         if (
             current_user.designation_category == "current_client"
@@ -76,6 +81,22 @@ class PropertyInfoViewSet(viewsets.ModelViewSet):
         elif current_user.is_superuser:
             qs = PropertyInfo.objects.all()
             return qs
+
+
+class CreatePropertyInfoCustomerComment(generics.CreateAPIView):
+    serializer_class = CommentOfferTabCustomerSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = CommentOfferTabCustomer.objects.select_related(
+        "property_info", "user"
+    ).all()
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        property_info_id = self.kwargs.get("id")
+        property_info = get_object_or_404(
+            PropertyInfo, id=property_info_id
+        )
+        serializer.save(user=user, property_info=property_info)
 
 
 class FileUploadView(APIView):
