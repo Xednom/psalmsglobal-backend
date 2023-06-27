@@ -147,9 +147,7 @@ class FileUploadView(APIView):
         sheet = wb_obj[sheet_name]
 
         for sheet_name in wb_obj.sheetnames:
-            print(f"Title = {sheet.title}")
             for value in sheet.iter_rows(values_only=True):
-                print("Value: ", value[0])
                 full_name = value[0]
                 company_name = value[1]
                 reference_number = value[2]
@@ -176,7 +174,7 @@ class FileUploadView(APIView):
                 land_hub = value[23]
                 land_century = value[24]
 
-                PropertyInfo.objects.create(
+                property_info = PropertyInfo.objects.create(
                     client_code=client.client_code,
                     full_name=full_name,
                     company_name=company_name,
@@ -191,9 +189,6 @@ class FileUploadView(APIView):
                     ad_content=ad_content,
                     images=images,
                     website=website,
-                    comment_offer_tab_customer=comment_offer_tab_customer,
-                    comment_offer_tab_client=comment_offer_tab_client,
-                    comment_sales_agent_notes=comment_sales_agent_notes,
                     facebook=facebook,
                     fb_groups=fb_groups,
                     landmodo=landmodo,
@@ -203,5 +198,21 @@ class FileUploadView(APIView):
                     land_flip=land_flip,
                     land_hub=land_hub,
                     land_century=land_century,
+                )
+                property_info_id = PropertyInfo.objects.filter(id=property_info.id).first()
+                CommentOfferTabCustomer.objects.create(
+                    property_info=property_info_id,
+                    comment=comment_offer_tab_customer,
+                    user=user,
+                )
+                CommentOfferTabClient.objects.create(
+                    property_info=property_info_id,
+                    comment=comment_offer_tab_client,
+                    user=user,
+                )
+                CommentOfferTabAgent.objects.create(
+                    property_info=property_info_id,
+                    comment=comment_sales_agent_notes,
+                    user=user,
                 )
         return Response(status=200)
